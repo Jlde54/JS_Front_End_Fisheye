@@ -4,9 +4,11 @@ async function getPhotographers() {
     const photografers = await reponse.json();
     return photografers;
 }
-
+/**
+ * Affichage des portraits des photographes sur la page d'accueil
+ * @param {*} photographers 
+ */
 async function displayData(photographers) {
-    // Affichage des portraits des photographes sur la page d'accueil
     const photographersSection = document.querySelector(".photographer_section");
 
     photographers.forEach((photographer) => {
@@ -17,9 +19,10 @@ async function displayData(photographers) {
         photographersSection.appendChild(userCardDOM);
     });
 }
-
+/**
+ * Récupère et affiche les datas des photographes
+ */
 async function init() {
-    // Récupère et affiche les datas des photographes
     const { photographers } = await getPhotographers();
     console.log("photographers : ", photographers)
     displayData(photographers);

@@ -1,14 +1,24 @@
+/**
+ * 
+ * @param {*} data 
+ * @returns 
+ */
 function photographerTemplate(data) {
     const { name, id, city, country, tagline, price, portrait } = data;
     const picture = `assets/photographers/${portrait}`;
-
+    /**
+     * 
+     * @returns 
+     */
     function getUserCardDOM() {
         // Création des éléments <article> et <a> : Carte et lien du photographe
         const article = document.createElement( 'article' );
         const linkImg = document.createElement("a");
+        linkImg.setAttribute("aria-label", `Lien vers la page du photographe ${name}`)
         // Suppression des espaces dans le nom du photgraphe
         const nameWoSpace = name.split(' ').join('');
-        linkImg.setAttribute("href", `../scripts/pages/${nameWoSpace}.html`);
+        // linkImg.setAttribute("href", `../scripts/pages/${nameWoSpace}.html`);
+        linkImg.setAttribute("href", "#");
         // Création de l'élément <img> : Portrait du photographe
         const img = document.createElement("img");
         img.setAttribute("src", picture);
@@ -44,7 +54,12 @@ function photographerTemplate(data) {
     }
     return { id, name, picture, getUserCardDOM };
 }
-// Listener sur le portrait du photographe
+
+/**
+ * Listener sur le portrait du photographe
+ * @param {*} linkImg 
+ * @param {*} id 
+ */
 function listenPhotographer (linkImg, id) {
     linkImg.addEventListener("click", async function (){
         const reponse = await fetch("../../data/photographers.json");
@@ -53,9 +68,14 @@ function listenPhotographer (linkImg, id) {
         mediaFilter(media, id);
     })
 }
-// Filtre sur les medias avec l'id du photographe
-function mediaFilter (media, id) {
-    const mediaFiltre = media.filter(function (media){
+
+/**
+ * Filtre les medias avec l'id du photographe
+ * @param {*} media 
+ * @param {*} id 
+ */
+function mediaFilter (medias, id) {
+    const mediaFiltre = medias.filter(function (media){
         return media.photographerId = id;
     }) 
     console.log("mediaFiltre : ", mediaFiltre);
