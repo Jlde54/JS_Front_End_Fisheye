@@ -1,6 +1,6 @@
 function photographerTemplate(photografers) {
     const { name, id, city, country, tagline, price, portrait } = photografers;
-    const picture = `../../assets/photographers/${portrait}`;
+    const picture = `./assets/photographers/${portrait}`;
 
     function getUserCardDOM() {
         // Création de l'élément <article> : Carte du photographe
@@ -63,7 +63,7 @@ async function listenPhotographer () {
 
 // Récupération des medias des photographes depuis le fichier JSON
 async function getMedias() {
-    const reponse = await fetch("../../data/photographers.json");
+    const reponse = await fetch("./data/photographers.json");
     const medias = await reponse.json();
     return medias;
 }
