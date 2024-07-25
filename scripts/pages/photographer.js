@@ -5,6 +5,7 @@ function photographerTemplate(photografers) {
     function getUserCardDOM() {
         // Création de l'élément <article> : Carte du photographe
         const article = document.createElement( 'article' );
+        article.setAttribute("id",`art${id}`)
 
         // Création de l'élément <a> : Lien vers les medias du photographe
         const linkImg = document.createElement("a");
@@ -44,20 +45,16 @@ function photographerTemplate(photografers) {
 
         return (article);
     }
-    return { name, picture, getUserCardDOM };
+    return { name, id, city, country, tagline, price, portrait, getUserCardDOM };
 }
 
- // Listener sur le portrait du photographe
-async function listenPhotographer () {
-    const linksPhotographes = document.querySelectorAll("article a");
-    const { media } = await getMedias();
-
-    linksPhotographes.forEach((item) => {
-        item.addEventListener("click", async function (event){
-            // Appel de la fonction de Filtre sur les medias avec l'id du photographe
-            const id = event.target.dataset.id;
-            mediaFilter(media, id);
-        });
+ // Listener sur le portrait du photographe + affichage page photographe
+async function listenPhotographer (id, name, city, country, tagline, portrait) {
+    const linksPhotographe = document.querySelector(`#art${id}`);
+    linksPhotographe.addEventListener("click", async function (event){
+        const id = event.target.dataset.id;
+        mediaFilter(id);
+        buildPhotograferPage(name, city, country, tagline, portrait);
     });
 }
 
@@ -69,13 +66,13 @@ async function getMedias() {
 }
 
  // Filtre les medias avec l'id du photographe
-function mediaFilter (medias, id) {
-    const mediaFiltre = medias.filter((media) => media.photographerId == id);
+async function mediaFilter (id) {
+    const { media } = await getMedias();
+    const mediaFiltre = media.filter((item) => item.photographerId == id);
     console.log("mediaFiltre : ", mediaFiltre);
-    buildPhotograferPage ();
 }
 
-function buildPhotograferPage () {
+function buildPhotograferPage (name, city, country, tagline, portrait) {
     const photographHeader = document.querySelector(".photograph-header");
     const divPhotographerProfile = document.createElement("div");
     divPhotographerProfile.className = "profile";
