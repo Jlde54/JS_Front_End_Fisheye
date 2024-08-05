@@ -5,9 +5,9 @@ function dataTemplate(data, section, dirPhotographer) {
 
     let picture = "";
     
+    // Création des éléments + Ajout des éléments à leur parent dans le DOM
     function getUserCardDOM() {
-        // Création des éléments de la page d'accueil +
-        // Ajout des éléments à leur parent dans le DOM
+        // Eléments de la page d'accueil
         if (section === ".photographer_section") {
             picture =`assets/photographers/${portrait}`;
             // Création de l'élément <article> : Carte du photographe
@@ -18,7 +18,7 @@ function dataTemplate(data, section, dirPhotographer) {
             const linkPortrait = document.createElement("a");
             linkPortrait.arialabel = `Lien vers la page du photographe ${name}`;
             linkPortrait.href = `./photographer.html?id=${id}&name=${name}&city=${city}&country=${country}&tagline=${tagline}&picture=${picture}&price=${price}`;
-            linkPortrait.target = "_blank";
+            // linkPortrait.target = "_blank";
             linkPortrait.dataset.id = id;
 
             // Création de l'élément <img> : Portrait du photographe
@@ -51,6 +51,8 @@ function dataTemplate(data, section, dirPhotographer) {
             article.appendChild(pPrice);
 
             return (article);
+
+        // Eléments de la page photographe
         } else {
             // Création des éléments pour afficher une image ou une video
             const mediaData = {
@@ -59,12 +61,11 @@ function dataTemplate(data, section, dirPhotographer) {
                 dirPhotographer: dirPhotographer,
                 title: title
             };
-
             const imgMedia = mediaElementFactory(mediaData);
+
             // Fonction factory
             function mediaElementFactory({ image, video, dirPhotographer, title }) {
                 let picture, imgMedia;
-            
                 if (image !== undefined) {
                     picture = `./assets/photographers/${dirPhotographer}/${image}`;
                     imgMedia = document.createElement('img');
@@ -75,40 +76,21 @@ function dataTemplate(data, section, dirPhotographer) {
                     picture = `./assets/photographers/${dirPhotographer}/${video}`;
                     imgMedia = document.createElement('video');
                     imgMedia.src = picture;
-                    imgMedia.alt = `Media ${title}`;
                     imgMedia.className = "medias_section_img";
                 } else {
                     throw new Error("No media source provided");
                 }
                 return imgMedia;
             }
-            
-            // if (image !== undefined) {
-            //     picture = `./assets/photographers/${dirPhotographer}/${image}`;
-            //     imgMedia = document.createElement( 'img' );
-            //     imgMedia.src = picture;
-            //     imgMedia.alt = `Media ${title}`;
-            //     imgMedia.className = "medias_section_img";
-            // } else {
-            //     picture = `./assets/photographers/${dirPhotographer}/${video}`;
-            //     imgMedia = document.createElement( 'video' );
-            //     imgMedia.src = picture;
-            //     imgMedia.alt = `Media ${title}`;
-            //     imgMedia.className = "medias_section_img";
-            // }
-            // Création des éléments de la page photographe +
-            // Ajout des éléments à leur parent dans le DOM
 
-            // Création de l'élément <article> : Carte du media du photographe
             const article = document.createElement( 'article' );
-            article.id =`art${id}`;
 
             // Création de l'élément <a> : Lien vers le media grand format
             const linkMedia = document.createElement("a");
             linkMedia.arialabel = `Lien vers le media ${title} grand format`;
-            linkMedia.href = `./photographer.html`;
-            linkMedia.target = "_blank";
-            linkMedia.dataset.id = id;
+            linkMedia.href = "#";
+            linkMedia.dataset.id = `med${id}`;
+            linkMedia.id =`med${id}`;
 
             // Création de l'élément <div> : Description du média
             const divDescMedia = document.createElement("div");
@@ -135,8 +117,8 @@ function dataTemplate(data, section, dirPhotographer) {
 
             // Ajout des éléments à leur parent dans le DOM
             article.appendChild(linkMedia);
+            article.appendChild(divDescMedia);
             linkMedia.appendChild(imgMedia);
-            linkMedia.appendChild(divDescMedia);
             divDescMedia.appendChild(h3Title);
             divDescMedia.appendChild(divDescLikes);
             divDescLikes.appendChild(pLikes);

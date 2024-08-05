@@ -2,10 +2,12 @@
     display: none;
 }
 
+/* Entête de la page Photographe */
 .photograph-header {
     background-color: #FAFAFA;
     height: 300px;
-    margin: 0 150px;
+    margin: 0 100px;
+    padding-inline: 50px;
     display: flex;
     flex-direction: row;
     justify-content:space-between;
@@ -46,7 +48,7 @@
     box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.25);
 }
 
-.photograph-header-button, .photograph-sort select, .selected {
+.btn {
     font-size: 20px;
     font-weight: 700;
     color: white;
@@ -64,6 +66,7 @@
     color : #000;
 }
 
+/* Dropdown menu pour trier les médias */
 .photograph-sort {
     display: flex;
     flex-direction: row;
@@ -126,24 +129,22 @@ label {
     font-size: 20px;
     font-weight: 700;
     height: 39px;
-    padding: 16px;
+    padding: 11px;
     cursor: pointer;
     color: white;
     text-align: left;
     background-color: #901C1C;
     transition: filter 0.4s ease;
     position: relative;
-    /* padding-bottom: 10px; */
 }
 
 .option::after {
     content: "";
     position: absolute;
     bottom: 0;
-    /* left: 0; */
     left: 50%;
     width: 90%;
-    height: 1px;
+    height: 2px;
     background-color: white;
     transform: translateX(-50%);
   }
@@ -152,24 +153,11 @@ label {
     content: none;
 }
 
-/* .option:hover {
-    background-color: #DB8876;
-    color : #000;
-} */
-
-
-/* .custom-dropdown:hover .menu {
-    display: block;
-} */
-
-/* .hidden {
-    display: none !important;
-} */
-
 .show {
     display: block !important;
 }
 
+/* Encart avec Likes et Tarifs  */
 .photograph-likes-tarif {
     display: flex;
     flex-direction: row;
@@ -187,6 +175,7 @@ label {
     font-weight: 500;
 }
 
+/* Section affichant les médias du photographe */
 .medias_section {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -200,7 +189,6 @@ label {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
 }
 
 .medias_section_img {
@@ -239,9 +227,31 @@ label {
     flex-direction: row;
     justify-content:space-between;
     align-items: center;
+    cursor: pointer;
+}
+
+/* Modale contenant le formulaire d'inscription */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+#contact_modal, #lightbox_modal {
+    position: relative;
+    display: none;
 }
 
 .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 5px;
     background-color: #DB8876;
     width: 50%;
@@ -250,7 +260,8 @@ label {
     align-items: center;
     justify-content: space-between;
     padding: 35px;
-    margin: auto;
+    margin: 30px auto;
+    z-index: 1001;
 }
 
 .modal header {
@@ -268,6 +279,7 @@ label {
     text-align: center;
 }
 
+/* Formulaire de la modale */
 form {
     display: flex;
     width: 100%;
@@ -275,7 +287,7 @@ form {
     align-items: flex-start;
 }
 
-form label {
+form label, form input, form textarea {
     color: #312E2E;
     font-size: 36px;
 }
@@ -293,4 +305,77 @@ form input {
     height: 68px;
     border: none;
     border-radius: 5px;
+}
+
+form textarea {
+    width: 100%;
+    height: 170px;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Modale contenant la lightbox */
+.lightbox-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    background-color: white;
+    width: 50%;
+    /* display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; */
+    padding: 35px;
+    margin: 30px auto;
+    z-index: 1001;
+}
+
+.lightbox-img img, .lightbox-img video {
+    display: block;
+    width: 80%;
+    object-fit: cover;
+    margin: auto;
+}
+
+.lightbox-prev, .lightbox-next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    /* width: auto; */
+    padding: 16px;
+    margin-top: -50px;
+    color: #901C1C;
+    font-weight: bold;
+    font-size: 20px;
+    width: 80px;
+    height: 80px;
+    transition: 0.3s;
+    user-select: none;
+}
+
+.lightbox-close {
+    filter: brightness(0) saturate(100%) invert(15%) sepia(12%) saturate(3471%) hue-rotate(350deg) brightness(101%) contrast(88%);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.lightbox-prev {
+    left: 0;
+}
+
+.lightbox-next {
+    right: 0;
+}
+
+.lightbox-desc {
+    font-size: 24px;
+    font-weight: 400;
+    color: #901C1C;
+    width: 80%;
+    margin-inline: auto;
+    margin-top: 20px;
 }

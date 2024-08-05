@@ -10,28 +10,56 @@
   </head>
   <body>
     <header>
-      <img src="assets/images/logo.png" class="logo" alt="Logo du site FishEye">
+      <a href="./index.html">
+        <img src="assets/images/logo.png" class="logo" alt="Logo du site FishEye">
+      </a>
     </header>
     <main id="main">
+
+      <!-- Entête du photographe -->
       <div class="photograph-header">
-        <button class="photograph-header-button" onclick="displayModal()">Contactez-moi</button>
+        <button class="btn photograph-header-button" onclick="displayModalForm()">Contactez-moi</button>
       </div>
       <div class="medias_section"></div>
     </main>
 
+    <!-- Overlay pour la modale -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Modale avec le formulaire -->
     <div id="contact_modal">
-			<div class="modal">
+			<div class="modal" role="dialog" aria-describedby="modalTitle">
 				<header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()">
+          <h2 id="modalTitle" class="modal-title">Contactez-moi</h2>
+          <img class="form-close" src="assets/icons/close.svg" onclick="closeModalForm()">
         </header>
-				<form>
+
+        <!-- Formulaire -->
+				<form name="form" id="form" aria-label="Formulaire de contact">
 					<div>
-						<label>Prénom</label>
-						<input />
+						<label for="first">Prénom</label>
+						<input type="text" id="first" aria-label="Entrez votre prénom" required>
+            <label for="last">Nom</label>
+						<input type="text" id="last" aria-label="Entrez votre nom" required>
+            <label for="email">Email</label>
+						<input type="email" id="email" aria-label="Entrez votre Email">
+            <label for="message">Votre message</label>
+            <textarea name="" id="message" aria-label="Entrez votre message" required></textarea>
 					</div>
-          <button class="contact_button">Envoyer</button>
+          <button type="submit" class="btn btn-submit" aria-label="Envoyer le formulaire de contact">Envoyer</button>
 				</form>
+			</div>
+		</div>
+
+    <!-- Modale avec la lightbox -->
+    <div id="lightbox_modal">
+			<div class="lightbox-modal" role="dialog" aria-label="Photo agrandie">
+          <img class="lightbox-close" src="assets/icons/close.svg" onclick="closeModalLightbox()">
+          <!-- <img class="lightbox-img" src="" alt=""> -->
+          <div class="lightbox-img"></div>
+          <div class="lightbox-desc"></div>
+          <img class="lightbox-prev" src="./assets/icons/left_chevron.svg" alt="Photo précédente">
+          <img class="lightbox-next" src="./assets/icons/right_chevron.svg" alt="Photo suivante">
 			</div>
 		</div>
     
