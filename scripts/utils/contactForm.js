@@ -69,6 +69,3 @@ btnSubmit.addEventListener("click", (event) => {
         console.log(`Formulaire soumis avec : ${first}, ${last}, ${email}, ${message}`);
     }
 })
-
-
-

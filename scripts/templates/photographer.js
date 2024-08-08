@@ -1,148 +1,235 @@
-
-// Affichage des datas des photographes (description + medias)
-function dataTemplate(data, section, dirPhotographer) {
+/**
+ * Fonction pour créer un modèle de données basé sur les informations fournies 
+ * Affichage des données des photographes (description ou medias)
+ * 
+ * @param {data} - objet contenant les propriétés à utiliser
+ * @param {section} - section devant contenir les articles crées 
+ * @param {dirPhotographer} - chemin vers le répertoire des medias du photographe
+ * @returns {article} - élément représentant la carte du photographe
+ */
+function dataTemplate (data, section, dirPhotographer) {
+    // Déstructuration de l'objet 'data' pour extraire les propriétés nécessaires
     const { name, id, city, country, tagline, price, portrait, photographerId, title, image, video, likes, date } = data;
 
+    // Initialisation de la variable 'picture' vide, utilisée pour stocker le chemin de l'image
     let picture = "";
     
-    // Création des éléments + Ajout des éléments à leur parent dans le DOM
-    function getUserCardDOM() {
-        // Eléments de la page d'accueil
+    /**
+     * Fonction pour créer et retourner les éléments DOM représentant les articles soit pour la page d'accueil des photographes, soit pour la page des médias d'un photographe.
+     * 
+     * @returns {name, picture, getUserCardDOM} - l'objet contenant le nom du photographe, le chemin de l'image et la méthode pour obtenir l'élément DOM représentant la carte utilisateur 
+     */
+    function getUserCardDOM () {
+        // Vérifie si la section cible est '.photographer_section' (page d'accueil des photographes)
         if (section === ".photographer_section") {
+            // Définition du chemin de l'image du photographe
             picture =`assets/photographers/${portrait}`;
-            // Création de l'élément <article> : Carte du photographe
-            const article = document.createElement( 'article' );
-            article.id =`art${id}`;
 
-            // Création de l'élément <a> : Lien vers les medias du photographe
-            const linkPortrait = document.createElement("a");
-            linkPortrait.arialabel = `Lien vers la page du photographe ${name}`;
-            linkPortrait.href = `./photographer.html?id=${id}&name=${name}&city=${city}&country=${country}&tagline=${tagline}&picture=${picture}&price=${price}`;
-            // linkPortrait.target = "_blank";
-            linkPortrait.dataset.id = id;
+            // Appel de la fonction createElement() pour la création de l'élément <a> : Lien vers les medias du photographe
+            const linkPortrait = createElement('a', {
+                'aria-label': `Lien vers la page du photographe ${name}`,
+                href: `./photographer.html?id=${id}&name=${name}&city=${city}&country=${country}&tagline=${tagline}&picture=assets/photographers/${portrait}&price=${price}`,
+                'data-id': id
+            }, [
+                // Appel de la fonction createElement() pour la création de l'élément <img> : Portrait du photographe
+                createElement('img', { src: `assets/photographers/${portrait}`, alt: `Portrait du photographe ${name}` }),
+                // Appel de la fonction createElement() pour la création de l'élément <h2> : Nom du photographe
+                createElement('h2', {}, [name])
+            ]);
 
-            // Création de l'élément <img> : Portrait du photographe
-            const imgPortrait = document.createElement( 'img' );
-            imgPortrait.src = picture;
-            imgPortrait.alt = `Portrait du photographe ${name}`;
+            // Appel de la fonction createElement() pour la création de l'élément <article> : Carte du photographe
+            const article = createElement('article', { id: `art${id}` }, [
+                linkPortrait, 
+                // Appel de la fonction createElement() pour la création de l'élément <h3> : Localisation du photographe
+                createElement('h3', {}, [`${city}, ${country}`]),
+                // Appel de la fonction createElement() pour la création de l'élément <h4> : Slogan du photographe
+                createElement('h4', {}, [tagline]),
+                // Appel de la fonction createElement() pour la création de l'élément <p> : Tarif du photographe
+                createElement('p', {}, [`${price}€/jour`])
+            ]);
 
-            // Création de l'élément <h2> : Nom du photographe
-            const h2Name = document.createElement( 'h2' );
-            h2Name.textContent = name;
-
-            // Création de l'élément <h3> : Localisation du photographe
-            const h3Location = document.createElement("h3");
-            h3Location.textContent = `${city}, ${country}`;
-
-            // Création de l'élément <h4> : Slogan du photographe
-            const h4Tagline = document.createElement("h4");
-            h4Tagline.textContent = tagline;
-
-            // Création de l'élément <p> : Tarif du photographe
-            const pPrice = document.createElement("p");
-            pPrice.textContent = `${price}€/jour`;
-
-            // Ajout des éléments à leur parent dans le DOM
-            article.appendChild(linkPortrait);
-            linkPortrait.appendChild(imgPortrait);
-            linkPortrait.appendChild(h2Name);
-            article.appendChild(h3Location);
-            article.appendChild(h4Tagline);
-            article.appendChild(pPrice);
-
+            // Retour de l'élément <article> représentant la carte du photographe
             return (article);
 
-        // Eléments de la page photographe
+        // sinon la section cible n'est pas '.photographer_section' (c'est donc la page contenant les médias d'un photographe)
         } else {
-            // Création des éléments pour afficher une image ou une video
+            // Préparation des données du média
             const mediaData = {
-                image: image,
-                video: video,
-                dirPhotographer: dirPhotographer,
-                title: title
+                image: image,   // le nom du fichier .jpg du média si c'est une image
+                video: video,   // le nom du fichier .mp4 du média si c'est une vidéo
+                dirPhotographer: dirPhotographer,   // le chemin vers le répertoire des medias du photographe
+                title: title    // le titre du média
             };
-            const imgMedia = mediaElementFactory(mediaData);
 
-            // Fonction factory
-            function mediaElementFactory({ image, video, dirPhotographer, title }) {
-                let picture, imgMedia;
-                if (image !== undefined) {
-                    picture = `./assets/photographers/${dirPhotographer}/${image}`;
-                    imgMedia = document.createElement('img');
-                    imgMedia.src = picture;
-                    imgMedia.alt = `Media ${title}`;
-                    imgMedia.className = "medias_section_img";
-                } else if (video !== undefined) {
-                    picture = `./assets/photographers/${dirPhotographer}/${video}`;
-                    imgMedia = document.createElement('video');
-                    imgMedia.src = picture;
-                    imgMedia.className = "medias_section_img";
-                } else {
-                    throw new Error("No media source provided");
-                }
-                return imgMedia;
-            }
+            // Appel de la fonction factory "mediaElementFactory" pour la création de l'élément média approprié (image ou vidéo)
+            const imgMedia = mediaElementFactory (mediaData);
 
-            const article = document.createElement( 'article' );
+            // Appel de la fonction createElement() pour la création de l'élément <article> pour le média
+            const article = createElement('article', {}, [
+                // Appel de la fonction createElement() pour la création de l'élément <a> : Lien vers le media grand format
+                createElement('a', {
+                    arialabel: `Lien vers le media ${title} grand format`,
+                    href: "#",
+                    'data-id': `med${id}`,
+                    id: `med${id}`
+                }, [
+                    // Appel de la fonction createElement() pour la création de l'élément <img> ou <video> en fonction du contenu de imgMedia
+                    createElement(imgMedia.tag, {
+                        src: imgMedia.src,
+                        className: imgMedia.className
+                    })
+                ]),
+                // Appel de la fonction createElement() pour la création de l'élément <div> : Description du média
+                createElement('div', { className: "medias_section_descMedia" }, [
+                    // Appel de la fonction createElement() pour la création de l'élément <h3> : Titre du média
+                    createElement('h3', { className: "medias_section_title" }, [`${title}`]),
+                    // Appel de la fonction createElement() pour la création de l'élément <div> : Description des likes
+                    createElement('div', { className: "medias_section_descLikes" }, [
+                        // Appel de la fonction createElement() pour la création de l'élément <p> : Nombre de likes
+                        createElement('p', { className: "medias_section_likes" }, [`${likes}`]),
+                        // Appel de la fonction createElement() pour la création de l'élément <p> : icon like
+                        createElement('p', { className: "medias_section_icon" }, [
+                            createElement('i', { className: "fa-solid fa-heart", 'aria-hidden': "true" })
+                        ])
+                    ])
+                ])
+            ]);
 
-            // Création de l'élément <a> : Lien vers le media grand format
-            const linkMedia = document.createElement("a");
-            linkMedia.arialabel = `Lien vers le media ${title} grand format`;
-            linkMedia.href = "#";
-            linkMedia.dataset.id = `med${id}`;
-            linkMedia.id =`med${id}`;
-
-            // Création de l'élément <div> : Description du média
-            const divDescMedia = document.createElement("div");
-            divDescMedia.className = "medias_section_descMedia";
-
-            // Création de l'élément <h3> : Titre du média
-            const h3Title = document.createElement("h3");
-            h3Title.textContent = `${title}`;
-            h3Title.className = "medias_section_title";
-
-            // Création de l'élément <div> : Description des likes
-            const divDescLikes = document.createElement("div");
-            divDescLikes.className = "medias_section_descLikes";
-
-            // Création de l'élément <p> : Nombre de likes
-            const pLikes = document.createElement("p");
-            pLikes.textContent = `${likes}`;
-            pLikes.className = "medias_section_likes";
-
-            // Création de l'élément <p> : Nombre de likes
-            const iIcon = document.createElement("p");
-            iIcon.innerHTML = "<i class='fa-solid fa-heart'></i>";
-            iIcon.className = "medias_section_icon";
-
-            // Ajout des éléments à leur parent dans le DOM
-            article.appendChild(linkMedia);
-            article.appendChild(divDescMedia);
-            linkMedia.appendChild(imgMedia);
-            divDescMedia.appendChild(h3Title);
-            divDescMedia.appendChild(divDescLikes);
-            divDescLikes.appendChild(pLikes);
-            divDescLikes.appendChild(iIcon);
-
+            // Retourne l'élément <article> représentant le média
             return (article);
         }
     }
+    // Retour d'un objet contenant le nom du photographe, le chemin de l'image et la méthode pour obtenir l'élément DOM représentant la carte utilisateur
     return { name, picture, getUserCardDOM }
 }
 
-// Récupération des datas des photographes depuis le fichier JSON
-async function getData() {
-    const reponse = await fetch("./data/photographers.json");
-    const data = await reponse.json();
-    return data;
+ /**
+  * Fonction pour créer et retourner un élément média (image ou vidéo)
+  * 
+  * @param {image} - le nom du fichier .jpg du média si c'est une image
+  * @param {video} - le nom du fichier .mp4 du média si c'est une vidéo
+  * @param {dirPhotographer} - le chemin vers le répertoire des medias du photographe
+  * @param {title} - le titre du média
+  * @returns {imgMedia} - l'élément média créé (image ou vidéo)
+  */
+function mediaElementFactory ({ image, video, dirPhotographer, title }) {
+    // Initialisation des variables pour stocker le chemin du média et l'élément DOM du média
+    let picture, tag, src, alt, className;
+
+    // Test Si le média est une image
+    if (image !== undefined) {
+        // Définition du chemin de l'image
+        picture = `./assets/photographers/${dirPhotographer}/${image}`;
+        // Création de l'élément <img> : image du média avec ses attributs
+        tag = 'img';
+        // Définition du chemin du média
+        src = picture;
+        // Définition de l'attribut alt pour l'accessibilité
+        alt = `Media ${title}`;
+        // Ajout de la classe CSS "medias_section_img" à l'image
+        className = "medias_section_img";
+
+        // sinon c'est une vidéo
+    } else if (video !== undefined) {
+        // Définition du chemin de la vidéo
+        picture = `./assets/photographers/${dirPhotographer}/${video}`;
+        // Création de l'élément <video> : video du média avec ses attributs
+        tag = 'video';
+        // Définition du chemin du média
+        src = picture;
+        // Ajout de la classe CSS "medias_section_img" à la vidéo
+        className = "medias_section_img";
+        // Si aucune source de média n'est fournie, lancer une erreur
+    } else {
+        throw new Error("No media source provided");
+    }
+    // Retourner l'élément média créé (image ou vidéo)
+    const imgMedia = {
+        tag: tag,
+        src: src,
+        alt: alt,
+        className: className
+    };
+    return imgMedia;
 }
 
-// Appel de l'affichage des datas des photographes
-async function displayData(data, section, dirPhotographer) {
+/**
+ * Fonction pour créer un élément HTML avec les attributs et les enfants spécifiés.
+ *
+ * @param {tag} - Le nom de la balise de l'élément HTML à créer.
+ * @param {[attributes={}]} - Un objet contenant les attributs à ajouter à l'élément.
+ * @param {[children=[]]} - Un tableau contenant les enfants à ajouter à l'élément. Les enfants peuvent être des chaînes de caractères ou des instances de Node.
+ * @returns {Element} - L'élément HTML créé.
+ */
+function createElement(tag, attributes = {}, children = []) {
+    // Création d'un élément HTML avec la balise spécifiée en paramètre
+    const element = document.createElement(tag);
+    // Parcourt des clés de l'objet attributes
+    Object.keys(attributes).forEach(item => {
+        // Vérifie si l'attribut commence par 'data-'
+        if (item.startsWith('data-')) {
+            // Si oui, utilisation de setAttribute pour les attributs 'data-'
+            element.setAttribute(item, attributes[item]);
+        } else {
+            // Sinon, assignation directe de l'attribut à l'élément
+            element[item] = attributes[item];
+        }
+    });
+    // Parcourt le tableau des enfants
+    children.forEach(child => {
+        // Vérifie si l'enfant est une chaîne de caractères
+        if (typeof child === 'string') {
+            // Si oui, Création d'un nœud de texte et ajout à l'élément
+            element.appendChild(document.createTextNode(child));
+        } else if (child instanceof Node) {
+            // Sinon et si l'enfant est une instance de Node, ajout direct à l'élément
+            element.appendChild(child);
+        }
+    });
+    // Retour de l'élément HTML créé
+    return element;
+}
+
+/**
+ * Fonction asynchrone pour l'affichage des données des photographes ou des médias des photographes, selon les paramètres de la fonction.
+ * 
+ * @param {*} data - les données à afficher
+ * @param {*} section - le sélecteur CSS de la section où les données doivent être affichées
+ * @param {*} dirPhotographer - le répertoire des photographes, utilisé pour créer le modèle de données
+ */
+async function displayData (data, section, dirPhotographer) {
+    // Sélection de l'élément du DOM correspondant au sélecteur 'section' en paramètre
     const sectionData = document.querySelector(section);
+
+    // Supprime tous les enfants de l'élément 'section' en paramètre
+    sectionData.replaceChildren();
+
+    // Parcourt chaque élément des données (data)
     data.forEach((item) => {
-        const dataModel = dataTemplate(item, section, dirPhotographer);
-        const userCardDOM = dataModel.getUserCardDOM();
+        // Appel de la fonction dataTemplate avec les arguments appropriés pour créer un modèle de données pour chaque item
+        const dataModel = dataTemplate (item, section, dirPhotographer);
+
+        // Appel de la fonction getUserCardDOM pour obtenir l'élément DOM représentant la carte utilisateur à partir du modèle de données
+        const userCardDOM = dataModel.getUserCardDOM ();
+
+        // Ajout de la carte utilisateur à la section du DOM spécifiée dans les paramètres de la fonction displayData
         sectionData.appendChild(userCardDOM);
     });
+}
+
+
+/**
+ * Fonction asynchrone de récupération des données des photographes ou des médias des photographes depuis le fichier JSON
+ * 
+ * @returns {data} - l'objet JavaScript contenant les données des photographes 
+ */
+async function getData () {
+    // Requête HTTP pour récupérer le fichier JSON contenant les données des photographes (avec attente que l'opération soit terminée)
+    const reponse = await fetch("./data/photographers.json");
+
+     // Conversion de la réponse HTTP en objet JavaScript (avec attente que l'opération soit terminée) dans la constante "data"
+    const data = await reponse.json();
+
+    // Retour de l'objet JavaScript "data" contenant les données des photographes.
+    return data;
 }
