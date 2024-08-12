@@ -1,4 +1,4 @@
-/**
+/********************************************************************
  * Fonction asynchrone d'initialisation de la page d'accueil (index.html)
  */
 async function init () {
@@ -11,7 +11,7 @@ async function init () {
     displayData (photographers, ".photographer_section");
 }
 
-/**
+/********************************************************************
  * Appel de la fonction init() pour initialiser la page d'accueil (index.html)
  */
 init ();

@@ -23,10 +23,10 @@
       <div class="medias_section"></div>
     </main>
 
-    <!-- Overlay pour la modale -->
+    <!-- Overlay pour les modales -->
     <div id="overlay" class="overlay"></div>
 
-    <!-- Modale avec le formulaire -->
+    <!-- Modale du formulaire de contact -->
     <div id="contact_modal">
 			<div class="modal" role="dialog" aria-describedby="modalTitle">
 				<header>
@@ -35,14 +35,14 @@
         </header>
 
         <!-- Formulaire -->
-				<form name="form" id="form" aria-label="Formulaire de contact">
+				<form name="formContact" id="form" aria-label="Formulaire de contact">
 					<div>
 						<label for="first">Prénom</label>
 						<input type="text" id="first" aria-label="Entrez votre prénom" required>
             <label for="last">Nom</label>
 						<input type="text" id="last" aria-label="Entrez votre nom" required>
             <label for="email">Email</label>
-						<input type="email" id="email" aria-label="Entrez votre Email">
+						<input type="email" id="email" aria-label="Entrez votre Email" required>
             <label for="message">Votre message</label>
             <textarea name="message" id="message" aria-label="Entrez votre message" required></textarea>
 					</div>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 
-    <!-- Modale avec la lightbox -->
+    <!-- Modale de la lightbox -->
     <div id="lightbox_modal">
 			<div class="lightbox-modal" role="dialog" aria-label="Photo agrandie">
           <img class="lightbox-close" src="assets/icons/close.svg" alt="Femer la modale" onclick="closeModalLightbox()">
@@ -63,8 +63,10 @@
 			</div>
 		</div>
     
-    <script src="./scripts/pages/photographer.js"></script>
     <script src="./scripts/templates/photographer.js"></script>
+    <script src="./scripts/pages/photographer.js"></script>
     <script src="./scripts/utils/contactForm.js"></script>
+    <script src="./scripts/utils/mediaLightbox.js"></script>
+    <script src="./scripts/factories/MediaFactory.js"></script>
   </body>
 </html>
