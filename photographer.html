@@ -6,19 +6,21 @@
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/3a3b922869.js" crossorigin="anonymous"></script>
-    <title>Site web FishEye : présentation des travaux d'un photographe</title>
+    <title>Site web FishEye : présentation des medias d'un photographe</title>
   </head>
   <body>
     <header>
-      <a href="./index.html">
+      <a href="./index.html" tabindex="1" aria-label="Voir les médias du photographe">
         <img src="assets/images/logo.png" class="logo" alt="Logo du site FishEye">
+        <!-- Texte caché mais lu par les lecteurs d'écran si l'image ne se charge pas -->
+        <span class="sr-only">Voir les médias du photographe</span>
       </a>
     </header>
     <main id="main">
 
       <!-- Entête du photographe -->
       <div class="photograph-header">
-        <button class="btn photograph-header-button" onclick="displayModalForm()">Contactez-moi</button>
+        <button class="btn photograph-header-button" aria-label="Contactez le photographe via un formulaire" onclick="displayModalForm()">Contactez-moi</button>
       </div>
       <div class="medias_section"></div>
     </main>
@@ -28,10 +30,12 @@
 
     <!-- Modale du formulaire de contact -->
     <div id="contact_modal">
-			<div class="modal" role="dialog" aria-describedby="modalTitle">
+			<div class="modal" role="dialog" aria-describedby="modalTitle" aria-modal="true">
 				<header>
           <h2 id="modalTitle" class="modal-title">Contactez-moi</h2>
-          <img class="form-close" src="assets/icons/close.svg" alt="Fermer la modale" onclick="closeModalForm()">
+          <button class="form-close" aria-label="Fermer la modale" onclick="closeModalForm()">
+            <img src="assets/icons/close.svg" alt="" >
+          </button>
         </header>
 
         <!-- Formulaire -->
@@ -53,13 +57,19 @@
 
     <!-- Modale de la lightbox -->
     <div id="lightbox_modal">
-			<div class="lightbox-modal" role="dialog" aria-label="Photo agrandie">
-          <img class="lightbox-close" src="assets/icons/close.svg" alt="Femer la modale" onclick="closeModalLightbox()">
+			<div class="lightbox-modal" role="dialog" aria-label="Photo agrandie" aria-modal="true">
+          <button class="lightbox-close" aria-label="Fermer la lightbox" onclick="closeModalLightbox()">
+            <img src="assets/icons/close.svg" alt="" onclick="closeModalLightbox()">
+          </button>
           <!-- <img class="lightbox-img" src="" alt=""> -->
           <div class="lightbox-img"></div>
           <div class="lightbox-desc"></div>
-          <img class="lightbox-prev" src="./assets/icons/left_chevron.svg" alt="Photo précédente">
-          <img class="lightbox-next" src="./assets/icons/right_chevron.svg" alt="Photo suivante">
+          <button class="lightbox-prev" aria-label="Photo précédente">
+            <img src="./assets/icons/left_chevron.svg" alt="">
+          </button>
+          <button class="lightbox-next" aria-label="Photo suivante">
+            <img src="./assets/icons/right_chevron.svg" alt="">
+          </button>
 			</div>
 		</div>
     

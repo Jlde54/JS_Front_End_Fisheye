@@ -11,6 +11,8 @@ function closeModalForm() {
     modal.style.display = "none";
     // Cache l'overlay en modifiant son style display à "none"
     overlay.style.display = "none";
+    // Retour du focus sur le bouton "Contactez-moi"
+    document.querySelector('.photograph-header-button').focus();
 }
 
 /********************************************************************
@@ -28,6 +30,8 @@ function displayModalForm() {
 	modal.style.display = "block";
     // Affichge de l'overlay en modifiant son style display à "block"
     overlay.style.display = "block";
+    // Focus sur la modale
+    document.querySelector('.modal').focus(); 
 }
 
 // Listener sur le bouton "Envoyer" du formulaire de contact
@@ -58,3 +62,10 @@ btnSubmit.addEventListener("click", (event) => {
         console.log(`Formulaire soumis avec : ${first}, ${last}, ${email}, ${message}`);
     }
 })
+
+// Fermeture de la modale avec la touche "Escape"
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        closeModalForm();
+    }
+});

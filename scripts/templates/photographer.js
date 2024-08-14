@@ -92,7 +92,8 @@ function dataTemplate (data, section, dirPhotographer) {
                         className: "media_section_play-icon"}, [
                             // Appel de la fonction createElement() pour la création de l'élément <i> pour la création de l'icône "play"
                             createElement('i', {
-                                className: "fa-solid fa-circle-play"}, []
+                                className: "fa-solid fa-circle-play",
+                                "aria-hidden": "true"}, []
                             )
                         ]
                     )
@@ -114,19 +115,22 @@ function dataTemplate (data, section, dirPhotographer) {
                 createElement('div', { 
                     className: "medias_section_descMedia" }, [
                         // Appel de la fonction createElement() pour la création de l'élément <h3> : Titre du média
-                        createElement('h3', { className: "medias_section_title" }, [`${title}`]),
+                        createElement('h3', { 
+                            className: "medias_section_title" }, [`${title}`]),
                         // Appel de la fonction createElement() pour la création de l'élément <div> : Description des likes
                         createElement('div', { 
                             className: "medias_section_descLikes" }, [
                                 // Appel de la fonction createElement() pour la création de l'élément <p> : Nombre de likes
                                 createElement('p', { 
-                                    className: "medias_section_likes" }, [`${likes}`]
+                                    className: "medias_section_likes",
+                                    "aria-label": `${likes} likes` }, [`${likes}`]
                                 ),
                                 // Appel de la fonction createElement() pour la création de l'élément <p> : icon like
                                 createElement('p', { 
                                     className: "medias_section_icon" }, [
                                         createElement('i', { 
-                                            className: "fa-solid fa-heart", 'aria-hidden': "true" }, [])
+                                            className: "fa-solid fa-heart", 
+                                            'aria-hidden': "true" }, [])
                                     ]
                                 )
                             ]
@@ -157,7 +161,7 @@ function createElement(tag, attributes = {}, children = []) {
     // Parcourt des clés de l'objet attributes
     Object.keys(attributes).forEach(item => {
         // Vérifie si l'attribut commence par 'data-'
-        if (item.startsWith('data-')) {
+        if (item.startsWith('data-') || item.startsWith('aria-')) {
             // Si oui, utilisation de setAttribute pour les attributs 'data-'
             element.setAttribute(item, attributes[item]);
         } else {

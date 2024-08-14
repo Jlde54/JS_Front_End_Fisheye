@@ -7,7 +7,7 @@
 			"country": "UK",
 			"tagline": "Voir le beau dans le quotidien",
 			"price": 400,
-			"portrait": "MimiKeel.jpg"
+			"portrait": "MimiKeel.webp"
 		},
 		{
 			"name": "Ellie-Rose Wilkens",
@@ -16,7 +16,7 @@
 			"country": "France",
 			"tagline": "Capturer des compositions complexes",
 			"price": 250,
-			"portrait": "EllieRoseWilkens.jpg"
+			"portrait": "EllieRoseWilkens.webp"
 		},
 		{
 			"name": "Tracy Galindo",
@@ -25,7 +25,7 @@
 			"country": "Canada",
 			"tagline": "Photographe freelance",
 			"price": 500,
-			"portrait": "TracyGalindo.jpg"
+			"portrait": "TracyGalindo.webp"
 		},
 		{
 			"name": "Nabeel Bradford",
@@ -34,7 +34,7 @@
 			"country": "Mexico",
 			"tagline": "Toujours aller de l'avant",
 			"price": 350,
-			"portrait": "NabeelBradford.jpg"
+			"portrait": "NabeelBradford.webp"
 		},
 		{
 			"name": "Rhode Dubois",
@@ -43,7 +43,7 @@
 			"country": "Spain",
 			"tagline": "Je crée des souvenirs",
 			"price": 275,
-			"portrait": "RhodeDubois.jpg"
+			"portrait": "RhodeDubois.webp"
 		},
 		{
 			"name": "Marcel Nikolic",
@@ -52,7 +52,7 @@
 			"country": "Germany",
 			"tagline": "Toujours à la recherche de LA photo",
 			"price": 300,
-			"portrait": "MarcelNikolic.jpg"
+			"portrait": "MarcelNikolic.webp"
 		}
 	],
 	"media": [
@@ -504,7 +504,7 @@
 			"id": 235234343,
 			"photographerId": 930,
 			"title": "Climber",
-			"image": "Sport_Next_Hold.jpg",
+			"image": "Sport_Next_Hold.webp",
 			"likes": 101,
 			"date": "2018-03-05",
 			"price": 65
@@ -513,7 +513,7 @@
 			"id": 235343222,
 			"photographerId": 930,
 			"title": "Surfer",
-			"image": "sport_water_tunnel.jpg",
+			"image": "sport_water_tunnel.webp",
 			"likes": 103,
 			"date": "2018-03-10",
 			"price": 70
@@ -522,7 +522,7 @@
 			"id": 7775342343,
 			"photographerId": 930,
 			"title": "Skier",
-			"image": "Sport_Sky_Cross.jpg",
+			"image": "Sport_Sky_Cross.webp",
 			"likes": 77,
 			"date": "2018-04-16",
 			"price": 50
@@ -531,7 +531,7 @@
 			"id": 9253445784,
 			"photographerId": 930,
 			"title": "Race End",
-			"image": "Sport_Race_End.jpg",
+			"image": "Sport_Race_End.webp",
 			"likes": 88,
 			"date": "2018-04-22",
 			"price": 65
@@ -540,7 +540,7 @@
 			"id": 22299394,
 			"photographerId": 930,
 			"title": "Jump!",
-			"image": "Sport_Jump.jpg",
+			"image": "Sport_Jump.webp",
 			"likes": 95,
 			"date": "2018-04-27",
 			"price": 70
@@ -549,7 +549,7 @@
 			"id": 3452342633,
 			"photographerId": 930,
 			"title": "White Light",
-			"image": "Architecture_White_Light.jpg",
+			"image": "Architecture_White_Light.webp",
 			"likes": 52,
 			"date": "2018-05-03",
 			"price": 75
@@ -558,7 +558,7 @@
 			"id": 939234243,
 			"photographerId": 930,
 			"title": "Water on Modern Building",
-			"image": "Architecture_Water_on_Modern.jpg",
+			"image": "Architecture_Water_on_Modern.webp",
 			"likes": 55,
 			"date": "2018-05-10",
 			"price": 72
@@ -567,7 +567,7 @@
 			"id": 222959233,
 			"photographerId": 930,
 			"title": "Horseshoe",
-			"image": "Architecture_Horseshoe.jpg",
+			"image": "Architecture_Horseshoe.webp",
 			"likes": 85,
 			"date": "2018-05-15",
 			"price": 71
@@ -576,7 +576,7 @@
 			"id": 965933434,
 			"photographerId": 930,
 			"title": "Cross Bar",
-			"image": "Architecture_Cross_Bar.jpg",
+			"image": "Architecture_Cross_Bar.webp",
 			"likes": 66,
 			"date": "2018-05-20",
 			"price": 58
@@ -585,7 +585,7 @@
 			"id": 777723343,
 			"photographerId": 930,
 			"title": "Connected Curves",
-			"image": "Architecture_Connected_Curves.jpg",
+			"image": "Architecture_Connected_Curves.webp",
 			"likes": 79,
 			"date": "2018-05-21",
 			"price": 80
