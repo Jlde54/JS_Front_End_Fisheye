@@ -104,7 +104,7 @@ function dataTemplate (data, section, dirPhotographer) {
             const article = createElement('article', {}, [
                 // Appel de la fonction createElement() pour la création de l'élément <a> : Lien vers le media grand format
                 createElement('a', {
-                    arialabel: `Lien vers le media ${title} grand format`,
+                    "aria-label": `Lien vers le media ${title} grand format`,
                     href: "#",
                     className: "medias_section_link",
                     'data-id': `med${id}`,

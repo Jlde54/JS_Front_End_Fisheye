@@ -50,11 +50,11 @@ async function init () {
     displayData (mediaFiltre, ".medias_section", dirPhotographer);
 
     // Appel de la fonction "displayTarif" pour l'affichage de l'encart contenant le nombre de likes et le tarif du photographe
-    // 1) Extraction des likes des médias 
-    const mapLikes = mediaFiltre.map(like => like.likes);
+    // 1) Extraction et calcul de la somme des likes des médias 
+    const sumLikes = mediaFiltre.map(like => like.likes).reduce((a,b) => a + b, 0);
     // 2) Calcul de la somme des likes
-    const sumLikes = mapLikes.reduce((a,b) => a + b, 0);
-    // 3) Appel de la fonction displayTarif pour l'affichage
+    // const sumLikes = mapLikes.reduce((a,b) => a + b, 0);
+    // 2) Appel de la fonction displayTarif pour l'affichage
     displayTarif (price, sumLikes);
     
     // Appel de la fonction "displayDropdownMenu" pour l'affichage de la lightbox
@@ -153,12 +153,12 @@ function displayPhotographerHeader (name, city, country, tagline, picture) {
         createElement("div", {
             className: "photograph-header-profile",
             "aria-labelledby": "photographer-name"}, [
-                createElement( "h2", {
+                createElement( "h1", {
                     textContent: name, 
                     id: "photographer-name"}, []),
-                createElement( "h3", {
+                createElement( "h2", {
                     textContent: `${city}, ${country}`}, []),
-                createElement( "h4", {
+                createElement( "h3", {
                     textContent: tagline}, [])
         ]);
 
@@ -192,8 +192,9 @@ function displayDropdownMenu(){
     const divSort = createElement("div", {
         className: "photograph-sort"}, [
             // Création de l'élément <label> pour le dropdown menu avec le texte "Trier par"
-            createElement("label", {
-                for: "select-list", 
+            createElement("span", {
+                // for: "select-list",
+                className: "photographer-sort-span",
                 textContent: "Trier par "}, []
             ),
             // Création de l'élément <div> pour le menu déroulant personnalisé

@@ -28,6 +28,8 @@ function displayLightbox(image, desc) {
 	modal.style.display = "block";
     // Affichage de l'overlay en modifiant son style display à "block"
     overlay.style.display = "block";
+    // Focus sur le bouton de fermeture
+    document.querySelector('.lightbox-close').focus();
     // Sélection de l'élément où l'image ou la vidéo sera insérée via sa classe ".lightbox-img"
     const ligthboxImg = document.querySelector(".lightbox-img");
     // Réinitialise le contenu de l'élément pour s'assurer qu'il est vide
@@ -100,3 +102,9 @@ function listenLightbox (index, mediaFiltre) {
     })
 }
 
+// Fermeture de la modale avec la touche "Escape"
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        closeModalLightbox();
+    }
+});

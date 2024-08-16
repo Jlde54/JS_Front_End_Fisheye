@@ -10,7 +10,7 @@
   </head>
   <body>
     <header>
-      <a href="./index.html" tabindex="1" aria-label="Voir les médias du photographe">
+      <a href="./index.html" aria-label="Voir les médias du photographe">
         <img src="assets/images/logo.png" class="logo" alt="Logo du site FishEye">
         <!-- Texte caché mais lu par les lecteurs d'écran si l'image ne se charge pas -->
         <span class="sr-only">Voir les médias du photographe</span>
@@ -30,13 +30,14 @@
 
     <!-- Modale du formulaire de contact -->
     <div id="contact_modal">
-			<div class="modal" role="dialog" aria-describedby="modalTitle" aria-modal="true">
-				<header>
+			<div class="modal" role="dialog" aria-label="Modale formulaire de contact" aria-modal="true">
+				<div class="modal-header">
           <h2 id="modalTitle" class="modal-title">Contactez-moi</h2>
+          <!-- Bouton de fermeture -->
           <button class="form-close" aria-label="Fermer la modale" onclick="closeModalForm()">
             <img src="assets/icons/close.svg" alt="" >
           </button>
-        </header>
+        </div>
 
         <!-- Formulaire -->
 				<form name="formContact" id="form" aria-label="Formulaire de contact">
@@ -46,10 +47,11 @@
             <label for="last">Nom</label>
 						<input type="text" id="last" aria-label="Entrez votre nom" required>
             <label for="email">Email</label>
-						<input type="email" id="email" aria-label="Entrez votre Email" required>
+						<input type="email" id="email" aria-label="Entrez votre Email" autocomplete="off" required>
             <label for="message">Votre message</label>
             <textarea name="message" id="message" aria-label="Entrez votre message" required></textarea>
 					</div>
+          <!-- Bouton de soumission du formulaire -->
           <button type="submit" class="btn btn-submit" aria-label="Envoyer le formulaire de contact">Envoyer</button>
 				</form>
 			</div>
@@ -58,15 +60,19 @@
     <!-- Modale de la lightbox -->
     <div id="lightbox_modal">
 			<div class="lightbox-modal" role="dialog" aria-label="Photo agrandie" aria-modal="true">
+          <!-- Bouton de fermeture -->
           <button class="lightbox-close" aria-label="Fermer la lightbox" onclick="closeModalLightbox()">
-            <img src="assets/icons/close.svg" alt="" onclick="closeModalLightbox()">
+            <img src="assets/icons/close.svg" alt="">
           </button>
-          <!-- <img class="lightbox-img" src="" alt=""> -->
+          <!-- Photo affichée -->
           <div class="lightbox-img"></div>
+          <!-- Description de la photo -->
           <div class="lightbox-desc"></div>
+          <!-- Navigation vers la photo précédente -->
           <button class="lightbox-prev" aria-label="Photo précédente">
             <img src="./assets/icons/left_chevron.svg" alt="">
           </button>
+          <!-- Navigation vers la photo suivante -->
           <button class="lightbox-next" aria-label="Photo suivante">
             <img src="./assets/icons/right_chevron.svg" alt="">
           </button>
