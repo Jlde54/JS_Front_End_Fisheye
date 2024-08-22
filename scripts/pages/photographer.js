@@ -4,7 +4,19 @@
 let mediaFiltre = [];   // Tableau contenant les médias du photographe
 let dirPhotographer = "";   // le répertoire des medias du photographe
 let isMenuOpen = false;
-let focusedOptionIndex = -1;
+let focusedOptionIndex;
+
+  /********************************************************************
+   * Fermeture du menu dropdown
+   * 
+   * @param {dropdownButton} - 
+   * @param {dropdownMenu} - 
+   */
+  function closeDropdownMenu(dropdownButton, dropdownMenu) {
+    dropdownMenu.style.display = 'none';
+    dropdownButton.setAttribute('aria-expanded', 'false');
+    isMenuOpen = false;
+  }
 
 /********************************************************************
  * Fonction "displayDropdownMenu" pour la création des éléments du dropdown menu de la page photographe
@@ -19,7 +31,6 @@ function displayDropdownMenu(){
         className: "photograph-sort"}, [
             // Création de l'élément <label> pour le dropdown menu avec le texte "Trier par"
             createElement("span", {
-                // for: "select-list",
                 className: "photographer-sort-span",
                 textContent: "Trier par "}, []
             ),
@@ -45,24 +56,21 @@ function displayDropdownMenu(){
                                 value: "Popularité", 
                                 innerHTML: `Popularité <span class="arrow"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></span>`, 
                                 className: "option",
-                                role: "menuitem",   // élément du menu
-                                tabindex: "0"}, []
+                                role: "menuitem"}, []
                             ),
                             // Création d'une option pour trier par "Date"
                             createElement("div", {
                                 value: "Date", 
                                 innerHTML: "Date", 
                                 className: "option",
-                                role: "menuitem",   // élément du menu
-                                tabindex: "-1"}, []
+                                role: "menuitem"}, []
                             ),
                             // Création d'une option pour trier par "Titre"
                             createElement("div", {
                                 value: "Titre", 
                                 innerHTML: "Titre", 
                                 className: "option",
-                                role: "menuitem",   // élément du menu
-                                tabindex: "-1"}, []
+                                role: "menuitem"}, []
                             )
                         ]
                     )
@@ -171,14 +179,14 @@ function getURL (string){
 function handleMediaListener (event, index) {
     event.preventDefault(); // Empêche le comportement par défaut du lien
     let media = "";     // variable pour stocker le chemin de <img> ou <video>
-    // Test si le média courant est une image ou une vidéo et met à jour la variable image en conséquence
+    // Teste si le média courant est une image ou une vidéo et met à jour la variable image en conséquence
     media = mediaFiltre[index].image ? mediaFiltre[index].image : mediaFiltre[index].video;
     // Construction du chemin complet du média en combinant le répertoire du photographe et le nom de l'image/vidéo
     pathMedia = `${mediaFiltre[index].dirPhotographer}${media}`
     // Appel de la fonction "displayLightbox" pour afficher le média cliqué dans la lightbox
     displayLightbox (pathMedia, mediaFiltre[index].title, "next");
     // Appel de la fonction "listenLightbox" pour ajouter les listeners sur les flèches suivant/précédent
-    listenLightbox (index, mediaFiltre);    
+    listenLightbox (index, mediaFiltre);
 }
 
 /********************************************************************
@@ -231,7 +239,7 @@ async function init () {
 
     // Appel des fonctions pour la création des listeners :
     // 1) pour ouvrir ou fermer le dropdown menu et choisir une option de tri
-    listenersDropDown ();
+    listenersDropDownMenu ();
     // 2) pour écouter le clic sur un média et afficher la lightbox
     listenersMedias (".medias_section");
     // 3) pour augmenter le nombre de likes au clic sur l'icon
@@ -287,113 +295,142 @@ function listenerLike () {
 }
 
 /********************************************************************
- * Appel de l'ouverture/Fermeture du menu en fonction du contenu de "isMenuOpen"
- * 
- * @param {dropdownButton} - 
- * @param {dropdownMenu} - 
- * @param {options} - 
+ * Fonction "listenersDropDownMenu" pour créer les listeners pour ouvrir ou fermer le dropdown menu et pour sélectionner une option
  */
-function toggleMenu(dropdownButton, dropdownMenu, options) {
-    if (isMenuOpen) {
-        // Appel de la fermeture du menu
-      closeMenu(dropdownButton, dropdownMenu);
-    } else {
-        // Appel de l'ouverture' du menu
-      openMenu(dropdownButton, dropdownMenu, options);
-    }
-  }
+function listenersDropDownMenu () {
+    // Sélection du bouton du dropdown menu, du dropdown menu et des options du menu
+    const dropdownButton = document.querySelector("#select-list");
+    const dropdownMenu = document.querySelector("#dropdown-menu");
+    const options = Array.from(dropdownMenu.querySelectorAll(".option"));
 
-  /********************************************************************
-   * Ouverture du menu
-   * 
-   * @param {dropdownButton} - 
-   * @param {dropdownMenu} - 
-   * @param {options} - 
-   */
-  function openMenu(dropdownButton, dropdownMenu, options) {
-    dropdownMenu.style.display = 'block';
-    dropdownButton.setAttribute('aria-expanded', 'true');
-    isMenuOpen = true;
-    focusedOptionIndex = 0;
-    options[focusedOptionIndex].focus();
-  }
-
-  /********************************************************************
-   * Fermeture du menu
-   * 
-   * @param {dropdownButton} - 
-   * @param {dropdownMenu} - 
-   */
-  function closeMenu(dropdownButton, dropdownMenu) {
-    dropdownMenu.style.display = 'none';
-    dropdownButton.setAttribute('aria-expanded', 'false');
-    isMenuOpen = false;
-    focusedOptionIndex = -1;
-    dropdownButton.focus();
-  }
-
-//   function handleOptionSelect(dropdownButton, dropdownMenu, option) {
-//     dropdownButton.textContent = option.textContent;
-//     closeMenu(dropdownButton, dropdownMenu);
-//   }
-
-/********************************************************************
- * Fonction "listenersDropDown" pour créer les listeners pour ouvrir ou fermer le dropdown menu et pour sélectionner une option
- */
-function listenersDropDown () {
-    const dropdownButton = document.getElementById('select-list');
-    const dropdownMenu = document.getElementById('dropdown-menu');
-    const options = Array.from(dropdownMenu.querySelectorAll('.option'));
-
-    dropdownButton.addEventListener('click', (event) => {
-        event.stopPropagation();
+    // Ouverture/Fermeture du menu si clic sur le bouton(dropdownButton)
+    dropdownButton.addEventListener("click", (event) => {   
+        event.preventDefault();
         // Appel de la fermeture/Ouverture du menu
-        toggleMenu(dropdownButton, dropdownMenu, options);
+        toggleDropdownMenu(dropdownButton, dropdownMenu, options);
     });
     
-    document.addEventListener('click', (event) => {
+    // Fermeture du menu si clic sur la page en dehors du bouton (dropdownButton) et du menu (dropdownMenu)
+    document.addEventListener("click", (event) => {
         if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
             // Appel de la fermeture du menu
-            closeMenu(dropdownButton, dropdownMenu);
+            closeDropdownMenu(dropdownButton, dropdownMenu);
         }
     });
-    
-    document.addEventListener('keydown', (event) => {
-        if (isMenuOpen) {
-            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-                // Empêcher le comportement par défaut de l'ascenseur
-                event.preventDefault();
-        
-                if (event.key === 'ArrowDown') {
-                  focusedOptionIndex = (focusedOptionIndex + 1) % options.length;
-                } else if (event.key === 'ArrowUp') {
-                  focusedOptionIndex = (focusedOptionIndex - 1 + options.length) % options.length;
+    // Listener sur les appuis sur les touches (flèches vers le bas et le haut, Enter et Escape) 
+    document.addEventListener("keydown", (event) => {
+        // Test si le menu est ouvert ou fermé
+        if (isMenuOpen) {   // Le menu est ouvert
+            // Gestion de la navigation dans les options avec les flèches vers le haut ou vers le bas
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                event.preventDefault(); // Empêcher le comportement par défaut
+                // Gestion de l'appui sur la flèche vers le bas
+                if (event.key === "ArrowDown") {
+                    // Avance l'index de l'option, avec une boucle si on dépasse la dernière option.
+                    focusedOptionIndex = (focusedOptionIndex + 1) % options.length;
+                    // Gestion de l'appui sur la flèche vers le haut
+                } else if (event.key === "ArrowUp") {
+                    // Recule l'index de l'option, avec une boucle si on dépasse la première option.
+                    focusedOptionIndex = (focusedOptionIndex - 1 + options.length) % options.length;
                 }
-        
+                // Focus sur l'option actuellement sélectionnée
                 options[focusedOptionIndex].focus();
-              } else if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
+            // Sélection de l'option actuelle si Enter ou Espace
+            } else if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault(); // Empêcher le comportement par défaut
+                // Appel de la fonction "optionSelected" pour afficher les médias correspondant à la sélection de l'option
                 optionSelected(dropdownButton, dropdownMenu, options[focusedOptionIndex]);
-              } else if (event.key === 'Escape') {
+            // Ferme le menu si "Escape" est pressé.
+            } else if (event.key === "Escape") {
                 // Appel de la fermeture du menu
-                closeMenu(dropdownButton, dropdownMenu);
-              }
-        } else if (document.activeElement === dropdownButton && (event.key === 'Enter' || event.key === ' ')) {
-            event.preventDefault();
-            openMenu(dropdownButton, dropdownMenu, options);
+                closeDropdownMenu(dropdownButton, dropdownMenu);
+            }
+        //Si le menu est fermé et que le bouton du menu a le focus et que Enter ou Espace sont pressés
+        } else if (document.activeElement === dropdownButton && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault(); // Empêcher le comportement par défaut
+            // Appel 
+            openDropdownMenu(dropdownButton, dropdownMenu, options);
         }
     });
     
     options.forEach((option, index) => {
-        option.addEventListener('click', () => {
-
+        option.addEventListener("click", () => {
             optionSelected (dropdownButton, dropdownMenu, option);
         });
 
-        option.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
+        option.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
-            // handleOptionSelect(dropdownButton, dropdownMenu, option);
+            optionSelected (dropdownButton, dropdownMenu, option);
+            }
+        });
+    });
+}
+
+function listenersDropDownMenuold () {
+    // Sélection du bouton du dropdown menu, du dropdown menu et des options du menu
+    const dropdownButton = document.querySelector("#select-list");
+    const dropdownMenu = document.querySelector("#dropdown-menu");
+    const options = Array.from(dropdownMenu.querySelectorAll(".option"));
+
+    // Ouverture/Fermeture du menu si clic sur le bouton(dropdownButton)
+    dropdownButton.addEventListener("click", (event) => {   
+        event.preventDefault();
+        // Appel de la fermeture/Ouverture du menu
+        toggleDropdownMenu(dropdownButton, dropdownMenu, options);
+    });
+    
+    // Fermeture du menu si clic sur la page en dehors du bouton (dropdownButton) et du menu (dropdownMenu)
+    document.addEventListener("click", (event) => {
+        if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            // Appel de la fermeture du menu
+            closeDropdownMenu(dropdownButton, dropdownMenu);
+        }
+    });
+    // Listener sur les appuis sur les touches (flèches vers le bas et le haut, Enter et Escape) 
+    document.addEventListener("keydown", (event) => {
+        // Test si le menu est ouvert ou fermé
+        if (isMenuOpen) {   // Le menu est ouvert
+            // Gestion de la navigation dans les options avec les flèches vers le haut ou vers le bas
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                event.preventDefault(); // Empêcher le comportement par défaut
+                // Gestion de l'appui sur la flèche vers le bas
+                if (event.key === "ArrowDown") {
+                    // Avance l'index de l'option, avec une boucle si on dépasse la dernière option.
+                    focusedOptionIndex = (focusedOptionIndex + 1) % options.length;
+                    // Gestion de l'appui sur la flèche vers le haut
+                } else if (event.key === "ArrowUp") {
+                    // Recule l'index de l'option, avec une boucle si on dépasse la première option.
+                    focusedOptionIndex = (focusedOptionIndex - 1 + options.length) % options.length;
+                }
+                // Focus sur l'option actuellement sélectionnée
+                options[focusedOptionIndex].focus();
+            // Sélection de l'option actuelle si Enter ou Espace
+            } else if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault(); // Empêcher le comportement par défaut
+                // Appel de la fonction "optionSelected" pour afficher les médias correspondant à la sélection de l'option
+                optionSelected(dropdownButton, dropdownMenu, options[focusedOptionIndex]);
+            // Ferme le menu si "Escape" est pressé.
+            } else if (event.key === "Escape") {
+                // Appel de la fermeture du menu
+                closeDropdownMenu(dropdownButton, dropdownMenu);
+            }
+        //Si le menu est fermé et que le bouton du menu a le focus et que Enter ou Espace sont pressés
+        } else if (document.activeElement === dropdownButton && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault(); // Empêcher le comportement par défaut
+            // Appel 
+            openDropdownMenu(dropdownButton, dropdownMenu, options);
+        }
+    });
+    
+    options.forEach((option, index) => {
+        option.addEventListener("click", () => {
+            optionSelected (dropdownButton, dropdownMenu, option);
+        });
+
+        option.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
             optionSelected (dropdownButton, dropdownMenu, option);
             }
         });
@@ -425,68 +462,30 @@ function listenersMedias (section) {
     });
 }
 
-/********************************************************************
- * Fonction "openDropdown" pour ouvrir le menu des options de tri
- * 
- * @param {divSelected} - élément qui affiche l'option sélectionnée dans le menu déroulant 
- * @param {selectDropDown} - menu déroulant qui contient les options de tri 
- */
-function openDropdown (divSelected, selectDropDown) {
-    // L'attribut aria-expanded est mis à "true" pour indiquer que le menu déroulant est ouvert.
-    divSelected.setAttribute("aria-expanded", true);
-    // Le menu est affiché 
-    selectDropDown.style.display = "block";
-    // Sélection du premier élément du menu
-    const firstOption = selectDropDown.querySelector(`[role="menuitem"]`);
-    // Déplace le focus clavier sur le premier élément du menu
-    firstOption.focus();
-}
-
-function optionSelectedOld (event, divSelected, selectDropDown) {
-    // Mise à jour de divSelected avec le texte de l'option sélectionnée
-    divSelected.innerHTML = `${event.currentTarget.textContent}<span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>`;
-    // Masque le menu déroulant et met l'attribut 'aria-expanded' à false
-    divSelected.setAttribute("aria-expanded", "false");
-    selectDropDown.style.display = "none";
-    // Tri de mediaFiltre selon l'option sélectionnée
-    switch (event.currentTarget.textContent) {
-        case "Popularité ":
-            // Tri en ordre croissant de popularité
-            mediaFiltre.sort((a, b) => Number(a.likes) - Number(b.likes));
-            break;
-        case "Date":
-            // Tri en ordre croissant de date
-            mediaFiltre.sort((a, b) => new Date(a.date) - new Date(b.date));
-            break;
-        case "Titre":
-            // Tri en ordre alphabétique de titre
-            mediaFiltre.sort((a, b) => {
-                if(a.title < b.title) return -1;
-                if(a.title > b.title) return 1;
-                return 0;
-            });
-            break;
-        default:
-            break;
-    }
-    
-    // Appel de l'affichage des medias des photographes après le tri
-    displayData (mediaFiltre, ".medias_section", dirPhotographer);
-    // Appel de la fonction "listenersMedias" pour l'ajout des listeners sur les médias affichés
-    listenersMedias (".medias_section");
-    // Appel de la fonction "listenerLike" pour l'ajout des listeners sur les likes des médias affichés
-    listenerLike ();
-}
+  /********************************************************************
+   * Ouverture du menu dropdown
+   * 
+   * @param {dropdownButton} - 
+   * @param {dropdownMenu} - 
+   * @param {options} - 
+   */
+  function openDropdownMenu(dropdownButton, dropdownMenu, options) {
+    dropdownMenu.style.display = 'block';
+    dropdownButton.setAttribute('aria-expanded', 'true');
+    isMenuOpen = true;
+    focusedOptionIndex = 0;
+    // options[focusedOptionIndex].focus();
+  }
 
 /********************************************************************
  * Fonction "optionSelected" pour l'affichage des médias après la sélection de l'option
  * 
  * @param {event} - événement lié à l'option choisie 
- * @param {divSelected} - élément qui affiche l'option sélectionnée dans le menu
- * @param {selectDropDown} - menu déroulant qui contient les options de tri 
+ * @param {dropdownButton} - élément qui affiche l'option sélectionnée dans le menu
+ * @param {dropdownMenu} - menu déroulant qui contient les options de tri 
  */
 function optionSelected (dropdownButton, dropdownMenu, option) {
-    // Mise à jour de divSelected avec le texte de l'option sélectionnée
+    // Mise à jour de dropdownButton avec le texte de l'option sélectionnée
     dropdownButton.innerHTML = `${option.textContent}<span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>`;
     // Masque le menu déroulant et met l'attribut 'aria-expanded' à false
     // dropdownButton.setAttribute("aria-expanded", "false");
@@ -514,7 +513,7 @@ function optionSelected (dropdownButton, dropdownMenu, option) {
     }
 
     // Appel de la fermeture du menu
-    closeMenu(dropdownButton, dropdownMenu);
+    closeDropdownMenu(dropdownButton, dropdownMenu);
     // Appel de l'affichage des medias des photographes après le tri
     displayData (mediaFiltre, ".medias_section", dirPhotographer);
     // Appel de la fonction "listenersMedias" pour l'ajout des listeners sur les médias affichés
@@ -522,6 +521,23 @@ function optionSelected (dropdownButton, dropdownMenu, option) {
     // Appel de la fonction "listenerLike" pour l'ajout des listeners sur les likes des médias affichés
     listenerLike ();
 }
+
+/********************************************************************
+ * Appel de l'ouverture/Fermeture du menu en fonction du contenu de "isMenuOpen"
+ * 
+ * @param {dropdownButton} - 
+ * @param {dropdownMenu} - 
+ * @param {options} - 
+ */
+function toggleDropdownMenu(dropdownButton, dropdownMenu, options) {
+    if (isMenuOpen) {
+        // Appel de la fermeture du menu
+        closeDropdownMenu(dropdownButton, dropdownMenu);
+    } else {
+        // Appel de l'ouverture' du menu dropdown
+        openDropdownMenu(dropdownButton, dropdownMenu, options);
+    }
+  }
 
 /********************************************************************
  * Appel de la fonction init() pour initialiser la page contenant les médias du photographe sélectionné (photographer.html)

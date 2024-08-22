@@ -10,10 +10,10 @@
   </head>
   <body>
     <header>
-      <a href="./index.html" aria-label="Voir les médias du photographe">
+      <a href="./index.html" class="logo-container" aria-label="Retour vers la page d'accueil de FishEye">
         <img src="assets/images/logo.png" class="logo" alt="Logo du site FishEye">
         <!-- Texte caché mais lu par les lecteurs d'écran si l'image ne se charge pas -->
-        <span class="sr-only">Voir les médias du photographe</span>
+        <span class="sr-only">Retour vers la page d'accueil de FishEye</span>
       </a>
     </header>
     <main id="main">
@@ -30,7 +30,8 @@
 
     <!-- Modale du formulaire de contact -->
     <div id="contact_modal">
-			<div class="modal" role="dialog" aria-label="Modale formulaire de contact" aria-modal="true" tabindex="-1">
+			<!-- <div class="modal" role="dialog" aria-label="Modale formulaire de contact" aria-modal="true" tabindex="-1"> -->
+        <div class="modal" role="dialog" aria-label="Modale formulaire de contact" aria-modal="true">
 				<div class="modal-header">
           <h2 id="modalTitle" class="modal-title">Contactez-moi</h2>
           <!-- Bouton de fermeture -->
@@ -59,24 +60,25 @@
 
     <!-- Modale de la lightbox -->
     <div id="lightbox_modal">
-			<div class="lightbox-modal" role="dialog" aria-label="Photo agrandie" aria-modal="true" tabindex="-1">
-          <!-- Bouton de fermeture -->
-          <button class="lightbox-close" aria-label="Fermer la lightbox" onclick="closeModalLightbox()">
-            <img src="assets/icons/close.svg" alt="">
-          </button>
-          <!-- Photo affichée -->
-          <div class="lightbox-img"></div>
-          <!-- Description de la photo -->
-          <div class="lightbox-desc"></div>
-          <!-- Navigation vers la photo précédente -->
-          <button class="lightbox-prev" aria-label="Photo précédente">
-            <img src="./assets/icons/left_chevron.svg" alt="">
-          </button>
-          <!-- Navigation vers la photo suivante -->
-          <button class="lightbox-next" aria-label="Photo suivante">
-            <img src="./assets/icons/right_chevron.svg" alt="">
-          </button>
-			</div>
+			<!-- <div class="lightbox-modal" role="dialog" aria-label="Photo agrandie" aria-modal="true" tabindex="-1"> -->
+      <div class="lightbox-modal" role="dialog" aria-label="Photo agrandie" aria-modal="true">
+        <!-- Bouton de fermeture -->
+        <button class="lightbox-close" aria-label="Fermer la lightbox" onclick="closeModalLightbox()">
+          <img src="assets/icons/close.svg" alt="">
+        </button>
+        <!-- Photo affichée -->
+        <div class="lightbox-img"></div>
+        <!-- Description de la photo -->
+        <div class="lightbox-desc"></div>
+        <!-- Navigation vers la photo précédente -->
+        <button class="lightbox-prev" aria-label="Photo précédente">
+          <img src="./assets/icons/left_chevron.svg" alt="">
+        </button>
+        <!-- Navigation vers la photo suivante -->
+        <button class="lightbox-next" aria-label="Photo suivante">
+          <img src="./assets/icons/right_chevron.svg" alt="">
+        </button>
+      </div>
 		</div>
     
     <script src="./scripts/templates/photographer.js"></script>

@@ -1,4 +1,3 @@
-// Cache la modale en modifiant son style display à "none"
 /********************************************************************
  * Fonction "closeModalForm" pour la fermeture de la modale du formulaire de contact.
  * L'appel se fait depuis "photographer.html"
@@ -16,12 +15,6 @@ function closeModalForm() {
     document.querySelector(".photograph-header-button").focus();
     // La modale est ignorée par les technologies d’assistance 
     modal.setAttribute('aria-hidden', 'true');
-    // Réactivation des éléments en arrière-plan de la modale :
-    // Sélection de tous les enfants de <body> excepté la modale
-    document.querySelectorAll('body > *:not(#contact_modal)').forEach(element => {
-        // Pour chacun, suppression de l'attribut "aria-hidden" pour les rendre invisibles aux technologies d'assistance
-        element.removeAttribute('aria-hidden');
-    });
 }
 
 /********************************************************************
@@ -41,17 +34,12 @@ function displayModalForm() {
     overlay.style.display = "block";
     // La modale est accessible par les technologies d’assistance
     modal.setAttribute('aria-hidden', 'false');
-    // Désactivation des éléments en arrière-plan de la modale
-    document.querySelectorAll('body > *:not(#contact_modal)').forEach(element => {
-        element.setAttribute('aria-hidden', 'true');
-    });
-    // Déplacement du focus initial sur la modale
-    modal.querySelector('.modal').focus();
+    modal.querySelector("#first").focus();
     // Appel de la fonction "focusTrapForm" pour gérer le Focus trap sur la modale
     focusTrapForm()
 }
 
-/**
+/********************************************************************
  * Configuration du focus trap sur la modale
  */
 function focusTrapForm() {

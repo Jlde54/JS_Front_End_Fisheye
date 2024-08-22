@@ -115,7 +115,7 @@ function dataTemplate (data, section, dirPhotographer) {
 
             // Construction de(s) élément(s) enfant(s) pour l'élément <article>
             const children = [imgMedia];
-            // Ajout de l'icône de "play" si la balise média est "video"
+            // Ajout de l'icône "play" si la balise média est "video"
             if (tag === "video") {
                 children.push(
                     // Appel de la fonction createElement() pour la création de l'élément <div> pour la création du container de l'icône "play"

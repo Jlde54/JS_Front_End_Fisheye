@@ -1,4 +1,3 @@
-let index;
 /********************************************************************
  * Fonction "closeModalLightbox" pour la fermeture de la modale lightbox
  * L'appel se fait depuis "photographer.html"
@@ -12,16 +11,8 @@ function closeModalLightbox() {
     modal.style.display = "none";
     // Cache l'overlay en modifiant son style display à "none"
     overlay.style.display = "none";
-    // Retour du focus sur le média sélectionné
-    // document.querySelector(".photograph-header-button").focus();
+    // La modale est ignorée par les technologies d’assistance 
     modal.setAttribute("aria-hidden", "true");
-    // Réactivation des éléments en arrière-plan de la modale :
-    // Sélection de tous les enfants de <body> excepté la modale
-    document.querySelectorAll('body > *:not(#lightbox_modal):not(.lightbox-prev):not(.lightbox-next):not(.lightbox-close)').forEach(element => {
-        // Pour chacun, suppression de l'attribut "aria-hidden" pour les rendre invisibles aux technologies d"assistance
-        element.removeAttribute("aria-hidden");
-        element.setAttribute("tabindex", "-1"); // Désactive le focus sur ces éléments
-    });
 }
 
 /********************************************************************
@@ -42,11 +33,6 @@ function displayLightbox(media, desc, type) {
     overlay.style.display = "block";
     // La modale est accessible par les technologies d’assistance
     modal.setAttribute("aria-hidden", "false");
-    // Désactivation des éléments en arrière-plan de la modale
-    document.querySelectorAll('body > *:not(#lightbox_modal):not(.lightbox-prev):not(.lightbox-next):not(.lightbox-close)').forEach(element => {
-        element.setAttribute("aria-hidden", "true");
-        element.setAttribute("tabindex", "-1"); // Désactive le focus sur les éléments en arrière-plan
-    });
     // Sélection de l'élément où l'image/la vidéo sera insérée via sa classe ".lightbox-img"
     const ligthboxImg = document.querySelector(".lightbox-img");
     // Réinitialise le contenu de l'élément pour s'assurer qu'il est vide
@@ -56,7 +42,9 @@ function displayLightbox(media, desc, type) {
         // Si oui, création d'un élément <video> pour la vidéo
         const imgMedia = document.createElement("video");
         imgMedia.src = media;   // Définit la source de la vidéo
-        imgMedia.autoplay = "true"; // Ajout de l'attribut autoplay pour démarrer la lecture automatique
+        if(imgMedia.paused){
+            imgMedia.autoplay = "true"; // Ajout de l'attribut autoplay pour démarrer la lecture automatique
+        }
         ligthboxImg.appendChild(imgMedia);  // Ajout de l'élément vidéo à la lightbox
     } else {
         // Si non, création d'un élément <img> pour l'image'
@@ -70,19 +58,10 @@ function displayLightbox(media, desc, type) {
     // Mise à jour du texte de la description dans la lightbox
     ligthboxDesc.textContent = desc;
     // Déplacement du focus initial sur la modale
-    console.log("modal.querySelector(.lightbox-modal : ", modal.querySelector(".lightbox-modal"));
     modal.querySelector(".lightbox-modal").focus();
-    console.log("modal.querySelector(.lightbox-next : ", modal.querySelector(".lightbox-next"));
     type === "next" ? modal.querySelector(".lightbox-next").focus() : modal.querySelector(".lightbox-prev").focus();
     // Appel de la fonction "focusTrapLightbox" pour gérer le Focus trap sur la modale
-    focusTrapLightbox()
-    // Ajout du gestionnaire pour forcer le focus à rester dans la lightbox
-    modal.addEventListener("focusin", (event) => {
-        if (!modal.contains(event.target)) {
-            event.stopPropagation();
-            modal.focus(); // Redirige le focus vers la modale si le focus sort
-        }
-    }); 
+    focusTrapLightbox() 
 }
 
 /********************************************************************
@@ -102,8 +81,6 @@ function displayNextMedia (index, mediaFiltre) {
     displayLightbox (pathMedia, mediaFiltre[newIndex].title, "next");
     // Mise à jour de l'index actuel avec le nouvel index
     index = newIndex;
-    // Appel de la fonction "listenLightbox" pour ajouter les listeners sur les flèches suivant/précédent
-    listenLightbox (index, mediaFiltre);
     return index;
 }
 
@@ -124,8 +101,6 @@ function displayPrevMedia (index, mediaFiltre) {
     displayLightbox (pathMedia, mediaFiltre[newIndex].title, "prev");
     // Mise à jour de l'index actuel avec le nouvel index
     index = newIndex;
-    // Appel de la fonction "listenLightbox" pour ajouter les listeners sur les flèches suivant/précédent
-    listenLightbox (index, mediaFiltre);
     return index;
 }
 
@@ -139,26 +114,20 @@ function focusTrapLightbox() {
     const focusableElements = modal.querySelectorAll(`button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])`);
     // Sélection du 1er et du dernier élément intéractif
     const firstElement = focusableElements[0];
-
     const lastElement = focusableElements[focusableElements.length - 1];
-
     // Capturer les appuis sur les touches de tabulation
     modal.addEventListener("keydown", function (event) {
-
         // Capturer les appuis sur Tab et Shift + Tab
         const isTabPressed = (event.key === "Tab" || event.keyCode === 9);
-
         if (!isTabPressed) return;
         if (event.shiftKey) { // Si "Shift + Tab" est pressé
             if (document.activeElement === firstElement) {
                 event.preventDefault();
-                console.log("lastElement : ", lastElement);
                 lastElement.focus(); // Boucle au dernier élément
             }
         } else { // Si seulement "Tab" est pressé
             if (document.activeElement === lastElement) {
                 event.preventDefault();
-                console.log("firstElement : ", firstElement);
                 firstElement.focus(); // Boucle au premier élément
             }
         }
