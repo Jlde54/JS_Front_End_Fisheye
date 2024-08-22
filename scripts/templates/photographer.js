@@ -1,4 +1,34 @@
 /********************************************************************
+ * Fonction "createElement" pour créer un élément HTML avec les attributs et les enfants spécifiés.
+ *
+ * @param {tag} - Le nom de la balise de l'élément HTML à créer.
+ * @param {[attributes={}]} - Un objet contenant les attributs à ajouter à l'élément.
+ * @param {[children=[]]} - Un tableau contenant les enfants à ajouter à l'élément. Les enfants peuvent être des chaînes de caractères ou des instances de Node.
+ * @returns {Element} - L'élément HTML créé.
+ */
+function createElement(tag, attributes = {}, children = []) {
+    // Création d'un élément HTML avec la balise spécifiée en paramètre
+    const element = document.createElement(tag);
+    // Parcourt des clés de l'objet attributes
+    Object.keys(attributes).forEach(item => {
+        // Vérifie si l'attribut commence par 'data-'
+        item.startsWith("data-") || item.startsWith("aria-") || item === "role" || item === "tabindex"
+            ? element.setAttribute(item, attributes[item]) 
+            : element[item] = attributes[item];
+    });
+    // Parcourt le tableau des enfants
+    children.forEach(child => {
+        // Vérifie si l'enfant est une chaîne de caractères
+        typeof child === "string" 
+            ? element.appendChild(document.createTextNode(child)) 
+            : child instanceof Node 
+                ? element.appendChild(child) 
+                : null;
+    });
+    // Retour de l'élément HTML créé
+    return element;
+}
+/********************************************************************
  * Fonction "dataTemplate" pour créer un modèle de données basé sur les informations fournies 
  * Affichage des données des photographes (description ou medias)
  * 
@@ -27,26 +57,26 @@ function dataTemplate (data, section, dirPhotographer) {
 
             // Appel de la fonction createElement() pour la création de l'élément <article> : Carte du photographe
             const article = 
-            createElement('article', {
+            createElement("article", {
                 id: `art${id}` }, [
                     // Appel de la fonction createElement() pour la création de l'élément <a> : lien vers les médias du photographe
-                    createElement('a', {
+                    createElement("a", {
                         arialabel: `Lien vers la page du photographe ${name}`,
                         href: `./photographer.html?id=${id}&name=${name}&city=${city}&country=${country}&tagline=${tagline}&picture=assets/photographers/${portrait}&price=${price}`,
-                        'data-id': id}, [
-                            createElement('img', {
+                        "data-id": id}, [
+                            createElement("img", {
                                 src: `assets/photographers/${portrait}`, 
                                 alt: `Portrait du photographe ${name}` }, []
                             ),
-                            createElement('h2', {}, [name])
+                            createElement("h2", {}, [name])
                         ]
                     ),
                     // Appel de la fonction createElement() pour la création de l'élément <h3> : Localisation du photographe
-                    createElement('h3', {}, [`${city}, ${country}`]),
+                    createElement("h3", {}, [`${city}, ${country}`]),
                     // Appel de la fonction createElement() pour la création de l'élément <h4> : Slogan du photographe
-                    createElement('h4', {}, [tagline]),
+                    createElement("h4", {}, [tagline]),
                     // Appel de la fonction createElement() pour la création de l'élément <p> : Tarif du photographe
-                    createElement('p', {}, [`${price}€/jour`])
+                    createElement("p", {}, [`${price}€/jour`])
                 ]
             );
 
@@ -68,7 +98,7 @@ function dataTemplate (data, section, dirPhotographer) {
             if (image !== undefined) {
                 picture = `./assets/photographers/${dirPhotographer}/${image}`; // chemin d'accès au fichier image
                 className = "medias_section_img";   // classe CSS de l'image
-                alt = title;    // alt texte de l'image
+                alt = "";    // alt texte vide
                 tag = "img";    // balise de l'image
 
                 // Appel de la création du media <img>
@@ -76,10 +106,11 @@ function dataTemplate (data, section, dirPhotographer) {
             } else {
                 picture = `./assets/photographers/${dirPhotographer}/${video}`; // chemin d'accès au fichier video
                 className = "medias_section_video";     // classe CSS de la vidéo
+                alt = `Vidéo ${title}`;       // alt sera utilisé comme textContent dans <video>
                 tag = "video";      // balise de la vidéo
 
                 // Appel de la création du media <video>
-                imgMedia = MediaFactory("video", {picture, className});
+                imgMedia = MediaFactory("video", {picture, className, alt});
             }
 
             // Construction de(s) élément(s) enfant(s) pour l'élément <article>
@@ -88,10 +119,10 @@ function dataTemplate (data, section, dirPhotographer) {
             if (tag === "video") {
                 children.push(
                     // Appel de la fonction createElement() pour la création de l'élément <div> pour la création du container de l'icône "play"
-                    createElement('div', {
+                    createElement("div", {
                         className: "media_section_play-icon"}, [
                             // Appel de la fonction createElement() pour la création de l'élément <i> pour la création de l'icône "play"
-                            createElement('i', {
+                            createElement("i", {
                                 className: "fa-solid fa-circle-play",
                                 "aria-hidden": "true"}, []
                             )
@@ -101,36 +132,36 @@ function dataTemplate (data, section, dirPhotographer) {
             }
 
             // Appel de la fonction createElement() pour la création de l'élément <article> pour le média
-            const article = createElement('article', {}, [
+            const article = createElement("article", {}, [
                 // Appel de la fonction createElement() pour la création de l'élément <a> : Lien vers le media grand format
-                createElement('a', {
+                createElement("a", {
                     "aria-label": `Lien vers le media ${title} grand format`,
                     href: "#",
                     className: "medias_section_link",
-                    'data-id': `med${id}`,
+                    "data-id": `med${id}`,
                     id: `med${id}`}, children   // Ajout de la liste des enfants de l'élément <a>
                 ), 
           
                 // Appel de la fonction createElement() pour la création de l'élément <div> : Description du média
-                createElement('div', { 
+                createElement("div", { 
                     className: "medias_section_descMedia" }, [
                         // Appel de la fonction createElement() pour la création de l'élément <h3> : Titre du média
-                        createElement('h3', { 
+                        createElement("h3", { 
                             className: "medias_section_title" }, [`${title}`]),
                         // Appel de la fonction createElement() pour la création de l'élément <div> : Description des likes
-                        createElement('div', { 
+                        createElement("div", { 
                             className: "medias_section_descLikes" }, [
                                 // Appel de la fonction createElement() pour la création de l'élément <p> : Nombre de likes
-                                createElement('p', { 
+                                createElement("p", { 
                                     className: "medias_section_likes",
                                     "aria-label": `${likes} likes` }, [`${likes}`]
                                 ),
                                 // Appel de la fonction createElement() pour la création de l'élément <p> : icon like
-                                createElement('p', { 
+                                createElement("p", { 
                                     className: "medias_section_icon" }, [
-                                        createElement('i', { 
+                                        createElement("i", { 
                                             className: "fa-solid fa-heart", 
-                                            'aria-hidden': "true" }, [])
+                                            "aria-hidden": "true" }, [])
                                     ]
                                 )
                             ]
@@ -145,43 +176,6 @@ function dataTemplate (data, section, dirPhotographer) {
     }
     // Retour d'un objet contenant le nom du photographe, le chemin de l'image et la méthode pour obtenir l'élément DOM représentant la carte utilisateur
     return { name, picture, getUserCardDOM }
-}
-
-/********************************************************************
- * Fonction "createElement" pour créer un élément HTML avec les attributs et les enfants spécifiés.
- *
- * @param {tag} - Le nom de la balise de l'élément HTML à créer.
- * @param {[attributes={}]} - Un objet contenant les attributs à ajouter à l'élément.
- * @param {[children=[]]} - Un tableau contenant les enfants à ajouter à l'élément. Les enfants peuvent être des chaînes de caractères ou des instances de Node.
- * @returns {Element} - L'élément HTML créé.
- */
-function createElement(tag, attributes = {}, children = []) {
-    // Création d'un élément HTML avec la balise spécifiée en paramètre
-    const element = document.createElement(tag);
-    // Parcourt des clés de l'objet attributes
-    Object.keys(attributes).forEach(item => {
-        // Vérifie si l'attribut commence par 'data-'
-        if (item.startsWith('data-') || item.startsWith('aria-')) {
-            // Si oui, utilisation de setAttribute pour les attributs 'data-'
-            element.setAttribute(item, attributes[item]);
-        } else {
-            // Sinon, assignation directe de l'attribut à l'élément
-            element[item] = attributes[item];
-        }
-    });
-    // Parcourt le tableau des enfants
-    children.forEach(child => {
-        // Vérifie si l'enfant est une chaîne de caractères
-        if (typeof child === 'string') {
-            // Si oui, Création d'un nœud de texte et ajout à l'élément
-            element.appendChild(document.createTextNode(child));
-        } else if (child instanceof Node) {
-            // Sinon et si l'enfant est une instance de Node, ajout direct à l'élément
-            element.appendChild(child);
-        }
-    });
-    // Retour de l'élément HTML créé
-    return element;
 }
 
 /********************************************************************
@@ -210,7 +204,6 @@ async function displayData (data, section, dirPhotographer) {
         sectionData.appendChild(userCardDOM);
     });
 }
-
 
 /********************************************************************
  * Fonction "getData" asynchrone de récupération des données des photographes ou des médias des photographes depuis le fichier JSON

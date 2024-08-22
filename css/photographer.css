@@ -157,9 +157,11 @@
     content: none;
 }
 
-.option:focus, a:focus {
-    outline: 5px solid black;
-    outline-offset: 2px;
+.option:focus, a:focus, .btn:focus {
+    outline: none;
+    box-shadow: 0 0 5px 5px rgb(13, 24, 244);
+    /* outline-offset: 3px; */
+    transition: box-shadow 0.2s ease-in-out;
 }
 
 /* Encart avec Likes et Tarifs  */
@@ -391,12 +393,17 @@ form textarea {
     height: 80px;
 }
 
-.lightbox-close img {
-    filter: brightness(0) saturate(100%) invert(15%) sepia(12%) saturate(3471%) hue-rotate(350deg) brightness(101%) contrast(88%);
+.lightbox-close {
     position: absolute;
     top: 20px;
     right: 20px;
     cursor: pointer;
+    border: none;
+    background-color: white;
+}
+
+.lightbox-close img {
+    filter: brightness(0) saturate(100%) invert(15%) sepia(12%) saturate(3471%) hue-rotate(350deg) brightness(101%) contrast(88%);
 }
 
 .lightbox-prev {

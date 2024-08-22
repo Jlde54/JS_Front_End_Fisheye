@@ -1,10 +1,185 @@
 /********************************************************************
  * Initialisation des variables globales
  */
-let images =[];     // Tableau contenant les images médias affichées
-let descImages =[];     // Tableau contenant les description des images médias affichées
 let mediaFiltre = [];   // Tableau contenant les médias du photographe
 let dirPhotographer = "";   // le répertoire des medias du photographe
+let isMenuOpen = false;
+let focusedOptionIndex = -1;
+
+/********************************************************************
+ * Fonction "displayDropdownMenu" pour la création des éléments du dropdown menu de la page photographe
+ */
+function displayDropdownMenu(){
+    // Sélection de l'élément principal de la page via son ID "#main"
+    const main = document.querySelector("#main");
+    // Sélection de la section des médias via sa classe ".medias_section"
+    const mediaSection = document.querySelector(".medias_section");
+    // Création de l'élément <div> pour contenir le dropdown menu
+    const divSort = createElement("div", {
+        className: "photograph-sort"}, [
+            // Création de l'élément <label> pour le dropdown menu avec le texte "Trier par"
+            createElement("span", {
+                // for: "select-list",
+                className: "photographer-sort-span",
+                textContent: "Trier par "}, []
+            ),
+            // Création de l'élément <div> pour le menu déroulant personnalisé
+            createElement("div", {
+                className : "custom-dropdown"}, [
+                    // Création d'un bouton pour afficher le menu déroulant avec l'option sélectionnée et une icône
+                    createElement("button", {
+                        id: "select-list",
+                        className: "btn selected", 
+                        innerHTML: `Popularité <span class="arrow"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></span>`, 
+                        "aria-haspopup": "true",
+                        "aria-expanded": "false",
+                        "aria-controls": "dropdown-menu"}, []
+                    ),
+                    // Création de l'élément <div> pour contenir les options du menu déroulant
+                    createElement("div", {
+                        className : "menu",
+                        id: "dropdown-menu",
+                        role: "menu"}, [    // élément menu
+                            // Création d'une option pour trier par "Popularité" avec une icône de flèche vers le haut
+                            createElement("div", {
+                                value: "Popularité", 
+                                innerHTML: `Popularité <span class="arrow"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></span>`, 
+                                className: "option",
+                                role: "menuitem",   // élément du menu
+                                tabindex: "0"}, []
+                            ),
+                            // Création d'une option pour trier par "Date"
+                            createElement("div", {
+                                value: "Date", 
+                                innerHTML: "Date", 
+                                className: "option",
+                                role: "menuitem",   // élément du menu
+                                tabindex: "-1"}, []
+                            ),
+                            // Création d'une option pour trier par "Titre"
+                            createElement("div", {
+                                value: "Titre", 
+                                innerHTML: "Titre", 
+                                className: "option",
+                                role: "menuitem",   // élément du menu
+                                tabindex: "-1"}, []
+                            )
+                        ]
+                    )
+                ]
+            )
+        ]
+    );
+
+    // Ajout de l'élément "divSort" à son parent "main" avant l'élément "mediaSection"
+    main.insertBefore(divSort, mediaSection);
+}
+
+/********************************************************************
+ * Fonction "displayPhotographerHeader" pour la création des éléments du header de la page photographe +
+ * Ajout des éléments à leur parent dans le DOM
+ * 
+ * @param {*} name 
+ * @param {*} city 
+ * @param {*} country 
+ * @param {*} tagline 
+ * @param {*} picture 
+ */
+function displayPhotographerHeader (name, city, country, tagline, picture) {
+
+    // Création des éléments du header de la page photographe
+    const photographHeader = document.querySelector(".photograph-header");
+
+    // Création de l'élément <div> : nom, localisation et slogan du photographe
+    const divPhotographerProfile = 
+        createElement("div", {
+            className: "photograph-header-profile",
+            "aria-labelledby": "photographer-name"}, [
+                createElement( "h1", {
+                    textContent: name, 
+                    id: "photographer-name"}, []),
+                createElement( "h2", {
+                    textContent: `${city}, ${country}`}, []),
+                createElement( "h3", {
+                    textContent: tagline}, [])
+        ]);
+
+    // Création de l'élément <img> : Portrait du photographe
+    const imgPicture = 
+        createElement("figure", {}, [
+            createElement( "img", {
+                src: picture, 
+                className: "photograph-header-imgprofile", 
+                alt: `Portrait du photographe ${name} basé à ${city}, ${country}`}, []
+            )
+        ]);
+
+    // Ajout des éléments à leur parent dans le DOM
+    photographHeader.insertBefore(divPhotographerProfile, photographHeader.firstChild);
+    photographHeader.appendChild(imgPicture);
+}
+
+/********************************************************************
+ * Fonction "displayTarif" pour l'affichage de l'encart contenant le nombre total de likes et le tarif du photographe
+ * 
+ * @param {price} - tarif journalier
+ * @param {sumLikes} - nombre total de "likes"
+ */
+function displayTarif (price, sumLikes) {
+    // Sélection de l'élément principal de la page via son ID "#main"
+    const main = document.querySelector("#main");
+    // Création d'un élément <div> pour contenir le tarif et les likes
+    const divTarifLikes = 
+        createElement("div", {
+            className: "photograph-likes-tarif"}, [ 
+            // Création d'un élément <div> pour afficher le nombre de "likes"
+            createElement("div", {
+                className: "photograph-likes", 
+                "aria-label": `${sumLikes} likes`,
+                innerHTML: `${sumLikes} <span class="arrow"><i class="fa-solid fa-heart" aria-hidden="true"></i></span>`}, []), 
+                // Création d'un élément <div> pour afficher le tarif journalier
+            createElement("div", {
+                className: "photograph-tarif", 
+                textContent: `${price}€/jour`,
+                "aria-label": `${price} euros par jour`}, [])
+        ]);
+    // Ajout du conteneur des likes et du tarif à l'élément principal de la page
+    main.appendChild(divTarifLikes);
+}
+
+/********************************************************************
+ * Fonction "getURL" de récupération des paramètres de l'URL
+ * 
+ * @param {string} - nom du pramètre à récupérer
+ * @returns {field} - valeur du paramètre
+ */
+function getURL (string){
+    // Création d'un objet contenant tous les paramètres de l'URL actuel de la page
+    const urlParams = new URL(document.location).searchParams;
+    // Récupération du paramètre correspondant à la valeur "string" passée en paramètre à la fonction
+    const field = urlParams.get(string);
+    // Retour de la valeur du paramètre
+    return field;
+}
+
+/********************************************************************
+ * Fonction "handleMediaListener" pour préparer l'affichage de la lightbox càd construire le chemin complet du média et appeler l'affichage du média cliqué
+ * 
+ * @param {event} - événement correspondant au média choisi
+ * @param {index} - index correspondant au média choisi dans le tableau "mediaFiltre"
+ */
+function handleMediaListener (event, index) {
+    event.preventDefault(); // Empêche le comportement par défaut du lien
+    let media = "";     // variable pour stocker le chemin de <img> ou <video>
+    // Test si le média courant est une image ou une vidéo et met à jour la variable image en conséquence
+    media = mediaFiltre[index].image ? mediaFiltre[index].image : mediaFiltre[index].video;
+    // Construction du chemin complet du média en combinant le répertoire du photographe et le nom de l'image/vidéo
+    pathMedia = `${mediaFiltre[index].dirPhotographer}${media}`
+    // Appel de la fonction "displayLightbox" pour afficher le média cliqué dans la lightbox
+    displayLightbox (pathMedia, mediaFiltre[index].title, "next");
+    // Appel de la fonction "listenLightbox" pour ajouter les listeners sur les flèches suivant/précédent
+    listenLightbox (index, mediaFiltre);    
+}
 
 /********************************************************************
  * Fonction "init" asynchrone pour l'initialisation de la la page photographe (photographer.html)
@@ -31,12 +206,8 @@ async function init () {
     // Construction du nom du dossier du photographe "dirPhotographer"
     // 1) Prendre le contenu de "name" avant le 1er espace
     let string = "";
-    const firstSpaceIndex = name.indexOf(' ');
-    if (firstSpaceIndex === -1) {
-        string = name
-    } else {
-        string = name.substring(0, firstSpaceIndex);
-    }
+    const firstSpaceIndex = name.indexOf(" ");
+    string = firstSpaceIndex === -1 ? name : name.substring(0, firstSpaceIndex);
     // 2) Mettre un espace à la place des caractères qui ne sont pas des lettres 
     dirPhotographer = string.replace(/[^a-zA-Z]/g, " ");
 
@@ -52,12 +223,10 @@ async function init () {
     // Appel de la fonction "displayTarif" pour l'affichage de l'encart contenant le nombre de likes et le tarif du photographe
     // 1) Extraction et calcul de la somme des likes des médias 
     const sumLikes = mediaFiltre.map(like => like.likes).reduce((a,b) => a + b, 0);
-    // 2) Calcul de la somme des likes
-    // const sumLikes = mapLikes.reduce((a,b) => a + b, 0);
     // 2) Appel de la fonction displayTarif pour l'affichage
     displayTarif (price, sumLikes);
     
-    // Appel de la fonction "displayDropdownMenu" pour l'affichage de la lightbox
+    // Appel de la fonction "displayDropdownMenu" pour l'affichage du dropdown menu
     displayDropdownMenu ();
 
     // Appel des fonctions pour la création des listeners :
@@ -93,14 +262,14 @@ function listenerLike () {
                 // Décrémente le nombre de "likes" affichés pour ce média
                 likeElem.textContent = currentLikes - 1;
                 // Mise à jour du nombre de likes dans l'attribut "aria-label"
-                likeElem.setAttribute('aria-label', `${currentSumLikes - 1} likes`);
+                likeElem.setAttribute("aria-label", `${currentSumLikes - 1} likes`);
                 // Change l'état "liked" du média à false
                 mediaFiltre[index].liked = false;
                 // Décrémente le nombre total de "likes" pour ce média dans le tableau
                 mediaFiltre[index].likes --;
                 // Mise à jour du total des "likes" affichés avec le nombre réduit
                 sumLikes.innerHTML = `${currentSumLikes - 1} <span class="arrow"><i class="fa-solid fa-heart"></i></span>`;
-                sumLikes.setAttribute('aria-label', `${currentSumLikes - 1} likes`);
+                sumLikes.setAttribute("aria-label", `${currentSumLikes - 1} likes`);
                 // si le média actuel n'est pas liké
             } else {
                 // Incrémente le nombre de "likes" affichés pour ce média
@@ -111,170 +280,149 @@ function listenerLike () {
                 mediaFiltre[index].likes ++;
                 // Mise à jour du total des "likes" affichés avec le nombre augmenté
                 sumLikes.innerHTML = `${currentSumLikes + 1} <span class="arrow"><i class="fa-solid fa-heart"></i></span>`;
-                sumLikes.setAttribute('aria-label', `${currentSumLikes + 1} likes`);
+                sumLikes.setAttribute("aria-label", `${currentSumLikes + 1} likes`);
             }
         })
     })
 }
 
 /********************************************************************
- * Fonction "getURL" de récupération des paramètres de l'URL
+ * Appel de l'ouverture/Fermeture du menu en fonction du contenu de "isMenuOpen"
  * 
- * @param {string} - nom du pramètre à récupérer
- * @returns {field} - valeur du paramètre
+ * @param {dropdownButton} - 
+ * @param {dropdownMenu} - 
+ * @param {options} - 
  */
-function getURL (string){
-    // Création d'un objet contenant tous les paramètres de l'URL actuel de la page
-    const urlParams = new URL(document.location).searchParams;
-    // Récupération du paramètre correspondant à la valeur "string" passée en paramètre à la fonction
-    const field = urlParams.get(string);
-    // Retour de la valeur du paramètre
-    return field;
-}
+function toggleMenu(dropdownButton, dropdownMenu, options) {
+    if (isMenuOpen) {
+        // Appel de la fermeture du menu
+      closeMenu(dropdownButton, dropdownMenu);
+    } else {
+        // Appel de l'ouverture' du menu
+      openMenu(dropdownButton, dropdownMenu, options);
+    }
+  }
 
+  /********************************************************************
+   * Ouverture du menu
+   * 
+   * @param {dropdownButton} - 
+   * @param {dropdownMenu} - 
+   * @param {options} - 
+   */
+  function openMenu(dropdownButton, dropdownMenu, options) {
+    dropdownMenu.style.display = 'block';
+    dropdownButton.setAttribute('aria-expanded', 'true');
+    isMenuOpen = true;
+    focusedOptionIndex = 0;
+    options[focusedOptionIndex].focus();
+  }
+
+  /********************************************************************
+   * Fermeture du menu
+   * 
+   * @param {dropdownButton} - 
+   * @param {dropdownMenu} - 
+   */
+  function closeMenu(dropdownButton, dropdownMenu) {
+    dropdownMenu.style.display = 'none';
+    dropdownButton.setAttribute('aria-expanded', 'false');
+    isMenuOpen = false;
+    focusedOptionIndex = -1;
+    dropdownButton.focus();
+  }
+
+//   function handleOptionSelect(dropdownButton, dropdownMenu, option) {
+//     dropdownButton.textContent = option.textContent;
+//     closeMenu(dropdownButton, dropdownMenu);
+//   }
 
 /********************************************************************
- * Fonction "displayPhotographerHeader" pour la création des éléments du header de la page photographe +
- * Ajout des éléments à leur parent dans le DOM
- * 
- * @param {*} name 
- * @param {*} city 
- * @param {*} country 
- * @param {*} tagline 
- * @param {*} picture 
+ * Fonction "listenersDropDown" pour créer les listeners pour ouvrir ou fermer le dropdown menu et pour sélectionner une option
  */
-function displayPhotographerHeader (name, city, country, tagline, picture) {
+function listenersDropDown () {
+    const dropdownButton = document.getElementById('select-list');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const options = Array.from(dropdownMenu.querySelectorAll('.option'));
 
-    // Création des éléments du header de la page photographe
-    const photographHeader = document.querySelector(".photograph-header");
+    dropdownButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        // Appel de la fermeture/Ouverture du menu
+        toggleMenu(dropdownButton, dropdownMenu, options);
+    });
+    
+    document.addEventListener('click', (event) => {
+        if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            // Appel de la fermeture du menu
+            closeMenu(dropdownButton, dropdownMenu);
+        }
+    });
+    
+    document.addEventListener('keydown', (event) => {
+        if (isMenuOpen) {
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                // Empêcher le comportement par défaut de l'ascenseur
+                event.preventDefault();
+        
+                if (event.key === 'ArrowDown') {
+                  focusedOptionIndex = (focusedOptionIndex + 1) % options.length;
+                } else if (event.key === 'ArrowUp') {
+                  focusedOptionIndex = (focusedOptionIndex - 1 + options.length) % options.length;
+                }
+        
+                options[focusedOptionIndex].focus();
+              } else if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                optionSelected(dropdownButton, dropdownMenu, options[focusedOptionIndex]);
+              } else if (event.key === 'Escape') {
+                // Appel de la fermeture du menu
+                closeMenu(dropdownButton, dropdownMenu);
+              }
+        } else if (document.activeElement === dropdownButton && (event.key === 'Enter' || event.key === ' ')) {
+            event.preventDefault();
+            openMenu(dropdownButton, dropdownMenu, options);
+        }
+    });
+    
+    options.forEach((option, index) => {
+        option.addEventListener('click', () => {
 
-    // Création de l'élément <div> : nom, localisation et slogan du photographe
-    const divPhotographerProfile = 
-        createElement("div", {
-            className: "photograph-header-profile",
-            "aria-labelledby": "photographer-name"}, [
-                createElement( "h1", {
-                    textContent: name, 
-                    id: "photographer-name"}, []),
-                createElement( "h2", {
-                    textContent: `${city}, ${country}`}, []),
-                createElement( "h3", {
-                    textContent: tagline}, [])
-        ]);
+            optionSelected (dropdownButton, dropdownMenu, option);
+        });
 
-    // Création de l'élément <img> : Portrait du photographe
-    const imgPicture = 
-        createElement("figure", {}, [
-            createElement( 'img', {
-                src: picture, 
-                className: "photograph-header-imgprofile", 
-                alt: `Portrait du photographe ${name}`}, []
-            ),
-            createElement( 'figcaption', {
-                textContent: `Portrait du photographe ${name} basé à ${city}, ${country}`}, []
-            )
-        ]);
-
-    // Ajout des éléments à leur parent dans le DOM
-    photographHeader.insertBefore(divPhotographerProfile, photographHeader.firstChild);
-    photographHeader.appendChild(imgPicture);
-}
-
-/********************************************************************
- * Fonction "displayDropdownMenu" pour la création des éléments du dropdown menu de la page photographe
- */
-function displayDropdownMenu(){
-    // Sélection de l'élément principal de la page via son ID "#main"
-    const main = document.querySelector("#main");
-    // Sélection de la section des médias via sa classe ".medias_section"
-    const mediaSection = document.querySelector(".medias_section");
-    // Création de l'élément <div> pour contenir le dropdown menu
-    const divSort = createElement("div", {
-        className: "photograph-sort"}, [
-            // Création de l'élément <label> pour le dropdown menu avec le texte "Trier par"
-            createElement("span", {
-                // for: "select-list",
-                className: "photographer-sort-span",
-                textContent: "Trier par "}, []
-            ),
-            // Création de l'élément <div> pour le menu déroulant personnalisé
-            createElement("div", {
-                className : "custom-dropdown"}, [
-                    // Création d'un bouton pour afficher le menu déroulant avec l'option sélectionnée et une icône
-                    createElement('button', {
-                        id: "select-list",
-                        className: 'btn selected', 
-                        innerHTML: 'Popularité <span class="arrow"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></span>', 
-                        "aria-haspopup": "true",
-                        "aria-expanded": "false",
-                        "aria-controls": "dropdown-menu"}, []
-                    ),
-                    // Création de l'élément <div> pour contenir les options du menu déroulant
-                    createElement("div", {
-                        className : "menu",
-                        id: "dropdown-menu",
-                        role: "menu"}, [    // élément menu
-                            // Création d'une option pour trier par "Popularité" avec une icône de flèche vers le haut
-                            createElement("div", {
-                                value: "Popularité", 
-                                innerHTML: 'Popularité <span class="arrow"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></span>', 
-                                className: "option",
-                                role: "menuitem",   // élément du menu
-                                tabindex: "0"}, []
-                            ),
-                            // Création d'une option pour trier par "Date"
-                            createElement("div", {
-                                value: "Date", 
-                                innerHTML: 'Date', 
-                                className: "option",
-                                role: "menuitem",   // élément du menu
-                                tabindex: "-1"}, []
-                            ),
-                            // Création d'une option pour trier par "Titre"
-                            createElement("div", {
-                                value: "Titre", 
-                                innerHTML: 'Titre', 
-                                className: "option",
-                                role: "menuitem",   // élément du menu
-                                tabindex: "-1"}, []
-                            )
-                        ]
-                    )
-                ]
-            )
-        ]
-    );
-
-    // Ajout de l'élément "divSort" à son parent "main" avant l'élément "mediaSection"
-    main.insertBefore(divSort, mediaSection);
+        option.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            // handleOptionSelect(dropdownButton, dropdownMenu, option);
+            optionSelected (dropdownButton, dropdownMenu, option);
+            }
+        });
+    });
 }
 
 /********************************************************************
- * Fonction "displayTarif" pour l'affichage de l'encart contenant le nombre total de likes et le tarif du photographe
+ * Fonction "listenersMedias" pour la création des listeners pour ouvrir la lightbox
  * 
- * @param {price} - tarif journalier
- * @param {sumLikes} - nombre total de "likes"
+ * @param {section} - section contenant les médias affichés
  */
-function displayTarif (price, sumLikes) {
-    // Sélection de l'élément principal de la page via son ID "#main"
-    const main = document.querySelector("#main");
-    // Création d'un élément <div> pour contenir le tarif et les likes
-    const divTarifLikes = 
-        createElement("div", {
-            className: "photograph-likes-tarif"}, [ 
-            // Création d'un élément <div> pour afficher le nombre de "likes"
-            createElement("div", {
-                className: "photograph-likes", 
-                "aria-label": `${sumLikes} likes`,
-                innerHTML: `${sumLikes} <span class="arrow"><i class="fa-solid fa-heart" aria-hidden="true"></i></span>`}, []), 
-                // Création d'un élément <div> pour afficher le tarif journalier
-            createElement("div", {
-                className: "photograph-tarif", 
-                textContent: `${price}€/jour`,
-                "aria-label": `${price} euros par jour`}, [])
-        ]);
-    // Ajout du conteneur des likes et du tarif à l'élément principal de la page
-    main.appendChild(divTarifLikes);
+function listenersMedias (section) {
+    // Sélection de tous les éléments <a> dans la section spécifiée, représentant des liens vers les médias
+    const a = document.querySelectorAll(`${section} a`);
+    
+    // Parcours de chaque élément <a> (représentant une image ou une vidéo)
+    a.forEach((item, index) => {
+        
+        // Ajout du listener pour le clic sur un élément <a>
+        item.addEventListener("click", (event) => {
+            handleMediaListener (event, index)
+        });
+        // Ajout du listener pour le "enter" sur un élément <a>
+        item.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                handleMediaListener(event, index);
+            }
+        });
+    });
 }
 
 /********************************************************************
@@ -285,100 +433,21 @@ function displayTarif (price, sumLikes) {
  */
 function openDropdown (divSelected, selectDropDown) {
     // L'attribut aria-expanded est mis à "true" pour indiquer que le menu déroulant est ouvert.
-    divSelected.setAttribute('aria-expanded', true);
+    divSelected.setAttribute("aria-expanded", true);
     // Le menu est affiché 
-    selectDropDown.style.display = 'block';
+    selectDropDown.style.display = "block";
     // Sélection du premier élément du menu
-    const firstOption = selectDropDown.querySelector('[role="menuitem"]');
+    const firstOption = selectDropDown.querySelector(`[role="menuitem"]`);
     // Déplace le focus clavier sur le premier élément du menu
     firstOption.focus();
 }
 
-/********************************************************************
- * Fonction "listenersDropDown" pour créer les listeners pour ouvrir ou fermer le dropdown menu et pour sélectionner une option
- */
-function listenersDropDown () {
-    // Sélection de l'élément qui affiche l'option sélectionnée dans le menu déroulant
-    const divSelected = document.querySelector(".selected");
-    // Sélection du menu déroulant qui contient les options de tri
-    const selectDropDown = document.querySelector(".menu");
-    // Ajout d'un listener pour afficher/masquer le menu déroulant lorsqu'on clique ou appuie sur "enter" sur l'élément sélectionné
-    divSelected.addEventListener('click', () => openDropdown(divSelected, selectDropDown));
-    divSelected.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            openDropdown(divSelected, selectDropDown);
-        }
-    });
-
-    // Gestion de la sélection d'une option du menu déroulant
-    const menuOptions = selectDropDown.querySelectorAll('[role="menuitem"]');
-    // Parcours de chaque option du menu
-    menuOptions.forEach(option => {
-        // Gestion de la sélection de l'option à l'appui d'une touche clavier
-        option.addEventListener('keydown', (event) => {
-            // Obtenir l'index de l'option actuellement en focus
-            let index = Array.prototype.indexOf.call(menuOptions, event.target);
-            // Test si la touche appuyée est la flèche vers le bas
-            if (event.key === 'ArrowDown') {
-                // Incrémentation de l'index pour passer à l'option suivante avec retour en boucle à la 1ère option quand la dernière est atteinte
-                index = (index + 1) % menuOptions.length;
-                // Placement du focus sur l'option suivante dans le menu
-                menuOptions[index].focus();
-            // Test si la touche appuyée est la flèche vers le haut
-            } else if (event.key === 'ArrowUp') {
-                // Décrémentation de l'index pour passer à l'option précédente avec retour en boucle à la dernière option quand la 1ère est atteinte
-                index = (index - 1 + menuOptions.length) % menuOptions.length;
-                // Placement du focus sur l'option précédente dans le menu
-                menuOptions[index].focus();
-            // Test si la touche appuyée est "Enter"
-            } else if (event.key === 'Enter') {
-                // Appel de la fonction "optionSelected" pour gérer la sélection de l'option
-                optionSelected(event, divSelected, selectDropDown);
-                // Le texte de l'option sélectionnée est placé dans divSelected qui affiche l'option choisie.
-                divSelected.textContent = event.target.textContent.trim(); 
-                // L'attribut aria-expanded est mis à "false" pour indiquer que le menu déroulant est maintenant fermé.
-                divSelected.setAttribute('aria-expanded', 'false');
-                // Le menu déroulant est masqué
-                selectDropDown.style.display = 'none';
-                //  Le focus est ramené à divSelected qui affiche l'option choisie
-                divSelected.focus();
-            }
-        });
-
-        // Gestion de la sélection de l'option au clic
-        option.addEventListener('click', (event) => {
-            // Appel de la fonction "optionSelected" pour gérer la sélection de l'option
-            optionSelected(event, divSelected, selectDropDown);
-        })
-    });
-
-    // Listener sur l'appui d'une touche clavier pour l'ensemble du document
-    document.addEventListener('keydown', (event) => {
-        // Test si la touche appuyée est "Escape"
-        if (event.key === 'Escape') {
-            // L'attribut aria-expanded est mis à "false" pour indiquer que le menu déroulant est maintenant fermé.
-            divSelected.setAttribute('aria-expanded', 'false');
-            // Masque le menu déroulant
-            selectDropDown.style.display = 'none';
-            //  Le focus est ramené à divSelected qui affiche l'option choisie
-            divSelected.focus(); // Remet le focus sur le bouton
-        }
-    });
-}
-
-/********************************************************************
- * Fonction "optionSelected" pour l'affichage des médias après la sélection de l'option
- * 
- * @param {event} - événement lié à l'option choisie 
- * @param {divSelected} - élément qui affiche l'option sélectionnée dans le menu
- * @param {selectDropDown} - menu déroulant qui contient les options de tri 
- */
-function optionSelected (event, divSelected, selectDropDown) {
+function optionSelectedOld (event, divSelected, selectDropDown) {
     // Mise à jour de divSelected avec le texte de l'option sélectionnée
     divSelected.innerHTML = `${event.currentTarget.textContent}<span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>`;
     // Masque le menu déroulant et met l'attribut 'aria-expanded' à false
-    divSelected.setAttribute('aria-expanded', 'false');
-    selectDropDown.style.display = 'none';
+    divSelected.setAttribute("aria-expanded", "false");
+    selectDropDown.style.display = "none";
     // Tri de mediaFiltre selon l'option sélectionnée
     switch (event.currentTarget.textContent) {
         case "Popularité ":
@@ -410,51 +479,48 @@ function optionSelected (event, divSelected, selectDropDown) {
 }
 
 /********************************************************************
- * Fonction "handleMediaListener" pour préparer l'affichage de la lightbox
+ * Fonction "optionSelected" pour l'affichage des médias après la sélection de l'option
  * 
- * @param {event} - événement correspondant au média choisi
- * @param {index} - index correspondant au média choisi dans le tableau "mediaFiltre"
+ * @param {event} - événement lié à l'option choisie 
+ * @param {divSelected} - élément qui affiche l'option sélectionnée dans le menu
+ * @param {selectDropDown} - menu déroulant qui contient les options de tri 
  */
-function handleMediaListener (event, index) {
-    event.preventDefault(); // Empêche le comportement par défaut du lien
-    let image = "";     // variable pour stocker le chemin de <img> ou <video>
-    // Test si le média courant est une image ou une vidéo et met à jour la variable image en conséquence
-    if (mediaFiltre[index].image) {
-        image = mediaFiltre[index].image;
-    } else {
-        image = mediaFiltre[index].video;
+function optionSelected (dropdownButton, dropdownMenu, option) {
+    // Mise à jour de divSelected avec le texte de l'option sélectionnée
+    dropdownButton.innerHTML = `${option.textContent}<span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>`;
+    // Masque le menu déroulant et met l'attribut 'aria-expanded' à false
+    // dropdownButton.setAttribute("aria-expanded", "false");
+    // dropdownMenu.style.display = "none";
+    // Tri de mediaFiltre selon l'option sélectionnée
+    switch (option.textContent) {
+        case "Popularité ":
+            // Tri en ordre croissant de popularité
+            mediaFiltre.sort((a, b) => Number(a.likes) - Number(b.likes));
+            break;
+        case "Date":
+            // Tri en ordre croissant de date
+            mediaFiltre.sort((a, b) => new Date(a.date) - new Date(b.date));
+            break;
+        case "Titre":
+            // Tri en ordre alphabétique de titre
+            mediaFiltre.sort((a, b) => {
+                if(a.title < b.title) return -1;
+                if(a.title > b.title) return 1;
+                return 0;
+            });
+            break;
+        default:
+            break;
     }
-    // Construction du chemin complet du média en combinant le répertoire du photographe et le nom de l'image/vidéo
-    pathImage = `${mediaFiltre[index].dirPhotographer}${image}`
-    // Appel de la fonction "displayLightbox" pour afficher le média cliqué dans la lightbox
-    displayLightbox (pathImage, mediaFiltre[index].title);
-    // Appel de la fonction "listenLightbox" pour ajouter les listeners sur les flèches suivant/précédent
-    listenLightbox (index, mediaFiltre);
-}
 
-/********************************************************************
- * Fonction "listenersMedias" pour la création des listeners pour ouvrir la lightbox
- * 
- * @param {section} - section contenant les médias affichés
- */
-function listenersMedias (section) {
-    // Sélection de tous les éléments <a> dans la section spécifiée, représentant des liens vers les médias
-    const a = document.querySelectorAll(`${section} a`);
-    
-    // Parcours de chaque élément <a> (représentant une image ou une vidéo)
-    a.forEach((item, index) => {
-        
-        // Ajout du listener pour le clic sur un élément <a>
-        item.addEventListener("click", (event) => {
-            handleMediaListener (event, index)
-        });
-
-        item.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                handleMediaListener(event, index);
-            }
-        });
-    });
+    // Appel de la fermeture du menu
+    closeMenu(dropdownButton, dropdownMenu);
+    // Appel de l'affichage des medias des photographes après le tri
+    displayData (mediaFiltre, ".medias_section", dirPhotographer);
+    // Appel de la fonction "listenersMedias" pour l'ajout des listeners sur les médias affichés
+    listenersMedias (".medias_section");
+    // Appel de la fonction "listenerLike" pour l'ajout des listeners sur les likes des médias affichés
+    listenerLike ();
 }
 
 /********************************************************************

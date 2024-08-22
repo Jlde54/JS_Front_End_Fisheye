@@ -1,3 +1,4 @@
+// Cache la modale en modifiant son style display à "none"
 /********************************************************************
  * Fonction "closeModalForm" pour la fermeture de la modale du formulaire de contact.
  * L'appel se fait depuis "photographer.html"
@@ -12,7 +13,15 @@ function closeModalForm() {
     // Cache l'overlay en modifiant son style display à "none"
     overlay.style.display = "none";
     // Retour du focus sur le bouton "Contactez-moi"
-    document.querySelector('.photograph-header-button').focus();
+    document.querySelector(".photograph-header-button").focus();
+    // La modale est ignorée par les technologies d’assistance 
+    modal.setAttribute('aria-hidden', 'true');
+    // Réactivation des éléments en arrière-plan de la modale :
+    // Sélection de tous les enfants de <body> excepté la modale
+    document.querySelectorAll('body > *:not(#contact_modal)').forEach(element => {
+        // Pour chacun, suppression de l'attribut "aria-hidden" pour les rendre invisibles aux technologies d'assistance
+        element.removeAttribute('aria-hidden');
+    });
 }
 
 /********************************************************************
@@ -28,10 +37,48 @@ function displayModalForm() {
     const overlay = document.querySelector(".overlay");
     // Affichage de la modale en modifiant son style display à "block"
 	modal.style.display = "block";
-    // Affichge de l'overlay en modifiant son style display à "block"
+    // Affichage de l'overlay en modifiant son style display à "block"
     overlay.style.display = "block";
-    // Focus sur la modale
-    document.querySelector('.modal').focus(); 
+    // La modale est accessible par les technologies d’assistance
+    modal.setAttribute('aria-hidden', 'false');
+    // Désactivation des éléments en arrière-plan de la modale
+    document.querySelectorAll('body > *:not(#contact_modal)').forEach(element => {
+        element.setAttribute('aria-hidden', 'true');
+    });
+    // Déplacement du focus initial sur la modale
+    modal.querySelector('.modal').focus();
+    // Appel de la fonction "focusTrapForm" pour gérer le Focus trap sur la modale
+    focusTrapForm()
+}
+
+/**
+ * Configuration du focus trap sur la modale
+ */
+function focusTrapForm() {
+    // Sélection de la modale via son ID "#contact_modal"
+    const modal = document.querySelector("#contact_modal");
+    // Sélection des éléments interactifs de la modale (y compris les éléments HTML ayant un attribut "tabindex" qui n'est pas égale à -1.)
+    const focusableElements = modal.querySelectorAll(`button, input, textarea, [tabindex]:not([tabindex="-1"])`);
+    // Sélection du 1er et du dernier élément intéractif
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    // Capturer les appuis sur les touches clavier
+    modal.addEventListener('keydown', function (event) {
+        // Capturer les appuis sur Tab et Shift + Tab
+        const isTabPressed = (event.key === 'Tab' || event.keyCode === 9);
+        if (!isTabPressed) return;
+        if (event.shiftKey) { // Si "Shift + Tab" est pressé
+            if (document.activeElement === firstElement) {
+                event.preventDefault();
+                lastElement.focus(); // Boucle au dernier élément
+            }
+        } else { // Si seulement "Tab" est pressé
+            if (document.activeElement === lastElement) {
+                event.preventDefault();
+                firstElement.focus(); // Boucle au premier élément
+            }
+        }
+    });
 }
 
 // Listener sur le bouton "Envoyer" du formulaire de contact
@@ -64,7 +111,7 @@ btnSubmit.addEventListener("click", (event) => {
 })
 
 // Fermeture de la modale avec la touche "Escape"
-document.addEventListener('keydown', function(event) {
+document.addEventListener("keydown", function(event) {
     if (event.key === "Escape") {
         closeModalForm();
     }
