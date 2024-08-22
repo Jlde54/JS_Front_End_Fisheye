@@ -14,12 +14,12 @@ function closeModalLightbox() {
     overlay.style.display = "none";
     // Retour du focus sur le média sélectionné
     // document.querySelector(".photograph-header-button").focus();
-    modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute("aria-hidden", "true");
     // Réactivation des éléments en arrière-plan de la modale :
     // Sélection de tous les enfants de <body> excepté la modale
     document.querySelectorAll('body > *:not(#lightbox_modal):not(.lightbox-prev):not(.lightbox-next):not(.lightbox-close)').forEach(element => {
-        // Pour chacun, suppression de l'attribut "aria-hidden" pour les rendre invisibles aux technologies d'assistance
-        element.removeAttribute('aria-hidden');
+        // Pour chacun, suppression de l'attribut "aria-hidden" pour les rendre invisibles aux technologies d"assistance
+        element.removeAttribute("aria-hidden");
         element.setAttribute("tabindex", "-1"); // Désactive le focus sur ces éléments
     });
 }
@@ -41,7 +41,7 @@ function displayLightbox(media, desc, type) {
     // Affichage de l'overlay en modifiant son style display à "block"
     overlay.style.display = "block";
     // La modale est accessible par les technologies d’assistance
-    modal.setAttribute('aria-hidden', 'false');
+    modal.setAttribute("aria-hidden", "false");
     // Désactivation des éléments en arrière-plan de la modale
     document.querySelectorAll('body > *:not(#lightbox_modal):not(.lightbox-prev):not(.lightbox-next):not(.lightbox-close)').forEach(element => {
         element.setAttribute("aria-hidden", "true");
@@ -77,7 +77,7 @@ function displayLightbox(media, desc, type) {
     // Appel de la fonction "focusTrapLightbox" pour gérer le Focus trap sur la modale
     focusTrapLightbox()
     // Ajout du gestionnaire pour forcer le focus à rester dans la lightbox
-    modal.addEventListener('focusin', (event) => {
+    modal.addEventListener("focusin", (event) => {
         if (!modal.contains(event.target)) {
             event.stopPropagation();
             modal.focus(); // Redirige le focus vers la modale si le focus sort
@@ -143,10 +143,10 @@ function focusTrapLightbox() {
     const lastElement = focusableElements[focusableElements.length - 1];
 
     // Capturer les appuis sur les touches de tabulation
-    modal.addEventListener('keydown', function (event) {
+    modal.addEventListener("keydown", function (event) {
 
         // Capturer les appuis sur Tab et Shift + Tab
-        const isTabPressed = (event.key === 'Tab' || event.keyCode === 9);
+        const isTabPressed = (event.key === "Tab" || event.keyCode === 9);
 
         if (!isTabPressed) return;
         if (event.shiftKey) { // Si "Shift + Tab" est pressé
