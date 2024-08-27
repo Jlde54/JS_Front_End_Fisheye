@@ -115,21 +115,6 @@ function dataTemplate (data, section, dirPhotographer) {
 
             // Construction de(s) élément(s) enfant(s) pour l'élément <article>
             const children = [imgMedia];
-            // Ajout de l'icône "play" si la balise média est "video"
-            if (tag === "video") {
-                children.push(
-                    // Appel de la fonction createElement() pour la création de l'élément <div> pour la création du container de l'icône "play"
-                    createElement("div", {
-                        className: "media_section_play-icon"}, [
-                            // Appel de la fonction createElement() pour la création de l'élément <i> pour la création de l'icône "play"
-                            createElement("i", {
-                                className: "fa-solid fa-circle-play",
-                                "aria-hidden": "true"}, []
-                            )
-                        ]
-                    )
-                );
-            }
 
             // Appel de la fonction createElement() pour la création de l'élément <article> pour le média
             const article = createElement("article", {}, [
@@ -157,11 +142,12 @@ function dataTemplate (data, section, dirPhotographer) {
                                     "aria-label": `${likes} likes` }, [`${likes}`]
                                 ),
                                 // Appel de la fonction createElement() pour la création de l'élément <p> : icon like
-                                createElement("p", { 
+                                createElement("p", {
                                     className: "medias_section_icon" }, [
                                         createElement("i", { 
-                                            className: "fa-solid fa-heart", 
-                                            "aria-hidden": "true" }, [])
+                                            className: "fas fa-heart",
+                                            tabindex: "0"}, []
+                                        )
                                     ]
                                 )
                             ]
@@ -169,7 +155,11 @@ function dataTemplate (data, section, dirPhotographer) {
                     ]
                 )
             ]);
-
+            // Forcer la suppression de l'attribut "aria-hidden" en continu
+            setInterval(() => {
+                article.querySelector("i").removeAttribute("aria-hidden");
+            }, 1000);
+            
             // Retour de l'élément <article> représentant le média
             return (article);
         }
@@ -181,9 +171,9 @@ function dataTemplate (data, section, dirPhotographer) {
 /********************************************************************
  * Fonction "displayData" asynchrone pour l'affichage des données des photographes ou des médias des photographes, selon les paramètres de la fonction.
  * 
- * @param {*} data - les données à afficher
- * @param {*} section - le sélecteur CSS de la section où les données doivent être affichées
- * @param {*} dirPhotographer - le répertoire des photographes, utilisé pour créer le modèle de données
+ * @param {data} - les données à afficher
+ * @param {section} - le sélecteur CSS de la section où les données doivent être affichées
+ * @param {dirPhotographer} - le répertoire des photographes, utilisé pour créer le modèle de données
  */
 async function displayData (data, section, dirPhotographer) {
     // Sélection de l'élément du DOM correspondant au sélecteur 'section' en paramètre
@@ -203,20 +193,4 @@ async function displayData (data, section, dirPhotographer) {
         // Ajout de la carte utilisateur à la section du DOM spécifiée dans les paramètres de la fonction displayData
         sectionData.appendChild(userCardDOM);
     });
-}
-
-/********************************************************************
- * Fonction "getData" asynchrone de récupération des données des photographes ou des médias des photographes depuis le fichier JSON
- * 
- * @returns {data} - l'objet JavaScript contenant les données des photographes 
- */
-async function getData () {
-    // Requête HTTP pour récupérer le fichier JSON contenant les données des photographes (avec attente que l'opération soit terminée)
-    const reponse = await fetch("./data/photographers.json");
-
-     // Conversion de la réponse HTTP en objet JavaScript (avec attente que l'opération soit terminée) dans la constante "data"
-    const data = await reponse.json();
-
-    // Retour de l'objet JavaScript "data" contenant les données des photographes.
-    return data;
 }

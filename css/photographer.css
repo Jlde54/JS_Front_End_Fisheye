@@ -69,7 +69,7 @@
     transition: all 0.4s ease;
 }
 
-.photograph-header-button:hover, .option:hover {
+.photograph-header-button:hover, .option:hover, .option:focus {
     background-color: #DB8876;
     color : #000;
 }
@@ -142,7 +142,6 @@
     color: white;
     text-align: left;
     background-color: #901C1C;
-    /* transition: filter 0.4s ease; */
     position: relative;
     transition: all 0.4s ease;
 }
@@ -162,7 +161,7 @@
     content: none;
 }
 
-.option:focus, a:focus, .btn:focus {
+a:focus, .btn:focus {
     outline: none;
     box-shadow: 0 0 5px 2px black;
     transition: box-shadow 0.2s ease-in-out;
@@ -251,12 +250,12 @@
     height: 31px;
     display :flex;
     flex-direction: row;
-    justify-content:space-between;
+    justify-content:center;
     align-items: center;
     cursor: pointer;
+    color : #901C1C;
 }
 
-/* Modale contenant le formulaire d'inscription */
 .overlay {
     display: none;
     position: fixed;
@@ -273,6 +272,7 @@
     display: none;
 }
 
+/* Modale contenant le formulaire d'inscription */
 .modal {
     position: fixed;
     top: 50%;
@@ -299,11 +299,6 @@
     width: 100%;
     margin: 30px 0;
 }
-
-/* .modal-header {
-    justify-content: space-between;
-    
-} */
 
 .modal-header img {
     cursor: pointer;

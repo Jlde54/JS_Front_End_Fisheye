@@ -1,3 +1,5 @@
+import { getData } from "../services/dataService.js";
+
 /********************************************************************
  * Fonction asynchrone d'initialisation de la page d'accueil (index.html)
  */
