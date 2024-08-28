@@ -163,7 +163,7 @@
 
 a:focus, .btn:focus {
     outline: none;
-    box-shadow: 0 0 5px 2px black;
+    box-shadow: 0 0 10px 2px black;
     transition: box-shadow 0.2s ease-in-out;
 }
 

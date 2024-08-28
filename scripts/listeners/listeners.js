@@ -4,6 +4,8 @@ let focusedOptionIndex = 0; // index de l'option qui a le focus dans le dropdown
 
 /********************************************************************
  * Fonction "listenersDropDownMenu" pour créer les listeners pour ouvrir ou fermer le dropdown menu et pour sélectionner une option
+ * 
+ * @param {isMenuOpen} - menu ouvert ou fermé
  */
 export function listenersDropDownMenu (isMenuOpen) {
     // Sélection du bouton du dropdown menu, du dropdown menu et des options du menu
@@ -42,7 +44,7 @@ export function listenersDropDownMenu (isMenuOpen) {
     dropdownButton.addEventListener("click", (event) => {
         event.preventDefault();
         // Appel de la fermeture/Ouverture du menu
-        toggleDropdownMenu(dropdownButton, dropdownMenu, options, "click");
+        isMenuOpen = toggleDropdownMenu(dropdownButton, dropdownMenu, options, "click", isMenuOpen);
     });
     
     // Fermeture du menu si clic sur la page en dehors du bouton (dropdownButton) et du menu (dropdownMenu)
@@ -52,6 +54,15 @@ export function listenersDropDownMenu (isMenuOpen) {
             isMenuOpen = closeDropdownMenu(dropdownButton, dropdownMenu);
         }
     });
+    
+    // Fermeture du menu avec la touche "Escape"
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape") {
+            // Appel de la fonction "closeModalLightbox" pour femer la modale 
+            isMenuOpen = closeDropdownMenu(dropdownButton, dropdownMenu);
+        }
+    });
+
     // Listener sur les appuis sur les touches (flèches vers le bas et le haut, Enter et Escape) 
     document.addEventListener("keydown", (event) => {
         // Test si le menu est ouvert ou fermé

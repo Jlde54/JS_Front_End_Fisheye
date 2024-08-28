@@ -1,4 +1,5 @@
 import { getData } from "../services/dataService.js";
+import { displayData } from "../templates/photographer.js";
 
 /********************************************************************
  * Fonction asynchrone d'initialisation de la page d'accueil (index.html)

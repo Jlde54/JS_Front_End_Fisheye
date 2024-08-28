@@ -18,7 +18,7 @@ function closeModalForm() {
 }
 
 /********************************************************************
- * Fonction "displayModalForm" pour afficher de la modale du formulaire de contact au clic sur le bouton "Contactez-moi".
+ * Fonction "displayModalForm" pour afficher la modale du formulaire de contact au clic sur le bouton "Contactez-moi".
  * L'appel se fait depuis "photographer.html"
  */
 function displayModalForm() {
@@ -42,9 +42,9 @@ function focusTrapForm() {
     const lastElement = focusableElements[focusableElements.length - 1];
 
     // Capturer les appuis sur les touches clavier
-    modal.addEventListener('keydown', (event) => {
+    modal.addEventListener("keydown", (event) => {
         // Capturer les appuis sur Tab et Shift + Tab
-        if (event.key === 'Tab' || event.keyCode === 9);
+        if (event.key === "Tab" || event.keyCode === 9) {
             if (event.shiftKey && document.activeElement === firstElement) { // Si "Shift + Tab" est pressé et que l'élément actif est le 1er champ
                     event.preventDefault();
                     lastElement.focus(); // Boucle au dernier élément
@@ -52,6 +52,7 @@ function focusTrapForm() {
                     event.preventDefault();
                     firstElement.focus(); // Boucle au premier élément
             }
+        }
     });
 }
 
@@ -62,13 +63,24 @@ function toggleModalForm(display, ariaHidden) {
     // Affiche/cache l'overlay en modifiant son style display
     overlay.style.display = display;
     // mettre l'attribut "aria-hidden" de la modale à true /false
-    modal.setAttribute('aria-hidden', ariaHidden);
+    modal.setAttribute("aria-hidden", ariaHidden);
 }
 
+// Contrôle des champs valides et soumission du formulaire
 function handleSubmit(event) {
-    event.preventDefault(); // Empêche le rechargement de la page
+    event.preventDefault(); // Empêche l'envoi du formulaire
+
     if (!formContact.checkValidity()) { // Teste si le formulaire de contact n'est pas valide
         formContact.reportValidity();   // Affichage des messages d'erreur
+        // Validation individuelle des champs
+        let inputs = formContact.querySelectorAll("input, textarea");
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                input.setAttribute("aria-invalid", "true"); // Marque le champ comme invalide
+            } else {
+                input.setAttribute("aria-invalid", "false"); // Marque le champ comme valide
+            }
+        });
     } else {
         // Si le formulaire est valide, récupèration des valeurs des champs
         const formData = ["first", "last", "email", "message"].map(id => document.querySelector(`#${id}`).value);

@@ -1,3 +1,5 @@
+import { createElement } from "../templates/photographer.js";
+
 /********************************************************************
  * Fonction "displayPhotographerHeader" pour la création des éléments du header de la page photographe +
  * Ajout des éléments à leur parent dans le DOM
@@ -8,7 +10,8 @@
  * @param {tagline} - slogan du photographe
  * @param {picture} - chemin complet vers le portrait du photographe
  */
-export function displayPhotographerHeader (name, city, country, tagline, picture) {
+export function displayPhotographerHeader (name, city, 
+    country, tagline, picture) {
 
     // Création des éléments du header de la page photographe
     const photographHeader = document.querySelector(".photograph-header");

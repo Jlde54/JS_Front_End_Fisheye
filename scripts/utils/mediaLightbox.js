@@ -70,6 +70,7 @@ function displayLightbox(media, desc, type) {
  * @param {*} direction
  */
 function displayMedia (index, mediaFiltre, direction) {
+    let newIndex, media, pathMedia;
     // Calcul du nouvel index pour naviguer au média précédent
     if (direction ==="prev") {
         newIndex = (index - 1 + mediaFiltre.length) % mediaFiltre.length;
@@ -117,7 +118,7 @@ function focusTrapLightbox() {
 }
 
 /********************************************************************
- * Fonction "listenLightbox" pour écouter le clic sur les flèches précédent et suivant dans la lightox
+ * Fonction "listenLightbox" pour écouter le clic, enter ou espace sur les flèches précédent et suivant dans la lightox
  * 
  * @param {index} - index actuel du média affiché dans la lightbox 
  * @param {mediaFiltre} - tableau contenant les objets médias filtrés 

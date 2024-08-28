@@ -1,5 +1,6 @@
 import { getPhotographerParams, getPhotographerFolder } from "../utils/photographerUtils.js";
 import { displayPhotographerHeader, displayDropdownMenu, displayTarif } from "../components/displays.js";
+import { displayData } from "../templates/photographer.js";
 import { setupListeners } from '../listeners/setupListeners.js';
 import { listenersMedias, listenerLike } from "../listeners/listeners.js";
 import { getData } from "../services/dataService.js";
@@ -33,6 +34,7 @@ let urlArray = [
     dropdownMenu.style.display = 'none';
     dropdownButton.setAttribute('aria-expanded', 'false');
     isMenuOpen = false;
+    // dropdownButton.focus();
     return isMenuOpen;
   }
 
@@ -100,10 +102,10 @@ export function handleMediaListener (event, index) {
  * Fonction "init" asynchrone pour l'initialisation de la la page photographe (photographer.html)
  */
 async function init () {
-    // Appel de la fonction "getPhotographerParams" pour la récupèration des paramètres du photographe de l'URL
+    // Appel de la fonction "getPhotographerParams" pour récupèrer les paramètres du photographe de l'URL
     const constURL = getPhotographerParams(urlArray);
 
-    // Appel de la fonction "getData" pour la récupération des medias des photographes (getData se trouve dans le fichier /scripts/templates/photographer.js)
+    // Appel de la fonction "getData" pour la récupération des medias des photographes (getData se trouve dans le fichier /scripts/services/dataSercice.js)
     const { media } = await getData ();
 
     // Filtre des médias correspondants à l'id du photographe
@@ -116,10 +118,10 @@ async function init () {
     dirPhotographer = getPhotographerFolder(constURL.name);
 
     // Ajout de la propriété contenant le nom du dossier "dirPhotographer" et de la propriété "liked" dans chaque objet du tableau "mediaFiltre"
-    for (let i = 0; i < mediaFiltre.length; i++) {
-        mediaFiltre[i].dirPhotographer = `./assets/photographers/${dirPhotographer}/`;
-        mediaFiltre[i].liked = false;
-    }
+    mediaFiltre.forEach(item => {
+        item.dirPhotographer = `./assets/photographers/${dirPhotographer}/`;
+        item.liked = false;
+    });
 
     // Appel de la fonction "displayData" pour l'affichage des medias des photographes (displayData se trouve dans le fichier /scripts/templates/photographer.js)
     displayData (mediaFiltre, ".medias_section", dirPhotographer);
@@ -140,25 +142,26 @@ async function init () {
   /********************************************************************
    * Ouverture du menu dropdown
    * 
-   * @param {dropdownButton} - 
-   * @param {dropdownMenu} - 
-   * @param {options} - 
-   * @return {isMenuOpen}
+   * @param {dropdownButton} - élément qui affiche l'option sélectionnée dans le menu
+   * @param {dropdownMenu} - menu déroulant qui contient les options de tri
+   * @param {options} - options dans le menu
+   * @return {type} - déclencheur de l'ouverture du menu (enter ou autre)
    */
   export function openDropdownMenu(dropdownButton, dropdownMenu, options, type) {
-    dropdownMenu.style.display = 'block';
+    dropdownMenu.style.display = 'block'; // afficher le menu
     dropdownButton.setAttribute('aria-expanded', 'true');
-    isMenuOpen = true;
+    isMenuOpen = true;  // menu ouvert
     focusedOptionIndex = 0;
-    dropdownButton.blur();
-    type === "enter" ? options[focusedOptionIndex].focus() : null ;
+    dropdownButton.blur();  // suppression du focus du bouton
+    // mise du focus sur la 1ère option 
+    type === "enter" && options[focusedOptionIndex].focus();
     return isMenuOpen;
   }
 
 /********************************************************************
  * Fonction "optionSelected" pour l'affichage des médias après la sélection de l'option
  * 
- * @param {event} - événement lié à l'option choisie 
+ * @param {option} - option choisie 
  * @param {dropdownButton} - élément qui affiche l'option sélectionnée dans le menu
  * @param {dropdownMenu} - menu déroulant qui contient les options de tri 
  */
@@ -200,21 +203,23 @@ export function optionSelected (dropdownButton, dropdownMenu, option) {
 }
 
 /********************************************************************
- * Appel de l'ouverture/Fermeture du menu en fonction du contenu de "isMenuOpen"
+ * Appel de l'ouverture/Fermeture du menu dropdown en fonction du contenu de "isMenuOpen"
  * 
  * @param {dropdownButton} - bouton déclenchant l'ouverture du menu
  * @param {dropdownMenu} - élément représentant le menu
  * @param {options} - liste des options du menu 
  * @param {type} - événement ayant déclanché l'appel (clic ou enter)
+ * @param {isMenuOpen} - menu ouvert ou fermé
  */
-export function toggleDropdownMenu(dropdownButton, dropdownMenu, options, type) {
+export function toggleDropdownMenu(dropdownButton, dropdownMenu, options, type, isMenuOpen) {
     if (isMenuOpen) {
         // Appel de la fermeture du menu
-        closeDropdownMenu(dropdownButton, dropdownMenu);
+        isMenuOpen = closeDropdownMenu(dropdownButton, dropdownMenu);
     } else {
         // Appel de l'ouverture' du menu dropdown
-        openDropdownMenu(dropdownButton, dropdownMenu, options, type);
+        isMenuOpen = openDropdownMenu(dropdownButton, dropdownMenu, options, type);
     }
+return isMenuOpen;
   }
 
 /********************************************************************

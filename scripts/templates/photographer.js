@@ -6,7 +6,7 @@
  * @param {[children=[]]} - Un tableau contenant les enfants à ajouter à l'élément. Les enfants peuvent être des chaînes de caractères ou des instances de Node.
  * @returns {Element} - L'élément HTML créé.
  */
-function createElement(tag, attributes = {}, children = []) {
+export function createElement(tag, attributes = {}, children = []) {
     // Création d'un élément HTML avec la balise spécifiée en paramètre
     const element = document.createElement(tag);
     // Parcourt des clés de l'objet attributes
@@ -19,11 +19,11 @@ function createElement(tag, attributes = {}, children = []) {
     // Parcourt le tableau des enfants
     children.forEach(child => {
         // Vérifie si l'enfant est une chaîne de caractères
-        typeof child === "string" 
-            ? element.appendChild(document.createTextNode(child)) 
-            : child instanceof Node 
-                ? element.appendChild(child) 
-                : null;
+        if (typeof child === "string") {
+            element.appendChild(document.createTextNode(child));
+        } else if (child instanceof Node) {
+            element.appendChild(child);
+        }
     });
     // Retour de l'élément HTML créé
     return element;
@@ -39,7 +39,7 @@ function createElement(tag, attributes = {}, children = []) {
  */
 function dataTemplate (data, section, dirPhotographer) {
     // Déstructuration de l'objet 'data' pour extraire les propriétés nécessaires
-    const { name, id, city, country, tagline, price, portrait, photographerId, title, image, video, likes, date } = data;
+    const { name, id, city, country, tagline, price, portrait, title, image, video, likes } = data;
 
     // Initialisation de la variable 'picture' vide, utilisée pour stocker le chemin de l'image
     let picture = "";
@@ -85,7 +85,7 @@ function dataTemplate (data, section, dirPhotographer) {
 
         // sinon la section cible n'est pas '.photographer_section' (c'est donc la page contenant les médias d'un photographe)
         } else {
-            let picture, tag, src, alt, className, imgMedia;
+            let picture, alt, className, imgMedia;
             // Préparation des données du média
             const mediaData = {
                 image: image,   // le nom du fichier .jpg du média si c'est une image
@@ -99,7 +99,6 @@ function dataTemplate (data, section, dirPhotographer) {
                 picture = `./assets/photographers/${dirPhotographer}/${image}`; // chemin d'accès au fichier image
                 className = "medias_section_img";   // classe CSS de l'image
                 alt = "";    // alt texte vide
-                tag = "img";    // balise de l'image
 
                 // Appel de la création du media <img>
                 imgMedia = MediaFactory("img", {picture, className, alt});
@@ -107,7 +106,6 @@ function dataTemplate (data, section, dirPhotographer) {
                 picture = `./assets/photographers/${dirPhotographer}/${video}`; // chemin d'accès au fichier video
                 className = "medias_section_video";     // classe CSS de la vidéo
                 alt = `Vidéo ${title}`;       // alt sera utilisé comme textContent dans <video>
-                tag = "video";      // balise de la vidéo
 
                 // Appel de la création du media <video>
                 imgMedia = MediaFactory("video", {picture, className, alt});
@@ -175,7 +173,7 @@ function dataTemplate (data, section, dirPhotographer) {
  * @param {section} - le sélecteur CSS de la section où les données doivent être affichées
  * @param {dirPhotographer} - le répertoire des photographes, utilisé pour créer le modèle de données
  */
-async function displayData (data, section, dirPhotographer) {
+export async function displayData (data, section, dirPhotographer) {
     // Sélection de l'élément du DOM correspondant au sélecteur 'section' en paramètre
     const sectionData = document.querySelector(section);
 
