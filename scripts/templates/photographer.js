@@ -7,14 +7,14 @@
  * @returns {Element} - L'élément HTML créé.
  */
 export function createElement(tag, attributes = {}, children = []) {
-    // Création d'un élément HTML avec la balise spécifiée en paramètre
     const element = document.createElement(tag);
-    // Parcourt des clés de l'objet attributes
-    Object.keys(attributes).forEach(item => {
-        // Vérifie si l'attribut commence par 'data-'
-        item.startsWith("data-") || item.startsWith("aria-") || item === "role" || item === "tabindex"
-            ? element.setAttribute(item, attributes[item]) 
-            : element[item] = attributes[item];
+    Object.keys(attributes).forEach(item => {   // Parcourt des clés de l'objet attributes
+        // Vérifie si l'attribut commence par "data-" ou "aria-" ou bien est "role" ou "tabindex"
+        if (item.startsWith("data-") || item.startsWith("aria-") || item === "role" || item === "tabindex") {
+            element.setAttribute(item, attributes[item])
+        } else {
+            element[item] = attributes[item];
+        }
     });
     // Parcourt le tableau des enfants
     children.forEach(child => {
@@ -28,143 +28,6 @@ export function createElement(tag, attributes = {}, children = []) {
     // Retour de l'élément HTML créé
     return element;
 }
-/********************************************************************
- * Fonction "dataTemplate" pour créer un modèle de données basé sur les informations fournies 
- * Affichage des données des photographes (description ou medias)
- * 
- * @param {data} - objet contenant les propriétés à utiliser
- * @param {section} - section devant contenir les articles crées 
- * @param {dirPhotographer} - le répertoire des medias du photographe
- * @returns {article} - élément représentant la carte du photographe
- */
-function dataTemplate (data, section, dirPhotographer) {
-    // Déstructuration de l'objet 'data' pour extraire les propriétés nécessaires
-    const { name, id, city, country, tagline, price, portrait, title, image, video, likes } = data;
-
-    // Initialisation de la variable 'picture' vide, utilisée pour stocker le chemin de l'image
-    let picture = "";
-    
-    /********************************************************************
-     * Fonction "getUserCardDOM" pour créer et retourner les éléments du DOM représentant les articles soit pour la page d'accueil des photographes, soit pour la page des médias d'un photographe.
-     * 
-     * @returns {name, picture, getUserCardDOM} - l'objet contenant le nom du photographe, le chemin de l'image et la méthode pour obtenir l'élément DOM représentant la carte utilisateur 
-     */
-    function getUserCardDOM () {
-        // Vérifie si la section cible est '.photographer_section' (page d'accueil des photographes)
-        if (section === ".photographer_section") {
-            // Définition du chemin de l'image du photographe
-            picture =`assets/photographers/${portrait}`;
-
-            // Appel de la fonction createElement() pour la création de l'élément <article> : Carte du photographe
-            const article = 
-            createElement("article", {
-                id: `art${id}` }, [
-                    // Appel de la fonction createElement() pour la création de l'élément <a> : lien vers les médias du photographe
-                    createElement("a", {
-                        arialabel: `Lien vers la page du photographe ${name}`,
-                        href: `./photographer.html?id=${id}&name=${name}&city=${city}&country=${country}&tagline=${tagline}&picture=assets/photographers/${portrait}&price=${price}`,
-                        "data-id": id}, [
-                            createElement("img", {
-                                src: `assets/photographers/${portrait}`, 
-                                alt: `Portrait du photographe ${name}` }, []
-                            ),
-                            createElement("h2", {}, [name])
-                        ]
-                    ),
-                    // Appel de la fonction createElement() pour la création de l'élément <h3> : Localisation du photographe
-                    createElement("h3", {}, [`${city}, ${country}`]),
-                    // Appel de la fonction createElement() pour la création de l'élément <h4> : Slogan du photographe
-                    createElement("h4", {}, [tagline]),
-                    // Appel de la fonction createElement() pour la création de l'élément <p> : Tarif du photographe
-                    createElement("p", {}, [`${price}€/jour`])
-                ]
-            );
-
-            // Retour de l'élément <article> représentant la carte du photographe
-            return (article);
-
-        // sinon la section cible n'est pas '.photographer_section' (c'est donc la page contenant les médias d'un photographe)
-        } else {
-            let picture, alt, className, imgMedia;
-            // Préparation des données du média
-            const mediaData = {
-                image: image,   // le nom du fichier .jpg du média si c'est une image
-                video: video,   // le nom du fichier .mp4 du média si c'est une vidéo
-                dirPhotographer: dirPhotographer,   // le chemin vers le répertoire des medias du photographe
-                title: title    // le titre du média
-            };
-
-            // Création de l'élement media (<img> ou <video>)
-            if (image !== undefined) {
-                picture = `./assets/photographers/${dirPhotographer}/${image}`; // chemin d'accès au fichier image
-                className = "medias_section_img";   // classe CSS de l'image
-                alt = "";    // alt texte vide
-
-                // Appel de la création du media <img>
-                imgMedia = MediaFactory("img", {picture, className, alt});
-            } else {
-                picture = `./assets/photographers/${dirPhotographer}/${video}`; // chemin d'accès au fichier video
-                className = "medias_section_video";     // classe CSS de la vidéo
-                alt = `Vidéo ${title}`;       // alt sera utilisé comme textContent dans <video>
-
-                // Appel de la création du media <video>
-                imgMedia = MediaFactory("video", {picture, className, alt});
-            }
-
-            // Construction de(s) élément(s) enfant(s) pour l'élément <article>
-            const children = [imgMedia];
-
-            // Appel de la fonction createElement() pour la création de l'élément <article> pour le média
-            const article = createElement("article", {}, [
-                // Appel de la fonction createElement() pour la création de l'élément <a> : Lien vers le media grand format
-                createElement("a", {
-                    "aria-label": `Lien vers le media ${title} grand format`,
-                    href: "#",
-                    className: "medias_section_link",
-                    "data-id": `med${id}`,
-                    id: `med${id}`}, children   // Ajout de la liste des enfants de l'élément <a>
-                ), 
-          
-                // Appel de la fonction createElement() pour la création de l'élément <div> : Description du média
-                createElement("div", { 
-                    className: "medias_section_descMedia" }, [
-                        // Appel de la fonction createElement() pour la création de l'élément <h3> : Titre du média
-                        createElement("h3", { 
-                            className: "medias_section_title" }, [`${title}`]),
-                        // Appel de la fonction createElement() pour la création de l'élément <div> : Description des likes
-                        createElement("div", { 
-                            className: "medias_section_descLikes" }, [
-                                // Appel de la fonction createElement() pour la création de l'élément <p> : Nombre de likes
-                                createElement("p", { 
-                                    className: "medias_section_likes",
-                                    "aria-label": `${likes} likes` }, [`${likes}`]
-                                ),
-                                // Appel de la fonction createElement() pour la création de l'élément <p> : icon like
-                                createElement("p", {
-                                    className: "medias_section_icon" }, [
-                                        createElement("i", { 
-                                            className: "fas fa-heart",
-                                            tabindex: "0"}, []
-                                        )
-                                    ]
-                                )
-                            ]
-                        )
-                    ]
-                )
-            ]);
-            // Forcer la suppression de l'attribut "aria-hidden" en continu
-            setInterval(() => {
-                article.querySelector("i").removeAttribute("aria-hidden");
-            }, 1000);
-            
-            // Retour de l'élément <article> représentant le média
-            return (article);
-        }
-    }
-    // Retour d'un objet contenant le nom du photographe, le chemin de l'image et la méthode pour obtenir l'élément DOM représentant la carte utilisateur
-    return { name, picture, getUserCardDOM }
-}
 
 /********************************************************************
  * Fonction "displayData" asynchrone pour l'affichage des données des photographes ou des médias des photographes, selon les paramètres de la fonction.
@@ -174,21 +37,178 @@ function dataTemplate (data, section, dirPhotographer) {
  * @param {dirPhotographer} - le répertoire des photographes, utilisé pour créer le modèle de données
  */
 export async function displayData (data, section, dirPhotographer) {
-    // Sélection de l'élément du DOM correspondant au sélecteur 'section' en paramètre
     const sectionData = document.querySelector(section);
+    sectionData.replaceChildren();  // Supprime tous les enfants de l'élément 'section' en paramètre
 
-    // Supprime tous les enfants de l'élément 'section' en paramètre
-    sectionData.replaceChildren();
-
-    // Parcourt chaque élément des données (data)
-    data.forEach((item) => {
-        // Appel de la fonction dataTemplate avec les arguments appropriés pour créer un modèle de données pour chaque item
-        const dataModel = dataTemplate (item, section, dirPhotographer);
-
-        // Appel de la fonction getUserCardDOM pour obtenir l'élément DOM représentant la carte utilisateur à partir du modèle de données
-        const userCardDOM = dataModel.getUserCardDOM ();
-
-        // Ajout de la carte utilisateur à la section du DOM spécifiée dans les paramètres de la fonction displayData
-        sectionData.appendChild(userCardDOM);
+    data.forEach((item) => {    // Parcourt chaque élément des données (data)
+        const dataModel = dataTemplate (item, section, dirPhotographer);    // Appel de la fonction pour créer un modèle de données pour chaque item
+        const userCardDOM = dataModel.getUserCardDOM ();    // Appel de la fonction pour obtenir l'élément DOM représentant la carte utilisateur à partir du modèle de données
+        sectionData.appendChild(userCardDOM);   // Ajout de la carte utilisateur à la section du DOM spécifiée dans les paramètres
     });
+}
+
+/********************************************************************
+ * Fonction "dataTemplate" pour créer un modèle de données basé sur les informations fournies 
+ * Affichage des données des photographes (description ou medias)
+ * 
+ * @param {data} - objet contenant les propriétés à utiliser
+ * @param {section} - section devant contenir les articles crées 
+ * @param {dirPhotographer} - répertoire des medias du photographe
+ * @returns {article} - élément représentant la carte du photographe
+ */
+function dataTemplate (data, section, dirPhotographer) {
+    // Déstructuration de l'objet 'data' pour extraire les propriétés nécessaires
+    const { name, id, city, country, tagline, price, portrait, title, image, video, likes } = data
+    let picture = "";   // Initialisation de 'picture', utilisée pour stocker le chemin de l'image
+
+    /********************************************************************
+     * Fonction "getUserCardDOM" pour créer et retourner les éléments du DOM représentant les articles soit pour la page d'accueil des photographes, soit pour la page des médias d'un photographe. 
+     *  
+     * @returns {} - carte média (image ou vidéo)
+     */
+    function getUserCardDOM() {
+        if (section === ".photographer_section") {  // Si la section cible est la page d'accueil des photographes
+            return createPhotographerCard();    // création d'une carte de photographe
+        } else {    // sinon la section cible est la page contenant les médias d'un photographe
+            return createMediaCard();
+        }
+    }
+
+    /********************************************************************
+     * Fonction pour créer une carte de photographe
+     * 
+     * @returns {article} - élément <article> représentant la carte média
+     */
+    function createPhotographerCard() {
+        const picture = `assets/photographers/${portrait}`; // Définition du chemin de l'image du photographe
+        const article = createElement("article", { id: `art${id}` }, [  // création de la carte du photographe
+            createPhotographerLink(picture),    // création du lien vers la page du photographe
+            createElement("h3", {}, [`${city}, ${country}`]),   // création de l'élément <h3> : localisation
+            createElement("h4", {}, [tagline]), // création de l'élément <h4> : slogan
+            createElement("p", {}, [`${price}€/jour`])  // création de l'élément <p> : tarif
+        ]);
+        return article;
+    }
+
+    /********************************************************************
+     * Fonction pour créer le lien vers la page du photographe
+     * 
+     * @param {picture} - chemin de l'image du photographe
+     * @returns {} - lien vers la page du photographe
+     */
+    function createPhotographerLink(picture) {
+        return createElement("a", {     // création du lien vers les médias du photographe
+            arialabel: `Lien vers la page du photographe ${name}`,
+            href: `./photographer.html?id=${id}&name=${name}&city=${city}&country=${country}&tagline=${tagline}&picture=assets/photographers/${portrait}&price=${price}`,
+            "data-id": id
+        }, [
+            createElement("img", {
+                src: picture,
+                alt: `Portrait du photographe ${name}`
+            }, []),
+            createElement("h2", {}, [name])
+        ]);
+    }
+
+    /********************************************************************
+     * Fonction pour créer une carte média (image ou vidéo)
+     * 
+     * @returns - élément <article> représentant le média
+     */
+    function createMediaCard() {
+        const mediaData = prepareMediaData();   // préparation des données du média
+        const imgMedia = createMediaElement(mediaData); // création de l'élément média (image ou vidéo)
+        const article = createElement("article", {}, [
+            createMediaLink(imgMedia, mediaData),   // création du lien vers le média en grand format
+            createMediaDescription(mediaData)   // création de la description du média (titre et likes)
+        ]);
+        ensureAriaHiddenIsRemoved(article); // s'assurer que l'attribut aria-hidden est supprimé
+        return article;
+    }
+
+    /********************************************************************
+     * Fonction pour préparer les données du média
+     * 
+     * @returns - données du média
+     */
+    function prepareMediaData() {
+        return {
+            image: image,   // le nom du fichier .jpg du média si c'est une image
+            video: video,   // le nom du fichier .mp4 du média si c'est une vidéo
+            dirPhotographer: dirPhotographer,   // le chemin vers le répertoire des medias du photographe
+            title: title    // le titre du média
+        };
+    }
+
+    /********************************************************************
+     * Fonction pour créer l'élément média (image ou vidéo)
+     * 
+     * @param {mediaData} - données du média
+     * @returns - élément media <img> ou <video>
+     */
+    function createMediaElement(mediaData) {
+        if (mediaData.image !== undefined) {
+            return MediaFactory("img", {    // création du media <img>
+                picture: `./assets/photographers/${mediaData.dirPhotographer}/${mediaData.image}`,  // chemin d'accès au fichier image
+                className: "medias_section_img",
+                alt: ""
+            });
+        } else {
+            return MediaFactory("video", {  // création du media <video>
+                picture: `./assets/photographers/${mediaData.dirPhotographer}/${mediaData.video}`,  // chemin d'accès au fichier video
+                className: "medias_section_video",
+                alt: `Vidéo ${mediaData.title}` // alt sera utilisé comme textContent dans <video>
+            });
+        }
+    }
+
+    /********************************************************************
+     * Fonction pour créer le lien vers le média en grand format dans la lightbox
+     * 
+     * @param {imgMedia} - élement media (<img> ou <video>)
+     * @param {mediaData} - données du média
+     * @returns - élément lien vers le média en grand format dans la lightbox
+     */
+    function createMediaLink(imgMedia, mediaData) {
+        return createElement("a", {     // lien vers le média en grand format dans la lightbox
+            "aria-label": `Lien vers le media ${mediaData.title} grand format`,
+            href: "#",
+            className: "medias_section_link",
+            "data-id": `med${id}`,
+            id: `med${id}`
+        }, [imgMedia]);
+    }
+
+    /********************************************************************
+     * Fonction pour créer la description du média (titre et likes)
+     * 
+     * @param {mediaData} - données du média
+     * @returns - élément description du média (titre et likes)
+     */
+    function createMediaDescription(mediaData) {
+        return createElement("div", { className: "medias_section_descMedia" }, [    // Description du média
+            createElement("h3", { className: "medias_section_title" }, [`${mediaData.title}`]), // Titre du média
+            createElement("div", { className: "medias_section_descLikes" }, [   // Description des likes
+                createElement("p", { className: "medias_section_likes", "aria-label": `${likes} likes` }, [`${likes}`]),    // Nombre de likes
+                createElement("p", { className: "medias_section_icon" }, [  // icon like
+                    createElement("i", { className: "fas fa-heart", tabindex: "0" }, [])
+                ])
+            ])
+        ]);
+    }
+
+    /********************************************************************
+     * Fonction pour s'assurer que l'attribut aria-hidden est supprimé
+     * 
+     * @param {article}  élément <article> représentant le média
+     */
+    function ensureAriaHiddenIsRemoved(article) {
+        // Forcer la suppression de l'attribut "aria-hidden" en continu
+        setInterval(() => {
+            article.querySelector("i").removeAttribute("aria-hidden");
+        }, 1000);
+    }
+
+    // Retour des nom du photographe, chemin de l'image et méthode pour obtenir l'élément DOM représentant la carte utilisateur
+    return { name, picture, getUserCardDOM }
 }

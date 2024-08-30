@@ -1,12 +1,17 @@
-import { listenersDropDownMenu, listenersMedias, listenerLike } from "../listeners/listeners.js";
+// Import(s)
+// *********
+import { listenersMedias, listenerLike } from "../listeners/listeners.js";
+import { listenersDropDownMenu } from "../utils/dropdownMenu.js";
+
 /********************************************************************
- * Fonction pour configurer les différents listeners
+ * Fonction pour lancer les différents listeners
  * 
  * @param {mediaSection} - classe de la section des médias
- * @param {isMenuOpen} - état du dropdown menu (ouvert ou fermé)
+ * @param {mediaFiltre} - tableau contenant les objets médias filtrés
+ * @param {dirPhotographer} - répertoire des medias du photographe
  */
-export function setupListeners(mediaSection, isMenuOpen) {
-    listenersDropDownMenu(isMenuOpen);  // Gestion du dropdown menu
-    listenersMedias(mediaSection);  // Gestion du clic sur les médias
-    listenerLike();  // Gestion des likes
+export function setupListeners(mediaSection, mediaFiltre, dirPhotographer) {
+    listenersDropDownMenu(mediaFiltre, dirPhotographer);  // Listener du dropdown menu
+    listenersMedias(mediaSection);  // Listener sur les médias
+    listenerLike();  // Listener des likes
 }
