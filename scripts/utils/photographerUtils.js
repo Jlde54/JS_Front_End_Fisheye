@@ -1,10 +1,10 @@
 // Import(s)
 // *********
-import { getURL } from "./urlUtils.js";
+import { getURL } from "./getURL.js";
 
 /********************************************************************
- * Fonction "getPhotographerFolder" pour obtenir le nom du dossier du photographe
- * 
+ * @description - Obtenir le nom du dossier du photographe
+ * @function (getPhotographerFolder)
  * @param {name} - nom du photographe
  * @returns {dirPhotographer} - dossier du photographe
  */
@@ -19,12 +19,9 @@ export function getPhotographerFolder(name) {
 }
 
 /********************************************************************
- * @description - Fonction "getPhotographerParams" pour récupérer les paramètres de l'URL
- * 
+ * @description - Récupérer les paramètres de l'URL
+ * @function (getPhotographerParams)
  * @param {urlArray} - libellés des paramètres de l'URL
- * 
- * @function (getURL) - récupération d'un paramètre de l'URL
- * 
  * @returns {params} - objet contenant les données des paramètres de l'URL
  */
 export function getPhotographerParams(urlArray) {

@@ -3,9 +3,8 @@
 import { createElement } from "../templates/photographer.js";
 
 /********************************************************************
- * Fonction "displayPhotographerHeader" pour la création des éléments du header de la page photographe +
- * Ajout des éléments à leur parent dans le DOM
- * 
+ * @description - Création des éléments du header de la page photographe + Ajout des éléments à leur parent dans le DOM
+ * @function (displayPhotographerHeader)
  * @param {name} - nom du photographe
  * @param {city} - ville du photographe
  * @param {country} - pays du photographe 
@@ -38,7 +37,7 @@ export function displayPhotographerHeader (name, city,
             createElement( "img", {
                 src: picture, 
                 className: "photograph-header-imgprofile", 
-                alt: `Portrait du photographe ${name} basé à ${city}, ${country}`}, []
+                alt: `${name} based to ${city}, ${country}`}, []
             )
         ]);
 
@@ -48,7 +47,8 @@ export function displayPhotographerHeader (name, city,
 }
 
 /********************************************************************
- * Fonction "displayDropdownMenu" pour la création des éléments du dropdown menu de la page photographe
+ * @description - Création des éléments du dropdown menu de la page photographe
+ * @function (getPhotographerFolder)
  */
 export function displayDropdownMenu(){
     const main = document.querySelector("#main");
@@ -106,8 +106,8 @@ export function displayDropdownMenu(){
 }
 
 /********************************************************************
- * Fonction "displayTarif" pour l'affichage de l'encart contenant le nombre total de likes et le tarif du photographe
- * 
+ * @description - Affichage de l'encart contenant le nombre total de likes et le tarif du photographe
+ * @function (displayTarif)
  * @param {price} - tarif journalier
  * @param {sumLikes} - nombre total de "likes"
  */
@@ -115,7 +115,7 @@ export function displayTarif (price, sumLikes) {
     const main = document.querySelector("#main");
     const divTarifLikes =
         createElement("div", {  // Création d'un élément <div> pour contenir le tarif et les likes
-            className: "photograph-likes-tarif"}, [ 
+            className: "photograph-likes-tarif"}, [
             createElement("div", {  // Création d'un élément <div> pour afficher le nombre de "likes"
                 className: "photograph-likes", 
                 "aria-label": `${sumLikes} likes`,

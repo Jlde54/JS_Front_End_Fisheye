@@ -4,8 +4,8 @@ import { listenersMedias, listenerLike } from "../listeners/listeners.js";
 import { listenersDropDownMenu } from "../utils/dropdownMenu.js";
 
 /********************************************************************
- * Fonction pour lancer les différents listeners
- * 
+ * @description - lancer les différents listeners
+ * @function (setupListeners)
  * @param {mediaSection} - classe de la section des médias
  * @param {mediaFiltre} - tableau contenant les objets médias filtrés
  * @param {dirPhotographer} - répertoire des medias du photographe

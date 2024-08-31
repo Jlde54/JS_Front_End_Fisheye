@@ -9,22 +9,21 @@ let isMenuOpen = false;   // état du dropdown menu (ouvert ou fermé)
 let focusedOptionIndex = 0; // index de l'option qui a le focus dans le dropdown menu
 
 /********************************************************************
-   * Fermeture du menu dropdown
-   * 
-   * @param {dropdownButton} - élément qui affiche l'option sélectionnée dans le menu
-   * @param {dropdownMenu} - menu déroulant qui contient les options de tri
-   */
+ * @description - Fermeture du menu dropdown
+ * @function (closeDropdownMenu)
+ * @param {dropdownButton} - élément qui affiche l'option sélectionnée dans le menu
+ * @param {dropdownMenu} - menu déroulant qui contient les options de tri
+ */
 export function closeDropdownMenu(dropdownButton, dropdownMenu) {
     dropdownMenu.style.display = 'none';
     dropdownButton.setAttribute('aria-expanded', 'false');
     isMenuOpen = false; // Dropdown menu fermé
-    // dropdownButton.focus();
+    dropdownButton.focus();
 }
 
-
 /********************************************************************
- * Fonction "listenersDropDownMenu" pour créer les listeners pour ouvrir ou fermer le dropdown menu et pour sélectionner une option
- * 
+ * @description - créer les listeners pour ouvrir ou fermer le dropdown menu et pour sélectionner une option
+ * @function (listenersDropDownMenu)
  * @param {mediaFiltre} - tableau contenant les objets médias filtrés
  * @param {dirPhotographer} - répertoire des medias du photographe
  */
@@ -34,8 +33,8 @@ export function listenersDropDownMenu (mediaFiltre, dirPhotographer) {
     const options = Array.from(dropdownMenu.querySelectorAll(".option"));   // options du menu
 
     /********************************************************************
-     * Gestion de la navigation dans les options avec les flèches vers le haut ou vers le bas, enter, espace ou escape
-     * 
+     * @description - Gestion de la navigation dans les options avec les flèches vers le haut ou vers le bas, enter, espace ou escape
+     * @function (handleKeyNavigation)
      * @param {event} - événement ayant déclenché l'appel de la fonction
      */
     function handleKeyNavigation(event) {
@@ -53,7 +52,6 @@ export function listenersDropDownMenu (mediaFiltre, dirPhotographer) {
             event.preventDefault();
             optionSelected(dropdownButton, dropdownMenu, options[focusedOptionIndex], mediaFiltre, dirPhotographer);    // afficher les médias correspondant à la sélection de l'option
         } else if (event.key === "Escape") {    // Ferme le menu si "Escape" est pressé.
-            console.log("listenersDropDownMenu (handleKeyNavigation) - Escape")     // affichage des champs encodés
             closeDropdownMenu(dropdownButton, dropdownMenu);    // fermeture du menu
         }
     }
@@ -62,15 +60,24 @@ export function listenersDropDownMenu (mediaFiltre, dirPhotographer) {
     // Listeners
     // *********
 
-    // Ouverture/Fermeture du menu si clic sur le bouton(dropdownButton)
+    // Ouverture/Fermeture du menu si clic sur le bouton (dropdownButton)
     dropdownButton.addEventListener("click", (event) => {
         event.preventDefault();
         toggleDropdownMenu(dropdownButton, dropdownMenu, options, "click", isMenuOpen); // fermeture/Ouverture du menu
     });
 
+    // Ouverture/Fermeture du menu si Enter ou Espace sur le bouton (dropdownButton)
+    dropdownButton.addEventListener("keydown", (event) => {
+        // if (document.activeElement === dropdownButton && (event.key === "Enter" || event.key === " ")) {
+        if ((event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+            toggleDropdownMenu(dropdownButton, dropdownMenu, options, "enter", isMenuOpen); // fermeture/Ouverture du menu
+        }
+    });
+
     // Fermeture du menu si clic sur la page en dehors du bouton (dropdownButton) et du menu (dropdownMenu)
     document.addEventListener("click", (event) => {
-        if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target) && isMenuOpen) {
             closeDropdownMenu(dropdownButton, dropdownMenu);    // fermeture du menu
         }
     });
@@ -83,13 +90,9 @@ export function listenersDropDownMenu (mediaFiltre, dirPhotographer) {
     });
 
     // Appuis sur les flèches vers le bas et le haut, Enter et Escape 
-    document.addEventListener("keydown", (event) => {
+    dropdownMenu.addEventListener("keydown", (event) => {
         if (isMenuOpen) {   // Le menu est ouvert
             handleKeyNavigation(event);
-            //Si le menu est fermé et que le bouton du menu a le focus et que Enter ou Espace sont pressés
-        } else if (document.activeElement === dropdownButton && (event.key === "Enter" || event.key === " ")) {
-            event.preventDefault();
-            toggleDropdownMenu(dropdownButton, dropdownMenu, options, "enter", isMenuOpen); // fermeture/Ouverture du menu
         }
     });
 
@@ -106,8 +109,8 @@ export function listenersDropDownMenu (mediaFiltre, dirPhotographer) {
 }
 
 /********************************************************************
- * Ouverture du menu dropdown
- * 
+ * @description - Ouverture du menu dropdown
+ * @function (openDropdownMenu)
  * @param {dropdownButton} - élément qui affiche l'option sélectionnée dans le menu
  * @param {dropdownMenu} - menu déroulant qui contient les options de tri
  * @param {options} - options dans le menu
@@ -122,9 +125,9 @@ export function openDropdownMenu(dropdownButton, dropdownMenu, options, type) {
     type === "enter" && options[focusedOptionIndex].focus();    // mise du focus sur la 1ère option 
 }
 
-  /********************************************************************
- * Fonction "optionSelected" pour l'affichage des médias après la sélection de l'option
- * 
+/********************************************************************
+ * @description - affichage des médias après la sélection de l'option
+ * @function (optionSelected)
  * @param {option} - option choisie 
  * @param {dropdownButton} - élément qui affiche l'option sélectionnée dans le menu
  * @param {dropdownMenu} - menu déroulant qui contient les options de tri 
@@ -149,7 +152,6 @@ export function optionSelected (dropdownButton, dropdownMenu, option, mediaFiltr
         default:
             break;
     }
-
     closeDropdownMenu(dropdownButton, dropdownMenu);    // fermeture du menu
     displayData (mediaFiltre, ".medias_section", dirPhotographer);  // affichage des medias des photographes après le tri
     listenersMedias (".medias_section");    // ajout des listeners sur les médias affichés
@@ -159,6 +161,8 @@ export function optionSelected (dropdownButton, dropdownMenu, option, mediaFiltr
 /********************************************************************
  * Appel de l'ouverture/Fermeture du menu dropdown en fonction du contenu de "isMenuOpen"
  * 
+ * @description - Appel de l'ouverture/Fermeture du menu dropdown en fonction du contenu de "isMenuOpen"
+ * @function (toggleDropdownMenu)
  * @param {dropdownButton} - bouton déclenchant l'ouverture du menu
  * @param {dropdownMenu} - élément représentant le menu
  * @param {options} - liste des options du menu 

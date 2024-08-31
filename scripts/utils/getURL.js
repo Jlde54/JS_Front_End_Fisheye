@@ -1,6 +1,6 @@
 /********************************************************************
- * Fonction "getURL" de récupération des paramètres de l'URL
- * 
+ * @description - récupération des paramètres de l'URL
+ * @function (getURL)
  * @param {string} - nom du pramètre à récupérer
  * @returns {field} - valeur du paramètre
  */

@@ -10,8 +10,8 @@ const btnSubmit = document.querySelector(".btn-submit");    // bouton "Envoyer"
 let isContactModalOpen = false;   // modale ouverte/fermée
 
 /********************************************************************
- * Fonction "closeModalForm" pour la fermeture de la modale du formulaire de contact.
- * L'appel se fait depuis "photographer.html"
+ * @description - fermeture de la modale du formulaire de contact. L'appel se fait depuis "photographer.html"
+ * @function (closeModalForm)
  */
 function closeModalForm() {
     toggleModalForm("none", "true");    // afficher/cacher la modale et l'overlay et mettre l'attribut "aria-hidden" à true /false
@@ -20,8 +20,8 @@ function closeModalForm() {
 }
 
 /********************************************************************
- * Fonction "openModalForm" pour afficher la modale du formulaire de contact au clic sur le bouton "Contactez-moi".
- * L'appel se fait depuis "photographer.html"
+ * @description - afficher la modale du formulaire de contact au clic sur le bouton "Contactez-moi". L'appel se fait depuis "photographer.html"
+ * @function (openModalForm)
  */
 function openModalForm() {
     document.formContact.reset();   // Réinitialisation des champs du formulaire de contact "formContact"
@@ -33,6 +33,8 @@ function openModalForm() {
 
 /********************************************************************
  * Configuration du focus trap sur la modale
+ * @description - Configuration du focus trap sur la modale
+ * @function (focusTrapForm)
  */
 function focusTrapForm() {
     const focusableElements = modal.querySelectorAll(`button, input, textarea, [tabindex]:not([tabindex="-1"])`);   // éléments interactifs de la modale
@@ -58,6 +60,8 @@ function focusTrapForm() {
 /********************************************************************
  * Fonction pour afficher ou cacher la modale et l'overlay et pour mettre l'attribut "aria-hidden" de la modale à true /false
  * 
+ * @description - afficher ou cacher la modale et l'overlay et pour mettre l'attribut "aria-hidden" de la modale à true /false
+ * @function (toggleModalForm)
  * @param {display} - contenu de la propriété "display" (none ou block) 
  * @param {ariaHidden} - contenu de la propriété "aria-hidden" (true ou false)
  */
@@ -70,6 +74,8 @@ function toggleModalForm(display, ariaHidden) {
 /********************************************************************
  * Contrôle des champs et soumission du formulaire
  * 
+ * @description - Contrôle des champs et soumission du formulaire
+ * @function (handleSubmit)
  * @param {event} - événement ayant déclenché le submit
  */
 function handleSubmit(event) {

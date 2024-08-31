@@ -1,6 +1,6 @@
 /********************************************************************
- * Fonction MediaFactory pour la création dynamique des éléments HTML <video> ou <img>
- * 
+ * @description - création dynamique des éléments HTML <video> ou <img>
+ * @function (MediaFactory)
  * @param {type} - type de média à créer ("video" ou "img")
  * @param {picture} - chemin du fichier de l'image ou la vidéo
  * @param {className} - classe CSS de l'élément

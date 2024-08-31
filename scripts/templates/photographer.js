@@ -1,6 +1,6 @@
 /********************************************************************
- * Fonction "createElement" pour créer un élément HTML avec les attributs et les enfants spécifiés.
- *
+ * @description - créer un élément HTML avec les attributs et les enfants spécifiés
+ * @function (createElement)
  * @param {tag} - Le nom de la balise de l'élément HTML à créer.
  * @param {[attributes={}]} - Un objet contenant les attributs à ajouter à l'élément.
  * @param {[children=[]]} - Un tableau contenant les enfants à ajouter à l'élément. Les enfants peuvent être des chaînes de caractères ou des instances de Node.
@@ -30,8 +30,8 @@ export function createElement(tag, attributes = {}, children = []) {
 }
 
 /********************************************************************
- * Fonction "displayData" asynchrone pour l'affichage des données des photographes ou des médias des photographes, selon les paramètres de la fonction.
- * 
+ * @description - affichage des données des photographes ou des médias des photographes, selon les paramètres de la fonction
+ * @function (displayData)
  * @param {data} - les données à afficher
  * @param {section} - le sélecteur CSS de la section où les données doivent être affichées
  * @param {dirPhotographer} - le répertoire des photographes, utilisé pour créer le modèle de données
@@ -48,9 +48,8 @@ export async function displayData (data, section, dirPhotographer) {
 }
 
 /********************************************************************
- * Fonction "dataTemplate" pour créer un modèle de données basé sur les informations fournies 
- * Affichage des données des photographes (description ou medias)
- * 
+ * @description - créer un modèle de données basé sur les informations fournies et affichage des données des photographes (description ou medias)
+ * @function (dataTemplate)
  * @param {data} - objet contenant les propriétés à utiliser
  * @param {section} - section devant contenir les articles crées 
  * @param {dirPhotographer} - répertoire des medias du photographe
@@ -61,9 +60,9 @@ function dataTemplate (data, section, dirPhotographer) {
     const { name, id, city, country, tagline, price, portrait, title, image, video, likes } = data
     let picture = "";   // Initialisation de 'picture', utilisée pour stocker le chemin de l'image
 
-    /********************************************************************
-     * Fonction "getUserCardDOM" pour créer et retourner les éléments du DOM représentant les articles soit pour la page d'accueil des photographes, soit pour la page des médias d'un photographe. 
-     *  
+    /*******************************************************************
+     * @description - créer et retourner les éléments du DOM représentant les articles soit pour la page d'accueil des photographes, soit pour la page des médias d'un photographe
+     * @function (getUserCardDOM)
      * @returns {} - carte média (image ou vidéo)
      */
     function getUserCardDOM() {
@@ -77,6 +76,8 @@ function dataTemplate (data, section, dirPhotographer) {
     /********************************************************************
      * Fonction pour créer une carte de photographe
      * 
+     * @description - créer une carte de photographe
+     * @function (createPhotographerCard)
      * @returns {article} - élément <article> représentant la carte média
      */
     function createPhotographerCard() {
@@ -91,8 +92,8 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * Fonction pour créer le lien vers la page du photographe
-     * 
+     * @description - créer le lien vers la page du photographe
+     * @function (createPhotographerLink)
      * @param {picture} - chemin de l'image du photographe
      * @returns {} - lien vers la page du photographe
      */
@@ -113,6 +114,8 @@ function dataTemplate (data, section, dirPhotographer) {
     /********************************************************************
      * Fonction pour créer une carte média (image ou vidéo)
      * 
+     * @description - créer une carte média (image ou vidéo)
+     * @function (createMediaCard)
      * @returns - élément <article> représentant le média
      */
     function createMediaCard() {
@@ -127,8 +130,8 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * Fonction pour préparer les données du média
-     * 
+     * @description - préparer les données du média
+     * @function (prepareMediaData)
      * @returns - données du média
      */
     function prepareMediaData() {
@@ -141,8 +144,8 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * Fonction pour créer l'élément média (image ou vidéo)
-     * 
+     * @description - créer l'élément média (image ou vidéo)
+     * @function (createMediaElement)
      * @param {mediaData} - données du média
      * @returns - élément media <img> ou <video>
      */
@@ -163,8 +166,8 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * Fonction pour créer le lien vers le média en grand format dans la lightbox
-     * 
+     * @description - créer le lien vers le média en grand format dans la lightbox
+     * @function (createMediaLink)
      * @param {imgMedia} - élement media (<img> ou <video>)
      * @param {mediaData} - données du média
      * @returns - élément lien vers le média en grand format dans la lightbox
@@ -180,8 +183,8 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * Fonction pour créer la description du média (titre et likes)
-     * 
+     * @description - créer la description du média (titre et likes)
+     * @function (createMediaDescription)
      * @param {mediaData} - données du média
      * @returns - élément description du média (titre et likes)
      */
@@ -198,8 +201,8 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * Fonction pour s'assurer que l'attribut aria-hidden est supprimé
-     * 
+     * @description - s'assurer que l'attribut aria-hidden est supprimé
+     * @function (ensureAriaHiddenIsRemoved)
      * @param {article}  élément <article> représentant le média
      */
     function ensureAriaHiddenIsRemoved(article) {

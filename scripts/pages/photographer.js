@@ -3,7 +3,7 @@ import { getPhotographerParams, getPhotographerFolder } from "../utils/photograp
 import { displayPhotographerHeader, displayTarif, displayDropdownMenu } from "../components/displays.js";
 import { displayData } from "../templates/photographer.js";
 import { setupListeners } from '../listeners/setupListeners.js';
-import { getData } from "../services/dataService.js";
+import { getData } from "../services/getData.js";
 
 /********************************************************************
  * Initialisation des variables globales
@@ -22,8 +22,8 @@ let urlArray = [
     "price"];       // tarif du photographe
 
 /********************************************************************
- * Fonction "handleLikeListener" pour mettre à jour le nombre de likes sur le média cliqué, dans le total du photographe et dans "mediaFiltre"
- * 
+ * @description - mettre à jour le nombre de likes sur le média cliqué, dans le total du photographe et dans "mediaFiltre"
+ * @function (handleLikeListener)
  * @param {event} - événement ayant déclenché le like
  * @param {index} - index du médias ayant déclenché le like
  */
@@ -59,8 +59,8 @@ export function handleLikeListener (event, index) {
 }
 
 /********************************************************************
- * Fonction "handleMediaListener" pour construire le chemin complet du média et appeler l'affichage du média cliqué dans la lightbox
- * 
+ * @description - construire le chemin complet du média et appeler l'affichage du média cliqué dans la lightbox
+ * @function (handleMediaListener)
  * @param {event} - événement correspondant au média choisi
  * @param {index} - index correspondant au média choisi dans le tableau "mediaFiltre"
  */
@@ -69,12 +69,13 @@ export function handleMediaListener (event, index) {
     let media = "";     // variable pour stocker le chemin de <img> ou <video>
     media = mediaFiltre[index].image ? mediaFiltre[index].image : mediaFiltre[index].video; // media est le media en cours (image ou vidéo)
     const pathMedia = `${mediaFiltre[index].dirPhotographer}${media}`   // Construction du chemin complet du média
-    displayLightbox (pathMedia, mediaFiltre[index].title, "next");  // Appel de "displayLightbox" pour afficher le média cliqué dans la lightbox
+    openLightbox (event, pathMedia, mediaFiltre[index].title, "next");  // Appel de "openLightbox" pour afficher le média cliqué dans la lightbox
     listenLightbox (index, mediaFiltre);    // Appel de "listenLightbox" pour ajouter les listeners sur les flèches suivant/précédent
 }
 
 /********************************************************************
- * Fonction "init" asynchrone pour l'initialisation de la la page photographe (photographer.html)
+ * @description - initialisation de la la page photographe (photographer.html)
+ * @function (init)
  */
 async function init () {
     const constURL = getPhotographerParams(urlArray);   // Appel de "getPhotographerParams" pour récupèrer les paramètres du photographe de l'URL

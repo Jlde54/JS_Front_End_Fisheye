@@ -8,23 +8,29 @@ const nextBtn = document.querySelector(".lightbox-next");   // flèche "suivant"
 // Variable(s) globale(s)
 // **********************
 let isLightboxModalOpen = false;   // modale ouverte/fermée
+let targetElement = ""; // média cliqué à l'origine
 
 /********************************************************************
- * Fonction "closeModalLightbox" pour la fermeture de la modale lightbox
+ * @description - fermeture de la modale lightbox
  * L'appel se fait depuis "photographer.html"
+ * @function (closeModalLightbox)
  */
 function closeModalLightbox() {
     toggleModalLightbox("none", "true");    // afficher ou cacher la lightbox et l'overlay
+    targetElement.focus();  // focus sur le média cliqué à l'origine
     isLightboxModalOpen = false;   // modale fermée
 }
 
 /********************************************************************
- * Fonction "displayLightbox" pour afficher de la modale lightbox au clic sur un média du photographe
- * 
+ * @description - afficher de la modale lightbox au clic sur un média du photographe
+ * @function (openLightbox)
  * @param {media} - chemin de l'image ou de la vidéo à afficher
  * @param {desc} - description associée à l'image ou la vidéo
  */
-function displayLightbox(media, desc, type) {
+function openLightbox(event, media, desc, type) {
+    if (event) {
+        targetElement = event.currentTarget;
+    }
     toggleModalLightbox("block", "false");  // afficher ou cacher la lightbox et l'overlay
     const ligthboxImg = document.querySelector(".lightbox-img");
     const ligthboxDesc = document.querySelector(".lightbox-desc");
@@ -40,23 +46,18 @@ function displayLightbox(media, desc, type) {
         imgMedia = document.createElement("img");   // création d'un élément <img> pour l'image'
         imgMedia.alt = desc;    // texte alternatif de l'image
     }
-
     imgMedia.src = media;   // source de la vidéo ou de l'image
     ligthboxImg.appendChild(imgMedia);
-
     ligthboxDesc.textContent = desc;
-
     lightboxModal.querySelector(".lightbox-modal").focus(); // focus sur la modale
     (type === "next" ? nextBtn : prevBtn).focus();  // focus sur la flèche "suivant" ou "précédent"
-
     isLightboxModalOpen = true;   // modale ouverte
-
     focusTrapLightbox()     // gérer le Focus trap sur la modale
 }
 
 /********************************************************************
- * Affichage du média précédent/suivant
- * 
+ * @description - Affichage du média précédent/suivant
+ * @function (displayMedia)
  * @param {index} - index du média cliqué
  * @param {mediaFiltre} - tableau contenant les objets médias filtrés
  * @param {direction} - flèche cliquée (prev ou next)
@@ -76,16 +77,16 @@ function displayMedia (index, mediaFiltre, direction) {
     // Construction du chemin complet du média
     pathMedia = `${mediaFiltre[newIndex].dirPhotographer}${media}`
     if (direction ==="prev") {
-        displayLightbox (pathMedia, mediaFiltre[newIndex].title, "prev");   // afficher la lightbox
+        openLightbox ("", pathMedia, mediaFiltre[newIndex].title, "prev");   // afficher la lightbox
     } else {
-        displayLightbox (pathMedia, mediaFiltre[newIndex].title, "next");   // afficher la lightbox
+        openLightbox ("",pathMedia, mediaFiltre[newIndex].title, "next");   // afficher la lightbox
     }
-    index = newIndex;   // Mise à jour de l'index actuel avec le nouvel index
-    return index;
+    return newIndex;
 }
 
 /********************************************************************
- * Configuration du focus trap sur la modale
+ * @description - Configuration du focus trap sur la modale
+ * @function (focusTrapLightbox)
  */
 function focusTrapLightbox() {
     // Sélection des éléments interactifs de la modale
@@ -108,8 +109,8 @@ function focusTrapLightbox() {
 }
 
 /********************************************************************
- * Fonction "listenLightbox" pour écouter le clic, enter ou espace sur les flèches "précédent" et "suivant" dans la lightox
- * 
+ * @description - écouter le clic, enter ou espace sur les flèches "précédent" et "suivant" dans la lightox
+ * @function (listenLightbox)
  * @param {index} - index actuel du média affiché dans la lightbox 
  * @param {mediaFiltre} - tableau contenant les objets médias filtrés 
  */
@@ -125,8 +126,8 @@ function listenLightbox (index, mediaFiltre) {
     }
 
     /********************************************************************
-     * Fonction pour gérer les événements clavier (Enter ou Espace)
-     * 
+     * @description - gérer les événements clavier (Enter ou Espace)
+     * @function (handleKeydown)
      * @param {event} - touche ayant déclenché l'appel à la fonction
      * @param {direction} - flèche cliquée (précédent ou suivant)
      */

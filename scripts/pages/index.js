@@ -1,10 +1,11 @@
 // Import(s)
 // *********
-import { getData } from "../services/dataService.js";
+import { getData } from "../services/getData.js";
 import { displayData } from "../templates/photographer.js";
 
 /********************************************************************
- * Fonction asynchrone d'initialisation de la page d'accueil (index.html)
+ * @description - initialisation de la page d'accueil (index.html)
+ * @function (init)
  */
 async function init () {
     const { photographers } = await getData();  // Appel de la fonction getData() pour récupèrer les données des photographes
