@@ -44,7 +44,7 @@ function openLightbox(event, media, desc, type) {
         }
     } else {
         imgMedia = document.createElement("img");   // création d'un élément <img> pour l'image'
-        imgMedia.alt = desc;    // texte alternatif de l'image
+        imgMedia.alt = `Photo ${desc}`;    // texte alternatif de l'image
     }
     imgMedia.src = media;   // source de la vidéo ou de l'image
     ligthboxImg.appendChild(imgMedia);

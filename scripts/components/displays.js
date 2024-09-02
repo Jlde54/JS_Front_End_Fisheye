@@ -37,7 +37,7 @@ export function displayPhotographerHeader (name, city,
             createElement( "img", {
                 src: picture, 
                 className: "photograph-header-imgprofile", 
-                alt: `${name} based to ${city}, ${country}`}, []
+                alt: `Portrait du photographe ${name} basé à ${city}, ${country}`}, []
             )
         ]);
 
@@ -74,21 +74,21 @@ export function displayDropdownMenu(){
                         id: "dropdown-menu",
                         role: "menu"}, [    // élément menu
                             createElement("div", {  // Création de l'option pour trier par "Popularité" avec une icône de flèche vers le haut
-                                value: "Popularité", 
+                                textContent: "Popularité", 
                                 innerHTML: `Popularité <span class="arrow"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></span>`, 
                                 className: "option",
                                 role: "menuitem",
                                 tabindex : "0"}, []
                             ),
                             createElement("div", {  // Création de l'option pour trier par "Date"
-                                value: "Date", 
+                                textContent: "Date", 
                                 innerHTML: "Date", 
                                 className: "option",
                                 role: "menuitem",
                                 tabindex : "0"}, []
                             ),
                             createElement("div", {  // Création de l'option pour trier par "Titre"
-                                value: "Titre", 
+                                textContent: "Titre", 
                                 innerHTML: "Titre", 
                                 className: "option",
                                 role: "menuitem",
@@ -116,15 +116,18 @@ export function displayTarif (price, sumLikes) {
     const divTarifLikes =
         createElement("div", {  // Création d'un élément <div> pour contenir le tarif et les likes
             className: "photograph-likes-tarif"}, [
-            createElement("div", {  // Création d'un élément <div> pour afficher le nombre de "likes"
-                className: "photograph-likes", 
-                "aria-label": `${sumLikes} likes`,
-                innerHTML: `${sumLikes} <span class="arrow"><i class="fa-solid fa-heart"></i></span>`}, []), 
-            createElement("div", {  // Création d'un élément <div> pour afficher le tarif journalier
-                className: "photograph-tarif", 
-                textContent: `${price}€/jour`,
-                "aria-label": `${price} euros par jour`}, [])
-        ]);
+                createElement("div", {  // Création d'un élément <div> pour afficher le nombre de "likes"
+                    className: "photograph-likes", 
+                    "aria-label": `${sumLikes} likes`,
+                    innerHTML: `${sumLikes} <span class="arrow"><i class="fa-solid fa-heart"></i></span>`}, []
+                ), 
+                createElement("div", {  // Création d'un élément <div> pour afficher le tarif journalier
+                    className: "photograph-tarif", 
+                    textContent: `${price}€/jour`,
+                    "aria-label": `${price} euros par jour`}, []
+                )
+            ]
+        );
     // Ajout du conteneur des likes et du tarif à l'élément principal de la page
     main.appendChild(divTarifLikes);
 }

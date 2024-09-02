@@ -11,7 +11,7 @@
   <body>
     <header>
       <a href="./index.html" class="logo-container" aria-label="Retour vers la page d'accueil de FishEye">
-        <img src="assets/images/logo.png" class="logo" alt="FishEye Home page">
+        <img src="assets/images/logo.png" class="logo" alt="Retour vers la page d'accueil de FishEye">
         <!-- Texte caché mais lu par les lecteurs d'écran si l'image ne se charge pas -->
         <span class="sr-only">Retour vers la page d'accueil de FishEye</span>
       </a>
@@ -20,7 +20,7 @@
 
       <!-- Entête du photographe -->
       <div class="photograph-header">
-        <button class="btn photograph-header-button" aria-label="Contact Me" onclick="openModalForm()">Contactez-moi</button>
+        <button class="btn photograph-header-button" aria-label="Contactez moi" onclick="openModalForm()">Contactez-moi</button>
       </div>
       <div class="medias_section"></div>
     </main>
@@ -35,7 +35,7 @@
           <h2 id="modalTitle" class="modal-title">Contactez-moi</h2>
           <!-- Bouton de fermeture -->
           <button class="form-close" aria-label="Fermer la modale" onclick="closeModalForm()">
-            <img src="assets/icons/close.svg" alt="" >
+            <img src="assets/icons/close.svg" alt="Fermer la modale" >
           </button>
         </div>
 
@@ -62,7 +62,7 @@
       <div class="lightbox-modal" role="dialog" aria-label="Photo agrandie" aria-modal="true">
         <!-- Bouton de fermeture -->
         <button class="lightbox-close" aria-label="Fermer la lightbox" onclick="closeModalLightbox()">
-          <img src="assets/icons/close.svg" alt="">
+          <img src="assets/icons/close.svg" alt="Fermer la lightbox">
         </button>
         <!-- Photo affichée -->
         <div class="lightbox-img"></div>
@@ -70,15 +70,14 @@
         <div class="lightbox-desc"></div>
         <!-- Navigation vers la photo précédente -->
         <button class="lightbox-prev" aria-label="Photo précédente">
-          <img src="./assets/icons/left_chevron.svg" alt="">
+          <img src="./assets/icons/left_chevron.svg" alt="Photo précédente">
         </button>
         <!-- Navigation vers la photo suivante -->
         <button class="lightbox-next" aria-label="Photo suivante">
-          <img src="./assets/icons/right_chevron.svg" alt="">
+          <img src="./assets/icons/right_chevron.svg" alt="Photo suivante">
         </button>
       </div>
 		</div>
-    <script src="./scripts/factories/MediaFactory.js"></script>
     <script type="module" src="./scripts/templates/photographer.js"></script>
     <script src="./scripts/utils/contactForm.js"></script>
     <script src="./scripts/utils/mediaLightbox.js"></script>

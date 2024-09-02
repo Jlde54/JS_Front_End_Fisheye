@@ -1,3 +1,7 @@
+// Import(s)
+// *********
+import { MediaFactory } from "../factories/MediaFactory.js";
+
 /********************************************************************
  * @description - créer un élément HTML avec les attributs et les enfants spécifiés
  * @function (createElement)
@@ -82,12 +86,16 @@ function dataTemplate (data, section, dirPhotographer) {
      */
     function createPhotographerCard() {
         const picture = `assets/photographers/${portrait}`; // Définition du chemin de l'image du photographe
-        const article = createElement("article", { id: `art${id}` }, [  // création de la carte du photographe
-            createPhotographerLink(picture),    // création du lien vers la page du photographe
-            createElement("h3", {}, [`${city}, ${country}`]),   // création de l'élément <h3> : localisation
-            createElement("h4", {}, [tagline]), // création de l'élément <h4> : slogan
-            createElement("p", {}, [`${price}€/jour`])  // création de l'élément <p> : tarif
-        ]);
+        const article = 
+        createElement("article", { 
+            role: "article",
+            id: `art${id}` }, [  // création de la carte du photographe
+                createPhotographerLink(picture),    // création du lien vers la page du photographe
+                createElement("h3", {}, [`${city}, ${country}`]),   // création de l'élément <h3> : localisation
+                createElement("h4", {}, [tagline]), // création de l'élément <h4> : slogan
+                createElement("p", {}, [`${price}€/jour`])  // création de l'élément <p> : tarif
+            ]
+        );
         return article;
     }
 
@@ -99,13 +107,13 @@ function dataTemplate (data, section, dirPhotographer) {
      */
     function createPhotographerLink(picture) {
         return createElement("a", {     // création du lien vers les médias du photographe
-            arialabel: `Lien vers la page du photographe ${name}`,
+            "aria-label": `Lien vers la page du photographe ${name}`,
             href: `./photographer.html?id=${id}&name=${name}&city=${city}&country=${country}&tagline=${tagline}&picture=assets/photographers/${portrait}&price=${price}`,
-            "data-id": id
+            "data-id": id,
         }, [
             createElement("img", {
                 src: picture,
-                alt: `Portrait du photographe ${name}`
+                alt: `Lien vers la page du   photographe ${name}`
             }, []),
             createElement("h2", {}, [name])
         ]);
@@ -121,10 +129,12 @@ function dataTemplate (data, section, dirPhotographer) {
     function createMediaCard() {
         const mediaData = prepareMediaData();   // préparation des données du média
         const imgMedia = createMediaElement(mediaData); // création de l'élément média (image ou vidéo)
-        const article = createElement("article", {}, [
-            createMediaLink(imgMedia, mediaData),   // création du lien vers le média en grand format
-            createMediaDescription(mediaData)   // création de la description du média (titre et likes)
-        ]);
+        const article = createElement("article", {
+            role: "article"}, [
+                createMediaLink(imgMedia, mediaData),   // création du lien vers le média en grand format
+                createMediaDescription(mediaData)   // création de la description du média (titre et likes)
+            ]
+        );
         ensureAriaHiddenIsRemoved(article); // s'assurer que l'attribut aria-hidden est supprimé
         return article;
     }
@@ -154,7 +164,7 @@ function dataTemplate (data, section, dirPhotographer) {
             return MediaFactory("img", {    // création du media <img>
                 picture: `./assets/photographers/${mediaData.dirPhotographer}/${mediaData.image}`,  // chemin d'accès au fichier image
                 className: "medias_section_img",
-                alt: ""
+                alt: `Photo ${mediaData.title}`
             });
         } else {
             return MediaFactory("video", {  // création du media <video>
@@ -189,15 +199,27 @@ function dataTemplate (data, section, dirPhotographer) {
      * @returns - élément description du média (titre et likes)
      */
     function createMediaDescription(mediaData) {
-        return createElement("div", { className: "medias_section_descMedia" }, [    // Description du média
-            createElement("h3", { className: "medias_section_title" }, [`${mediaData.title}`]), // Titre du média
-            createElement("div", { className: "medias_section_descLikes" }, [   // Description des likes
-                createElement("p", { className: "medias_section_likes", "aria-label": `${likes} likes` }, [`${likes}`]),    // Nombre de likes
-                createElement("p", { className: "medias_section_icon" }, [  // icon like
-                    createElement("i", { className: "fas fa-heart", tabindex: "0" }, [])
+        return createElement("div", { 
+            className: "medias_section_descMedia" }, [    // Description du média
+                createElement("h3", { 
+                    className: "medias_section_title" }, [`${mediaData.title}`]), // Titre du média
+                createElement("div", { 
+                    className: "medias_section_descLikes" }, [   // Description des likes
+                        createElement("p", { 
+                            className: "medias_section_likes", 
+                            "aria-label": `${likes} likes` }, [`${likes}`]   // Nombre de likes
+                        ),
+                        createElement("p", { 
+                            className: "medias_section_icon" }, [  // icon like
+                                createElement("i", { 
+                                    className: "fas fa-heart", 
+                                    "aria-label": "Cliquez ici pour aimer ce contenu",
+                                    tabindex: "0" }, [])
+                            ]
+                        )
                 ])
-            ])
-        ]);
+            ]
+        );
     }
 
     /********************************************************************

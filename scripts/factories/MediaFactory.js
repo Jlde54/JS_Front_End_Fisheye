@@ -7,7 +7,7 @@
  * @param {alt} - texte alternatif pour l'élément <img> (non utilisé pour <video>).
  * @returns {element} - élément HTML créé (<video> ou <img>)
  */
-function MediaFactory (type, {picture, className, alt}) {
+export function MediaFactory (type, {picture, className, alt}) {
     let element;    // Initialisation de la variable pour stocker l'élément HTML créé
     switch (type) { // Test sur le type de média à créer
         case "video":
@@ -15,6 +15,7 @@ function MediaFactory (type, {picture, className, alt}) {
             element.src = picture;   // chemin du fichier vidéo
             element.className = className;   // classe css de l'élément vidéo
             element.textContent = alt;      // contenu textuel 
+            element.setAttribute("aria-label", `${alt}`)
             break;
         case "img":
             element = document.createElement("img");  // Création de l'élément img
