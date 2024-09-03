@@ -1,8 +1,5 @@
 import globals from "globals";
-import pluginJs from "@eslint/js";
-// import { defineConfig } from "eslint";
 import jsxA11y from 'eslint-plugin-jsx-a11y';
-
 
 export default [
   {
@@ -14,19 +11,11 @@ export default [
       sourceType: "module",
       globals: globals.browser,
     },
-    // parserOptions: {
-    //   ecmaVersion: "latest",
-    //   sourceType: "module",
-    // },
-    // env: {
-    //   browser: true,
-    //   es2021: true,
-    // },
     rules: {
       // Règles pour l'accessibilité liée aux balises sémantiques
       "jsx-a11y/heading-has-content": ["error", { components: [""] }],
       "jsx-a11y/html-has-lang": "error",
-      "jsx-a11y/anchor-is-valid": "error",
+      "jsx-a11y/anchor-is-valid": "error", // Garantir que les liens sont correctement utilisés
       "jsx-a11y/no-redundant-roles": "error",
       "jsx-a11y/role-supports-aria-props": "error",
 
@@ -39,7 +28,6 @@ export default [
       ],
       // Règles pour la navigation au clavier
       "jsx-a11y/interactive-supports-focus": "error", // S'assurer que les éléments interactifs sont accessibles au clavier
-      "jsx-a11y/anchor-is-valid": "error", // Garantir que les liens sont correctement utilisés
       "jsx-a11y/click-events-have-key-events": "error", // S'assurer que les éléments avec des événements click sont accessibles via le clavier
       "jsx-a11y/no-static-element-interactions": "warn", // Empêcher l'ajout d'événements sur des éléments non interactifs
       "jsx-a11y/no-noninteractive-element-interactions": "warn", // Empêcher l'ajout d'événements sur des éléments non destinés à être interactifs

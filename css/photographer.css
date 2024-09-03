@@ -161,7 +161,7 @@
     content: none;
 }
 
-a:focus, .btn:focus {
+a:focus, .btn:focus, i:focus {
     outline: none;
     box-shadow: 0 0 10px 2px black;
     transition: box-shadow 0.2s ease-in-out;

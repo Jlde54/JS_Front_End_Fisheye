@@ -78,7 +78,7 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * Fonction pour créer une carte de photographe
+     * Fonction pour créer une carte photographe (<article>)
      * 
      * @description - créer une carte de photographe
      * @function (createPhotographerCard)
@@ -88,7 +88,6 @@ function dataTemplate (data, section, dirPhotographer) {
         const picture = `assets/photographers/${portrait}`; // Définition du chemin de l'image du photographe
         const article = 
         createElement("article", { 
-            role: "article",
             id: `art${id}` }, [  // création de la carte du photographe
                 createPhotographerLink(picture),    // création du lien vers la page du photographe
                 createElement("h3", {}, [`${city}, ${country}`]),   // création de l'élément <h3> : localisation
@@ -100,7 +99,7 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * @description - créer le lien vers la page du photographe
+     * @description - créer le lien vers la page du photographe (<a>)
      * @function (createPhotographerLink)
      * @param {picture} - chemin de l'image du photographe
      * @returns {} - lien vers la page du photographe
@@ -120,17 +119,14 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * Fonction pour créer une carte média (image ou vidéo)
-     * 
-     * @description - créer une carte média (image ou vidéo)
+     * @description - créer une carte média (image ou vidéo) <article>
      * @function (createMediaCard)
      * @returns - élément <article> représentant le média
      */
     function createMediaCard() {
         const mediaData = prepareMediaData();   // préparation des données du média
         const imgMedia = createMediaElement(mediaData); // création de l'élément média (image ou vidéo)
-        const article = createElement("article", {
-            role: "article"}, [
+        const article = createElement("article", {}, [
                 createMediaLink(imgMedia, mediaData),   // création du lien vers le média en grand format
                 createMediaDescription(mediaData)   // création de la description du média (titre et likes)
             ]
@@ -154,7 +150,7 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * @description - créer l'élément média (image ou vidéo)
+     * @description - créer l'élément média (<img> ou <video>)
      * @function (createMediaElement)
      * @param {mediaData} - données du média
      * @returns - élément media <img> ou <video>
@@ -176,7 +172,7 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * @description - créer le lien vers le média en grand format dans la lightbox
+     * @description - créer le lien vers le média en grand format dans la lightbox (<a>)
      * @function (createMediaLink)
      * @param {imgMedia} - élement media (<img> ou <video>)
      * @param {mediaData} - données du média
@@ -187,13 +183,13 @@ function dataTemplate (data, section, dirPhotographer) {
             "aria-label": `Lien vers le media ${mediaData.title} grand format`,
             href: "#",
             className: "medias_section_link",
-            "data-id": `med${id}`,
+            // "data-id": `med${id}`,
             id: `med${id}`
         }, [imgMedia]);
     }
 
     /********************************************************************
-     * @description - créer la description du média (titre et likes)
+     * @description - créer la description du média (titre et likes) <div>
      * @function (createMediaDescription)
      * @param {mediaData} - données du média
      * @returns - élément description du média (titre et likes)
@@ -213,7 +209,8 @@ function dataTemplate (data, section, dirPhotographer) {
                             className: "medias_section_icon" }, [  // icon like
                                 createElement("i", { 
                                     className: "fas fa-heart", 
-                                    tabindex: "0" }, [])
+                                    tabindex: "0", 
+                                    "aria-label": "Ajouter ou enlever un like" }, [])
                             ]
                         )
                 ])

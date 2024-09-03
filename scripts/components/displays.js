@@ -3,50 +3,6 @@
 import { createElement } from "../templates/photographer.js";
 
 /********************************************************************
- * @description - Création des éléments du header de la page photographe + Ajout des éléments à leur parent dans le DOM
- * @function (displayPhotographerHeader)
- * @param {name} - nom du photographe
- * @param {city} - ville du photographe
- * @param {country} - pays du photographe 
- * @param {tagline} - slogan du photographe
- * @param {picture} - chemin complet vers le portrait du photographe
- */
-export function displayPhotographerHeader (name, city, 
-    country, tagline, picture) {
-
-    // Création des éléments du header de la page photographe
-    const photographHeader = document.querySelector(".photograph-header");
-
-    // Création de l'élément <div> : nom, localisation et slogan du photographe
-    const divPhotographerProfile = 
-        createElement("div", {
-            className: "photograph-header-profile",
-            "aria-labelledby": "photographer-name"}, [
-                createElement( "h1", {
-                    textContent: name, 
-                    id: "photographer-name"}, []),
-                createElement( "h2", {
-                    textContent: `${city}, ${country}`}, []),
-                createElement( "h3", {
-                    textContent: tagline}, [])
-        ]);
-
-    // Création de l'élément <img> : Portrait du photographe
-    const imgPicture = 
-        createElement("figure", {}, [
-            createElement( "img", {
-                src: picture, 
-                className: "photograph-header-imgprofile", 
-                alt: `Portrait du photographe ${name} basé à ${city}, ${country}`}, []
-            )
-        ]);
-
-    // Ajout des éléments à leur parent dans le DOM
-    photographHeader.insertBefore(divPhotographerProfile, photographHeader.firstChild);
-    photographHeader.appendChild(imgPicture);
-}
-
-/********************************************************************
  * @description - Création des éléments du dropdown menu de la page photographe
  * @function (getPhotographerFolder)
  */
@@ -106,6 +62,50 @@ export function displayDropdownMenu(){
 
     // Ajout de l'élément "divSort" à son parent "main" avant l'élément "mediaSection"
     main.insertBefore(divSort, mediaSection);
+}
+
+/********************************************************************
+ * @description - Création des éléments du header de la page photographe + Ajout des éléments à leur parent dans le DOM
+ * @function (displayPhotographerHeader)
+ * @param {name} - nom du photographe
+ * @param {city} - ville du photographe
+ * @param {country} - pays du photographe 
+ * @param {tagline} - slogan du photographe
+ * @param {picture} - chemin complet vers le portrait du photographe
+ */
+export function displayPhotographerHeader (name, city, 
+    country, tagline, picture) {
+
+    // Création des éléments du header de la page photographe
+    const photographHeader = document.querySelector(".photograph-header");
+
+    // Création de l'élément <div> : nom, localisation et slogan du photographe
+    const divPhotographerProfile = 
+        createElement("div", {
+            className: "photograph-header-profile",
+            "aria-labelledby": "photographer-name"}, [
+                createElement( "h1", {
+                    textContent: name, 
+                    id: "photographer-name"}, []),
+                createElement( "h2", {
+                    textContent: `${city}, ${country}`}, []),
+                createElement( "h3", {
+                    textContent: tagline}, [])
+        ]);
+
+    // Création de l'élément <img> : Portrait du photographe
+    const imgPicture = 
+        createElement("figure", {}, [
+            createElement( "img", {
+                src: picture, 
+                className: "photograph-header-imgprofile", 
+                alt: `Portrait du photographe ${name} basé à ${city}, ${country}`}, []
+            )
+        ]);
+
+    // Ajout des éléments à leur parent dans le DOM
+    photographHeader.insertBefore(divPhotographerProfile, photographHeader.firstChild);
+    photographHeader.appendChild(imgPicture);
 }
 
 /********************************************************************
