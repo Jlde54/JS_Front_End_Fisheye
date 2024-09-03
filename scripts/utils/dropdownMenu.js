@@ -68,7 +68,6 @@ export function listenersDropDownMenu (mediaFiltre, dirPhotographer) {
 
     // Ouverture/Fermeture du menu si Enter ou Espace sur le bouton (dropdownButton)
     dropdownButton.addEventListener("keydown", (event) => {
-        // if (document.activeElement === dropdownButton && (event.key === "Enter" || event.key === " ")) {
         if ((event.key === "Enter" || event.key === " ")) {
             event.preventDefault();
             toggleDropdownMenu(dropdownButton, dropdownMenu, options, "enter", isMenuOpen); // fermeture/Ouverture du menu

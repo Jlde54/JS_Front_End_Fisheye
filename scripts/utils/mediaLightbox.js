@@ -141,6 +141,17 @@ function listenLightbox (index, mediaFiltre) {
     // Listeners
     // *********
 
+    lightboxModal.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+            event.preventDefault();
+            if (event.key === "ArrowLeft") {    // appui sur la flèche vers le gauche
+                index = displayMedia(index, mediaFiltre, "prev");    // affichage du média précédent/suivant
+            } else if (event.key === "ArrowRight") {   // appui sur la flèche vers la droite
+                index = displayMedia(index, mediaFiltre, "next");    // affichage du média précédent/suivant
+            }
+        }
+    })
+
     // Listeners pour le bouton "précédent"
     prevBtn.addEventListener("click", () => handleNavigation("prev"));
     prevBtn.addEventListener("keydown", (event) => handleKeydown(event, "prev"));

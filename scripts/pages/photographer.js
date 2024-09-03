@@ -30,8 +30,8 @@ let urlArray = [
 export function handleLikeListener (event, index) {
     const clickedLike = event.target;   //  élément like cliqué
     const articleElem = clickedLike.closest("article"); // Trouver l'élément article parent le + proche contenant l'élément cliqué
-    const likeElem = articleElem.querySelector(".medias_section_likes");
-    const sumLikes = document.querySelector(".photograph-likes");
+    const likeElem = articleElem.querySelector(".medias_section_likes");    // likes pour la photo
+    const sumLikes = document.querySelector(".photograph-likes");   // nombre total de likes
 
     // Récupérer les valeurs actuelles
     let currentLikes = parseInt(likeElem.textContent);

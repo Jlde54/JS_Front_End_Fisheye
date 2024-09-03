@@ -74,7 +74,8 @@ export function displayDropdownMenu(){
                         id: "dropdown-menu",
                         role: "menu"}, [    // élément menu
                             createElement("div", {  // Création de l'option pour trier par "Popularité" avec une icône de flèche vers le haut
-                                textContent: "Popularité", 
+                                // textContent: "Popularité", 
+                                "aria-label": "Option Popularité",
                                 innerHTML: `Popularité <span class="arrow"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></span>`, 
                                 className: "option",
                                 role: "menuitem",
@@ -82,14 +83,16 @@ export function displayDropdownMenu(){
                             ),
                             createElement("div", {  // Création de l'option pour trier par "Date"
                                 textContent: "Date", 
-                                innerHTML: "Date", 
+                                "aria-label": "Option Date",
+                                // innerHTML: "Date", 
                                 className: "option",
                                 role: "menuitem",
                                 tabindex : "0"}, []
                             ),
                             createElement("div", {  // Création de l'option pour trier par "Titre"
                                 textContent: "Titre", 
-                                innerHTML: "Titre", 
+                                "aria-label": "Option Titre",
+                                // innerHTML: "Titre",  
                                 className: "option",
                                 role: "menuitem",
                                 tabindex : "0"}, []

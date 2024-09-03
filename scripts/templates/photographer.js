@@ -213,7 +213,6 @@ function dataTemplate (data, section, dirPhotographer) {
                             className: "medias_section_icon" }, [  // icon like
                                 createElement("i", { 
                                     className: "fas fa-heart", 
-                                    "aria-label": "Cliquez ici pour aimer ce contenu",
                                     tabindex: "0" }, [])
                             ]
                         )
