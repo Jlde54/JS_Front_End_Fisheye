@@ -3,7 +3,7 @@
 import { handleMediaListener, handleLikeListener } from "../pages/photographer.js";
 
 /********************************************************************
- * @description - création des listeners pour ouvrir la lightbox
+ * @description - création des listeners pour écouter les médias et ouvrir la lightbox
  * @function (listenersMedias)
  * @param {section} - section contenant les médias affichés
  */
