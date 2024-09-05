@@ -5,6 +5,7 @@ Lien GitHub du projet : https://jlde54.github.io/JS_Front_End_Fisheye/
 
 Organisation des dossiers :
 Dossier "assets" contenant les sous-dossiers : 
+    - "icons" avec les icônes utilisés dans les modales
     - "images" avec le logo FishEye (logo.png).
     - "photographers" avec les portaits des photographes ainsi que des sous-dossiers contenant les médias (travaux) de chaque photographe.
 Dossier "css" contenant les fichiers css "style.css" et "photographers.css".

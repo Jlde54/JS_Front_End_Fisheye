@@ -82,6 +82,7 @@ async function init () {
     const { media } = await getData (); // Appel de "getData" pour la récupérer les medias des photographes
 
     mediaFiltre = media.filter((item) => item.photographerId == constURL.id);   // Filtre des médias correspondants à l'id du photographe
+    mediaFiltre.sort((a, b) => Number(a.likes) - Number(b.likes));  // Tri en ordre croissant de popularité
 
     displayPhotographerHeader (constURL.name, constURL.city, constURL.country, constURL.tagline, constURL.picture); // Appel de l'affichage de l'entête du photographe
 

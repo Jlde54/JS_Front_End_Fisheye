@@ -28,13 +28,13 @@ export function displayDropdownMenu(){
                     createElement("div", {  // Création de l'élément <div> pour contenir les options du menu déroulant
                         className : "menu",
                         id: "dropdown-menu",
-                        role: "menu"}, [    // élément menu
+                        role: "list"}, [    // élément menu
                             createElement("div", {  // Création de l'option pour trier par "Popularité" avec une icône de flèche vers le haut
                                 // textContent: "Popularité", 
                                 "aria-label": "Option Popularité",
                                 innerHTML: `Popularité <span class="arrow"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></span>`, 
                                 className: "option",
-                                role: "menuitem",
+                                role: "listitem",
                                 tabindex : "0"}, []
                             ),
                             createElement("div", {  // Création de l'option pour trier par "Date"
@@ -42,7 +42,7 @@ export function displayDropdownMenu(){
                                 "aria-label": "Option Date",
                                 // innerHTML: "Date", 
                                 className: "option",
-                                role: "menuitem",
+                                role: "listitem",
                                 tabindex : "0"}, []
                             ),
                             createElement("div", {  // Création de l'option pour trier par "Titre"
@@ -50,7 +50,7 @@ export function displayDropdownMenu(){
                                 "aria-label": "Option Titre",
                                 // innerHTML: "Titre",  
                                 className: "option",
-                                role: "menuitem",
+                                role: "listitem",
                                 tabindex : "0"}, []
                             )
                         ]
