@@ -203,6 +203,9 @@ a:focus, .btn:focus, i:focus {
 
 .medias_section_link {
     position: relative;
+    height: 300px;
+    width: 350px;
+    border-radius: 5px;
 }
 
 .medias_section_img, .medias_section_video {
@@ -234,8 +237,8 @@ a:focus, .btn:focus, i:focus {
     font-weight: 400;
     color : #901C1C;
     gap: 10px;
+    margin-top: 5px;
 }
-
 
 .medias_section_descLikes {
     display: flex;

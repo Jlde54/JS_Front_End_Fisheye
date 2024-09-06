@@ -15,7 +15,7 @@ export function MediaFactory (type, {picture, className, alt}) {
             element.src = picture;   // chemin du fichier vidéo
             element.className = className;   // classe css de l'élément vidéo
             element.textContent = alt;      // contenu textuel 
-            element.setAttribute("aria-label", `${alt}`)
+            element.setAttribute("aria-label", `${alt}`);
             break;
         case "img":
             element = document.createElement("img");  // Création de l'élément img

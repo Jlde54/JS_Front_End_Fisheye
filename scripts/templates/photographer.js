@@ -116,6 +116,7 @@ function dataTemplate (data, section, dirPhotographer) {
                                 createElement("i", { 
                                     className: "fas fa-heart", 
                                     tabindex: "0", 
+                                    role: "button",
                                     "aria-label": "Ajouter ou enlever un like" }, [])
                             ]
                         )

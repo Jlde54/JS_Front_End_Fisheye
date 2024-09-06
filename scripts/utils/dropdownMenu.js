@@ -85,6 +85,8 @@ export function listenersDropDownMenu (mediaFiltre, dirPhotographer) {
     document.addEventListener("keydown", function(event) {
         if (event.key === "Escape" && isMenuOpen) {
             toggleDropdownMenu(dropdownButton, dropdownMenu, options, "escape", isMenuOpen);    // fermeture/Ouverture du menu
+        } else if(event.key === "ArrowDown" || event.key === "ArrowUp") {
+            event.preventDefault();
         }
     });
 
