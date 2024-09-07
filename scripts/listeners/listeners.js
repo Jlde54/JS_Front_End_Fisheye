@@ -12,8 +12,8 @@ export function listenersMedias (section) {
     /*********************************
      * @description - Gestion des événements clic et clavier (enter ou espacement) sur chaque média
      * @function (handleEvent)
-     * @param {event} event 
-     * @param {index} index 
+     * @param {event} - événement déclencheur 
+     * @param {index} - index du média cliqué
      */
     function handleEvent(event, index) {
         if (event.type === "click" || event.key === " " || event.key === "Enter") {

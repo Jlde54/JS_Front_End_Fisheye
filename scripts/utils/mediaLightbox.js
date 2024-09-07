@@ -27,7 +27,7 @@ function closeModalLightbox() {
  * @param {media} - chemin de l'image ou de la vidéo à afficher
  * @param {desc} - description associée à l'image ou la vidéo
  */
-function openLightbox(event, media, desc, type) {
+export function openLightbox(event, media, desc, type) {
     if (event) {
         targetElement = event.currentTarget;
     }
@@ -114,7 +114,7 @@ function focusTrapLightbox() {
  * @param {index} - index actuel du média affiché dans la lightbox 
  * @param {mediaFiltre} - tableau contenant les objets médias filtrés 
  */
-function listenLightbox (index, mediaFiltre) {
+export function listenLightbox (index, mediaFiltre) {
     let enterKeyTriggered = false;  // variable informant que la touche "enter" est désactivée
 
     // Fonction pour gérer la navigation dans la lightbox

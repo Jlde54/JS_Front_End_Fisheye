@@ -11,7 +11,7 @@ import { listenersDropDownMenu } from "../utils/dropdownMenu.js";
  * @param {dirPhotographer} - répertoire des medias du photographe
  */
 export function setupListeners(mediaSection, mediaFiltre, dirPhotographer) {
-    listenersDropDownMenu(mediaFiltre, dirPhotographer);  // Listener sur le dropdown menu
-    listenersMedias(mediaSection);  // Listener sur les médias
-    listenerLike();  // Listener sur les likes
+    listenersDropDownMenu(mediaFiltre, dirPhotographer);  // Appel du listener sur le dropdown menu
+    listenersMedias(mediaSection);  // Appel du listener sur les médias
+    listenerLike();  // Appel du listener sur les likes
 }

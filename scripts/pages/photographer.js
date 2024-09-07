@@ -4,6 +4,8 @@ import { displayPhotographerHeader, displayTarif, displayDropdownMenu } from "..
 import { displayData } from "../templates/photographer.js";
 import { setupListeners } from '../listeners/setupListeners.js';
 import { getData } from "../services/getData.js";
+import { openLightbox } from "../utils/mediaLightbox.js";
+import { listenLightbox } from "../utils/mediaLightbox.js";
 
 /********************************************************************
  * Initialisation des variables globales
@@ -39,12 +41,12 @@ export function handleLikeListener (event, index) {
 
     const isLiked = mediaFiltre[index].liked;   // Vérifier si le média est déjà liké
 
-    // Définir les valeurs à mettre à jour
+    // Définir les nouvelles valeurs des likes
     const likeChange = isLiked ? -1 : 1;    // ajout ou retrait de like
     const newLikes = currentLikes + likeChange;
     const newSumLikes = currentSumLikes + likeChange;
 
-    // Mettre à jour l'état du média dans mediaFiltre
+    // Mettre à jour les champs "liked" et "likes" du média dans mediaFiltre
     mediaFiltre[index].liked = !isLiked;
     mediaFiltre[index].likes += likeChange;
 
@@ -67,7 +69,7 @@ export function handleLikeListener (event, index) {
 export function handleMediaListener (event, index) {
     event.preventDefault();
     let media = "";     // variable pour stocker le chemin de <img> ou <video>
-    media = mediaFiltre[index].image ? mediaFiltre[index].image : mediaFiltre[index].video; // media est le media en cours (image ou vidéo)
+    media = mediaFiltre[index].image ? mediaFiltre[index].image : mediaFiltre[index].video; // récupérer le média en cours (image ou vidéo)
     const pathMedia = `${mediaFiltre[index].dirPhotographer}${media}`   // Construction du chemin complet du média
     openLightbox (event, pathMedia, mediaFiltre[index].title, "next");  // Appel de "openLightbox" pour afficher le média cliqué dans la lightbox
     listenLightbox (index, mediaFiltre);    // Appel de "listenLightbox" pour ajouter les listeners sur les flèches suivant/précédent
@@ -78,7 +80,7 @@ export function handleMediaListener (event, index) {
  * @function (init)
  */
 async function init () {
-    const constURL = getPhotographerParams(urlArray);   // Appel de "getPhotographerParams" pour récupèrer les paramètres du photographe de l'URL
+    const constURL = getPhotographerParams(urlArray);   // Appel de "getPhotographerParams" pour récupérer les paramètres du photographe de l'URL
     const { media } = await getData (); // Appel de "getData" pour la récupérer les medias des photographes
 
     mediaFiltre = media.filter((item) => item.photographerId == constURL.id);   // Filtre des médias correspondants à l'id du photographe
@@ -98,11 +100,11 @@ async function init () {
 
     // Appel de l'affichage de l'encart contenant le nombre de likes et le tarif du photographe 
     const sumLikes = mediaFiltre.map(like => like.likes).reduce((a,b) => a + b, 0); // Extraction et calcul de la somme des likes des médias
-    displayTarif (constURL.price, sumLikes);    // 2) Appel de l'affichage du tarif et du total des likes
+    displayTarif (constURL.price, sumLikes);    // Appel de l'affichage du tarif et du total des likes
     
     displayDropdownMenu ();    // Appel de l'affichage du dropdown menu
 
-    setupListeners(".medias_section", mediaFiltre, dirPhotographer);    // Configuration des listeners sur le dropdown menu, les medias et les likes
+    setupListeners(".medias_section", mediaFiltre, dirPhotographer);    // Lancement des listeners sur le dropdown menu, les medias et les likes
 }
 
 /********************************************************************

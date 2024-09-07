@@ -4,6 +4,7 @@ const modal = document.querySelector("#contact_modal");
 const overlay = document.querySelector(".overlay");
 const contactButton = document.querySelector(".photograph-header-button");  // bouton "Contactez-moi"
 const btnSubmit = document.querySelector(".btn-submit");    // bouton "Envoyer"
+const formContact = document.forms["formContact"];  // récupérer le formulaire par son nom
 
 // Variable(s) globale(s)
 // **********************
@@ -23,8 +24,9 @@ function closeModalForm() {
  * @description - afficher la modale du formulaire de contact au clic sur le bouton "Contactez-moi". L'appel se fait depuis "photographer.html"
  * @function (openModalForm)
  */
+/* eslint-disable no-unused-vars */
 function openModalForm() {
-    document.formContact.reset();   // Réinitialisation des champs du formulaire de contact "formContact"
+    formContact.reset();   // Réinitialisation des champs du formulaire de contact "formContact"
     toggleModalForm("block", "false");  // afficher/cacher la modale et l'overlay et mettre l'attribut "aria-hidden" à true /false
     modal.querySelector("#first").focus();  // focus sur le 1er champ du formulaire
     isContactModalOpen = true;   // modale ouverte
