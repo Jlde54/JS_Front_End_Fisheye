@@ -4,7 +4,7 @@ import { createElement } from "../templates/photographer.js";
 
 /********************************************************************
  * @description - Création des éléments du dropdown menu de la page photographe
- * @function (getPhotographerFolder)
+ * @function (displayDropdownMenu)
  */
 export function displayDropdownMenu(){
     const main = document.querySelector("#main");
@@ -65,7 +65,7 @@ export function displayDropdownMenu(){
 }
 
 /********************************************************************
- * @description - Création des éléments du header de la page photographe + Ajout des éléments à leur parent dans le DOM
+ * @description - Création des éléments du header de la page photographe
  * @function (displayPhotographerHeader)
  * @param {name} - nom du photographe
  * @param {city} - ville du photographe
