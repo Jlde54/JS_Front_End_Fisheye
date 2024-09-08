@@ -34,24 +34,6 @@ export function createElement(tag, attributes = {}, children = []) {
 }
 
 /********************************************************************
- * @description - affichage des données des photographes ou des médias des photographes, selon les paramètres de la fonction
- * @function (displayData)
- * @param {data} - les données à afficher
- * @param {section} - le sélecteur CSS de la section où les données doivent être affichées
- * @param {dirPhotographer} - le répertoire des photographes, utilisé pour créer le modèle de données
- */
-export async function displayData (data, section, dirPhotographer) {
-    const sectionData = document.querySelector(section);
-    sectionData.replaceChildren();  // Supprime tous les enfants de l'élément 'section' en paramètre
-
-    data.forEach((item) => {    // Parcourt chaque élément des données (data)
-        const dataModel = dataTemplate (item, section, dirPhotographer);    // Appel de la fonction pour créer un modèle de données pour chaque item
-        const userCardDOM = dataModel.getUserCardDOM ();    // Appel de la fonction pour obtenir l'élément DOM représentant la carte utilisateur à partir du modèle de données
-        sectionData.appendChild(userCardDOM);   // Ajout de la carte utilisateur à la section du DOM spécifiée dans les paramètres
-    });
-}
-
-/********************************************************************
  * @description - créer un modèle de données basé sur les informations fournies et affichage des données des photographes (description ou medias)
  * @function (dataTemplate)
  * @param {data} - objet contenant les propriétés à utiliser
@@ -233,4 +215,23 @@ function dataTemplate (data, section, dirPhotographer) {
 
     // Retour des nom du photographe, chemin de l'image et méthode pour obtenir l'élément DOM représentant la carte utilisateur
     return { name, picture, getUserCardDOM }
+}
+
+
+/********************************************************************
+ * @description - affichage des données des photographes ou des médias des photographes, selon les paramètres de la fonction
+ * @function (displayData)
+ * @param {data} - les données à afficher
+ * @param {section} - le sélecteur CSS de la section où les données doivent être affichées
+ * @param {dirPhotographer} - le répertoire des photographes, utilisé pour créer le modèle de données
+ */
+export async function displayData (data, section, dirPhotographer) {
+    const sectionData = document.querySelector(section);
+    sectionData.replaceChildren();  // Supprime tous les enfants de l'élément 'section' en paramètre
+
+    data.forEach((item) => {    // Parcourt chaque élément des données (data)
+        const dataModel = dataTemplate (item, section, dirPhotographer);    // Appel de la fonction pour créer un modèle de données pour chaque item
+        const userCardDOM = dataModel.getUserCardDOM ();    // Appel de la fonction pour obtenir l'élément DOM représentant la carte utilisateur à partir du modèle de données
+        sectionData.appendChild(userCardDOM);   // Ajout de la carte utilisateur à la section du DOM spécifiée dans les paramètres
+    });
 }

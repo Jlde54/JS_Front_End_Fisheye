@@ -21,20 +21,6 @@ function closeModalForm() {
 }
 
 /********************************************************************
- * @description - afficher la modale du formulaire de contact au clic sur le bouton "Contactez-moi". L'appel se fait depuis "photographer.html"
- * @function (openModalForm)
- */
-/* eslint-disable no-unused-vars */
-function openModalForm() {
-    formContact.reset();   // Réinitialisation des champs du formulaire de contact "formContact"
-    toggleModalForm("block", "false");  // afficher/cacher la modale et l'overlay et mettre l'attribut "aria-hidden" à true /false
-    modal.querySelector("#first").focus();  // focus sur le 1er champ du formulaire
-    isContactModalOpen = true;   // modale ouverte
-    focusTrapForm();    // gérer le Focus trap sur la modale
-}
-
-/********************************************************************
- * Configuration du focus trap sur la modale
  * @description - Configuration du focus trap sur la modale
  * @function (focusTrapForm)
  */
@@ -60,22 +46,6 @@ function focusTrapForm() {
 }
 
 /********************************************************************
- * Fonction pour afficher ou cacher la modale et l'overlay et pour mettre l'attribut "aria-hidden" de la modale à true /false
- * 
- * @description - afficher ou cacher la modale et l'overlay et pour mettre l'attribut "aria-hidden" de la modale à true /false
- * @function (toggleModalForm)
- * @param {display} - contenu de la propriété "display" (none ou block) 
- * @param {ariaHidden} - contenu de la propriété "aria-hidden" (true ou false)
- */
-function toggleModalForm(display, ariaHidden) {
-    modal.style.display = display;  // Affiche/cache la modale en modifiant son style display
-    overlay.style.display = display;    // Affiche/cache l'overlay en modifiant son style display
-    modal.setAttribute("aria-hidden", ariaHidden);  // mettre l'attribut "aria-hidden" de la modale à true /false
-}
-
-/********************************************************************
- * Contrôle des champs et soumission du formulaire
- * 
  * @description - Contrôle des champs et soumission du formulaire
  * @function (handleSubmit)
  * @param {event} - événement ayant déclenché le submit
@@ -98,6 +68,31 @@ function handleSubmit(event) {
         // Affichage dans la console des données soumises par l'utilisateur
         console.log(`Formulaire soumis avec : ${formData.join(', ')}`);
     }
+}
+
+/********************************************************************
+ * @description - afficher la modale du formulaire de contact au clic sur le bouton "Contactez-moi". L'appel se fait depuis "photographer.html"
+ * @function (openModalForm)
+ */
+/* eslint-disable no-unused-vars */
+function openModalForm() {
+    formContact.reset();   // Réinitialisation des champs du formulaire de contact "formContact"
+    toggleModalForm("block", "false");  // afficher/cacher la modale et l'overlay et mettre l'attribut "aria-hidden" à true /false
+    modal.querySelector("#first").focus();  // focus sur le 1er champ du formulaire
+    isContactModalOpen = true;   // modale ouverte
+    focusTrapForm();    // gérer le Focus trap sur la modale
+}
+
+/********************************************************************
+ * @description - afficher ou cacher la modale et l'overlay et pour mettre l'attribut "aria-hidden" de la modale à true /false
+ * @function (toggleModalForm)
+ * @param {display} - contenu de la propriété "display" (none ou block) 
+ * @param {ariaHidden} - contenu de la propriété "aria-hidden" (true ou false)
+ */
+function toggleModalForm(display, ariaHidden) {
+    modal.style.display = display;  // Affiche/cache la modale en modifiant son style display
+    overlay.style.display = display;    // Affiche/cache l'overlay en modifiant son style display
+    modal.setAttribute("aria-hidden", ariaHidden);  // mettre l'attribut "aria-hidden" de la modale à true /false
 }
 
 // *********

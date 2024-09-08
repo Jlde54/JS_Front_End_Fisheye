@@ -22,6 +22,32 @@ export function closeDropdownMenu(dropdownButton, dropdownMenu) {
 }
 
 /********************************************************************
+ * @description - Configuration du focus trap sur le dropdown menu
+ * @function (focusTrapForm)
+ */
+function focusTrapMenu() {
+    const menu = document.querySelector("#dropdown-menu");
+    const focusableElements = menu.querySelectorAll(".option");   // toutes les options du menu
+
+    // Sélection du 1er et du dernier élément intéractif
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    // Capturer les appuis surTab et Shift + Tab
+    menu.addEventListener("keydown", (event) => {
+        if (event.key === "Tab" || event.keyCode === 9) {
+            if (event.shiftKey && document.activeElement === firstElement) { // Si "Shift + Tab" et l'élément actif est le 1er champ
+                    event.preventDefault();
+                    lastElement.focus(); // Boucle au dernier élément
+            } else if (!event.shiftKey && document.activeElement === lastElement) { // Si "Tab" est pressé et l'élément actif est le dernier champ
+                    event.preventDefault();
+                    firstElement.focus(); // Boucle au premier élément
+            }
+        }
+    });
+}
+
+/********************************************************************
  * @description - créer les listeners pour ouvrir ou fermer le dropdown menu et pour sélectionner une option
  * @function (listenersDropDownMenu)
  * @param {mediaFiltre} - tableau contenant les objets médias filtrés
@@ -124,6 +150,7 @@ export function openDropdownMenu(dropdownButton, dropdownMenu, options, type) {
     focusedOptionIndex = 0; // index de la 1ère option
     dropdownButton.blur();  // suppression du focus du bouton
     type === "enter" && options[focusedOptionIndex].focus();    // mise du focus sur la 1ère option 
+    focusTrapMenu() // gérer le Focus trap sur le menu
 }
 
 /********************************************************************

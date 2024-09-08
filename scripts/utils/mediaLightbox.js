@@ -15,44 +15,10 @@ let targetElement = ""; // média cliqué à l'origine
  * L'appel se fait depuis "photographer.html"
  * @function (closeModalLightbox)
  */
-function closeModalLightbox() {
+export function closeModalLightbox() {
     toggleModalLightbox("none", "true");    // afficher ou cacher la lightbox et l'overlay
     targetElement.focus();  // focus sur le média cliqué à l'origine
     isLightboxModalOpen = false;   // modale fermée
-}
-
-/********************************************************************
- * @description - afficher de la modale lightbox au clic sur un média du photographe
- * @function (openLightbox)
- * @param {media} - chemin de l'image ou de la vidéo à afficher
- * @param {desc} - description associée à l'image ou la vidéo
- */
-export function openLightbox(event, media, desc, type) {
-    if (event) {
-        targetElement = event.currentTarget;
-    }
-    toggleModalLightbox("block", "false");  // afficher ou cacher la lightbox et l'overlay
-    const ligthboxImg = document.querySelector(".lightbox-img");
-    const ligthboxDesc = document.querySelector(".lightbox-desc");
-    ligthboxImg.innerHTML = "";
-    let imgMedia = "";  // élément video ou img
-
-    if (media.endsWith(".mp4")) {   // test si media video
-        imgMedia = document.createElement("video");     // création d'un élément <video> pour la vidéo
-        if(imgMedia.paused){
-            imgMedia.autoplay = "true"; // Ajout de l'attribut autoplay pour démarrer la lecture automatique
-        }
-    } else {
-        imgMedia = document.createElement("img");   // création d'un élément <img> pour l'image'
-        imgMedia.alt = `Photo ${desc}`;    // texte alternatif de l'image
-    }
-    imgMedia.src = media;   // source de la vidéo ou de l'image
-    ligthboxImg.appendChild(imgMedia);
-    ligthboxDesc.textContent = desc;
-    lightboxModal.querySelector(".lightbox-modal").focus(); // focus sur la modale
-    (type === "next" ? nextBtn : prevBtn).focus();  // focus sur la flèche "suivant" ou "précédent"
-    isLightboxModalOpen = true;   // modale ouverte
-    focusTrapLightbox()     // gérer le Focus trap sur la modale
 }
 
 /********************************************************************
@@ -159,6 +125,40 @@ export function listenLightbox (index, mediaFiltre) {
     // Listeners pour le bouton "suivant"
     nextBtn.addEventListener("click", () => handleNavigation("next"));
     nextBtn.addEventListener("keydown", (event) => handleKeydown(event, "next"));
+}
+
+/********************************************************************
+ * @description - afficher de la modale lightbox au clic sur un média du photographe
+ * @function (openLightbox)
+ * @param {media} - chemin de l'image ou de la vidéo à afficher
+ * @param {desc} - description associée à l'image ou la vidéo
+ */
+export function openLightbox(event, media, desc, type) {
+    if (event) {
+        targetElement = event.currentTarget;
+    }
+    toggleModalLightbox("block", "false");  // afficher ou cacher la lightbox et l'overlay
+    const ligthboxImg = document.querySelector(".lightbox-img");
+    const ligthboxDesc = document.querySelector(".lightbox-desc");
+    ligthboxImg.innerHTML = "";
+    let imgMedia = "";  // élément video ou img
+
+    if (media.endsWith(".mp4")) {   // test si media video
+        imgMedia = document.createElement("video");     // création d'un élément <video> pour la vidéo
+        if(imgMedia.paused){
+            imgMedia.autoplay = "true"; // Ajout de l'attribut autoplay pour démarrer la lecture automatique
+        }
+    } else {
+        imgMedia = document.createElement("img");   // création d'un élément <img> pour l'image'
+        imgMedia.alt = `Photo ${desc}`;    // texte alternatif de l'image
+    }
+    imgMedia.src = media;   // source de la vidéo ou de l'image
+    ligthboxImg.appendChild(imgMedia);
+    ligthboxDesc.textContent = desc;
+    lightboxModal.querySelector(".lightbox-modal").focus(); // focus sur la modale
+    (type === "next" ? nextBtn : prevBtn).focus();  // focus sur la flèche "suivant" ou "précédent"
+    isLightboxModalOpen = true;   // modale ouverte
+    focusTrapLightbox()     // gérer le Focus trap sur la modale
 }
 
 /********************************************************************
