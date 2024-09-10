@@ -26,8 +26,8 @@ export function getPhotographerFolder(name) {
  */
 export function getPhotographerParams(urlArray) {
     const params = {};
-    urlArray.forEach(elem => {
-        params[elem] = getURL(elem);
+    urlArray.forEach(elem => {  // pour chaque élément du tableau urlArray
+        params[elem] = getURL(elem);    // retour de l'url correspondant à l'élément
     });
     return params;
 }

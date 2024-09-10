@@ -187,8 +187,6 @@ export function optionSelected (dropdownButton, dropdownMenu, option, mediaFiltr
 }
 
 /********************************************************************
- * Appel de l'ouverture/Fermeture du menu dropdown en fonction du contenu de "isMenuOpen"
- * 
  * @description - Appel de l'ouverture/Fermeture du menu dropdown en fonction du contenu de "isMenuOpen"
  * @function (toggleDropdownMenu)
  * @param {dropdownButton} - bouton déclenchant l'ouverture du menu

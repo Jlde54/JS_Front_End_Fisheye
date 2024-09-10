@@ -18,7 +18,7 @@ let targetElement = ""; // média cliqué à l'origine
 export function closeModalLightbox() {
     toggleModalLightbox("none", "true");    // afficher ou cacher la lightbox et l'overlay
     targetElement.focus();  // focus sur le média cliqué à l'origine
-    isLightboxModalOpen = false;   // modale fermée
+    isLightboxModalOpen = false;   // lightbox fermée
 }
 
 /********************************************************************
@@ -31,31 +31,29 @@ export function closeModalLightbox() {
  */
 function displayMedia (index, mediaFiltre, direction) {
     let newIndex, media, pathMedia;
-    // Calcul du nouvel index pour naviguer au média précédent
+    // Calcul du nouvel index pour naviguer au média précédent ou suivant
     if (direction ==="prev") {
         newIndex = (index - 1 + mediaFiltre.length) % mediaFiltre.length;
-        // Calcul du nouvel index pour naviguer au média précédent
     } else {
         newIndex = (index + 1) % mediaFiltre.length;
     }
-    // Test si le média au nouvel index est une image ou une vidéo
+    // Initialisation de media (une image ou une vidéo)
     media = mediaFiltre[newIndex].image ? mediaFiltre[newIndex].image : mediaFiltre[newIndex].video;
-    // Construction du chemin complet du média
-    pathMedia = `${mediaFiltre[newIndex].dirPhotographer}${media}`
+    pathMedia = `${mediaFiltre[newIndex].dirPhotographer}${media}`  // Construction du chemin complet du média
     if (direction ==="prev") {
-        openLightbox ("", pathMedia, mediaFiltre[newIndex].title, "prev");   // afficher la lightbox
+        openLightbox ("", pathMedia, mediaFiltre[newIndex].title, "prev");   // afficher le media précédent
     } else {
-        openLightbox ("",pathMedia, mediaFiltre[newIndex].title, "next");   // afficher la lightbox
+        openLightbox ("",pathMedia, mediaFiltre[newIndex].title, "next");   // afficher le media suivant
     }
     return newIndex;
 }
 
 /********************************************************************
- * @description - Configuration du focus trap sur la modale
+ * @description - Configuration du focus trap sur la lightbox
  * @function (focusTrapLightbox)
  */
 function focusTrapLightbox() {
-    // Sélection des éléments interactifs de la modale
+    // Sélection des éléments interactifs de la lightbox
     const focusableElements = lightboxModal.querySelectorAll(`button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])`);
     // Sélection du 1er et du dernier élément intéractif
     const firstElement = focusableElements[0];
@@ -106,7 +104,7 @@ export function listenLightbox (index, mediaFiltre) {
 
     // Listeners
     // *********
-
+    // Listener sur les flèches gauche ou droite du clavier
     lightboxModal.addEventListener("keydown", (event) => {
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             event.preventDefault();
@@ -118,24 +116,24 @@ export function listenLightbox (index, mediaFiltre) {
         }
     })
 
-    // Listeners pour le bouton "précédent"
+    // Listeners sur le bouton "précédent"
     prevBtn.addEventListener("click", () => handleNavigation("prev"));
     prevBtn.addEventListener("keydown", (event) => handleKeydown(event, "prev"));
 
-    // Listeners pour le bouton "suivant"
+    // Listeners sur le bouton "suivant"
     nextBtn.addEventListener("click", () => handleNavigation("next"));
     nextBtn.addEventListener("keydown", (event) => handleKeydown(event, "next"));
 }
 
 /********************************************************************
- * @description - afficher de la modale lightbox au clic sur un média du photographe
+ * @description - afficher la lightbox au clic sur un média du photographe
  * @function (openLightbox)
  * @param {media} - chemin de l'image ou de la vidéo à afficher
  * @param {desc} - description associée à l'image ou la vidéo
  */
 export function openLightbox(event, media, desc, type) {
     if (event) {
-        targetElement = event.currentTarget;
+        targetElement = event.currentTarget;    // mémorisation du média cliqué à l'origine
     }
     toggleModalLightbox("block", "false");  // afficher ou cacher la lightbox et l'overlay
     const ligthboxImg = document.querySelector(".lightbox-img");
@@ -158,7 +156,7 @@ export function openLightbox(event, media, desc, type) {
     lightboxModal.querySelector(".lightbox-modal").focus(); // focus sur la modale
     (type === "next" ? nextBtn : prevBtn).focus();  // focus sur la flèche "suivant" ou "précédent"
     isLightboxModalOpen = true;   // modale ouverte
-    focusTrapLightbox()     // gérer le Focus trap sur la modale
+    focusTrapLightbox()     // gérer le Focus trap sur la lightbox
 }
 
 /********************************************************************

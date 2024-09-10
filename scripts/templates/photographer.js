@@ -12,21 +12,20 @@ import { MediaFactory } from "../factories/MediaFactory.js";
  */
 export function createElement(tag, attributes = {}, children = []) {
     const element = document.createElement(tag);
-    Object.keys(attributes).forEach(item => {   // Parcourt des clés de l'objet attributes
-        // Vérifie si l'attribut commence par "data-" ou "aria-" ou bien est "role" ou "tabindex"
+    Object.keys(attributes).forEach(item => {   // Parcourt les attributs à créer
+        // Vérifie si l'attribut commence par "data-" ou "aria-" ou bien est "role" ou "tabindex" (données, accessibilité ou navigation clavier)
         if (item.startsWith("data-") || item.startsWith("aria-") || item === "role" || item === "tabindex") {
-            element.setAttribute(item, attributes[item])
+            element.setAttribute(item, attributes[item])    // méthode setAttribute pour les attribut non standards
         } else {
-            element[item] = attributes[item];
+            element[item] = attributes[item];   // Assignation directe
         }
     });
     // Parcourt le tableau des enfants
     children.forEach(child => {
-        // Vérifie si l'enfant est une chaîne de caractères
-        if (typeof child === "string") {
-            element.appendChild(document.createTextNode(child));
-        } else if (child instanceof Node) {
-            element.appendChild(child);
+        if (typeof child === "string") {    // Vérifie si l'enfant est une chaîne de caractères
+            element.appendChild(document.createTextNode(child));    // Convertit child en objet de type Text Node 
+        } else if (child instanceof Node) {     // vérifie si child est une instance de type Node
+            element.appendChild(child); 
         }
     });
     // Retour de l'élément HTML créé
@@ -55,7 +54,7 @@ function dataTemplate (data, section, dirPhotographer) {
         if (section === ".photographer_section") {  // Si la section cible est la page d'accueil des photographes
             return createPhotographerCard();    // création d'une carte de photographe
         } else {    // sinon la section cible est la page contenant les médias d'un photographe
-            return createMediaCard();
+            return createMediaCard();   // création d'une carte média
         }
     }
 
@@ -147,8 +146,6 @@ function dataTemplate (data, section, dirPhotographer) {
     }
 
     /********************************************************************
-     * Fonction pour créer une carte photographe (<article>)
-     * 
      * @description - créer une carte de photographe
      * @function (createPhotographerCard)
      * @returns {article} - élément <article> représentant la carte média
@@ -181,7 +178,7 @@ function dataTemplate (data, section, dirPhotographer) {
         }, [
             createElement("img", {
                 src: picture,
-                alt: `Lien vers la page du   photographe ${name}`
+                alt: `Lien vers la page du photographe ${name}`
             }, []),
             createElement("h2", {}, [name])
         ]);
@@ -193,7 +190,7 @@ function dataTemplate (data, section, dirPhotographer) {
      * @param {article}  élément <article> représentant le média
      */
     function ensureAriaHiddenIsRemoved(article) {
-        // Forcer la suppression de l'attribut "aria-hidden" en continu
+        // Forcer la suppression de l'attribut "aria-hidden"
         setInterval(() => {
             article.querySelector("i").removeAttribute("aria-hidden");
         }, 1000);

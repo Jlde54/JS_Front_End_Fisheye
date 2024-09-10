@@ -31,7 +31,7 @@ function focusTrapForm() {
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
 
-    // Capturer les appuis surTab et Shift + Tab
+    // Capturer les appuis sur Tab et Shift + Tab
     modal.addEventListener("keydown", (event) => {
         if (event.key === "Tab" || event.keyCode === 9) {
             if (event.shiftKey && document.activeElement === firstElement) { // Si "Shift + Tab" et l'élément actif est le 1er champ
@@ -54,8 +54,8 @@ function handleSubmit(event) {
     event.preventDefault();
     if (!formContact.checkValidity()) { // Teste si le formulaire de contact n'est pas valide
         formContact.reportValidity();   // Affichage des messages d'erreur
-        let inputs = formContact.querySelectorAll("input, textarea");   // Validation individuelle des champs
-        inputs.forEach(input => {
+        let inputs = formContact.querySelectorAll("input, textarea");   // Sélection des champs du formulaires
+        inputs.forEach(input => {       // Validation individuelle des champs
             if (!input.checkValidity()) {
                 input.setAttribute("aria-invalid", "true"); // Marque le champ comme invalide
             } else {
@@ -74,6 +74,7 @@ function handleSubmit(event) {
  * @description - afficher la modale du formulaire de contact au clic sur le bouton "Contactez-moi". L'appel se fait depuis "photographer.html"
  * @function (openModalForm)
  */
+// Désactiver la règle ESLint qui empêche "require" d'être reconnu
 /* eslint-disable no-unused-vars */
 function openModalForm() {
     formContact.reset();   // Réinitialisation des champs du formulaire de contact "formContact"
@@ -103,10 +104,8 @@ function toggleModalForm(display, ariaHidden) {
 btnSubmit.addEventListener("click", handleSubmit);  // sur le click
 btnSubmit.addEventListener("keydown", (event) => {  // sur le "Enter" ou "Espace"
     if (event.key === "Enter" || event.key === " ") {
-        // Empêche le rechargement de la page par défaut du bouton de soumission
         event.preventDefault();
-        // Teste si le formulaire de contact est valide
-        handleSubmit(event);
+        handleSubmit(event);    // Teste si le formulaire de contact est valide
     }
 })
 
