@@ -171,7 +171,7 @@ function dataTemplate (data, section, dirPhotographer) {
      * @returns {} - lien vers la page du photographe
      */
     function createPhotographerLink(picture) {
-        return createElement("a", {     // création du lien vers les médias du photographe
+        return createElement("a", {     // création du lien vers la page du photographe
             "aria-label": `Lien vers la page du photographe ${name}`,
             href: `./photographer.html?id=${id}&name=${name}&city=${city}&country=${country}&tagline=${tagline}&picture=assets/photographers/${portrait}&price=${price}`,
             "data-id": id,
